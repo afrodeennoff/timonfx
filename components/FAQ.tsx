@@ -6,7 +6,6 @@ export const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    // Normalized padding to py-24 md:py-48
     <section id="faq" className="py-24 md:py-48 px-6 bg-brand-black border-t border-white/10">
       <div className="max-w-4xl mx-auto">
         <div className="text-center space-y-4 mb-24">
@@ -20,13 +19,17 @@ export const FAQ: React.FC = () => {
               <motion.button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 whileFocus={VARIANTS.buttonFocus}
-                className="w-full flex justify-between items-center p-8 text-left hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple focus-visible:bg-white/5"
+                className="w-full flex justify-between items-center p-6 md:p-8 text-left hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple focus-visible:bg-white/5"
                 aria-expanded={openIndex === i}
                 aria-controls={`faq-answer-${i}`}
                 id={`faq-question-${i}`}
               >
-                <span className="mono text-[11px] md:text-xs text-white uppercase tracking-widest font-black pr-4 leading-relaxed group-hover:text-zinc-200 transition-colors">{item.q}</span>
-                <span className="mono text-xs text-brand-purple font-bold shrink-0">{openIndex === i ? '[-]' : '[+]'}</span>
+                <span className="mono text-[11px] md:text-xs text-white uppercase tracking-widest font-black pr-4 leading-relaxed group-hover:text-zinc-200 transition-colors">
+                  {item.q}
+                </span>
+                <span className="mono text-[10px] md:text-xs text-brand-purple font-bold shrink-0 tabular-nums">
+                  {openIndex === i ? '[-]' : '[+]'}
+                </span>
               </motion.button>
               <AnimatePresence>
                 {openIndex === i && (
@@ -39,7 +42,7 @@ export const FAQ: React.FC = () => {
                     aria-labelledby={`faq-question-${i}`}
                     id={`faq-answer-${i}`}
                   >
-                    <div className="p-8 pt-0 border-t border-white/10">
+                    <div className="p-6 md:p-8 pt-0 border-t border-white/10">
                       <p className="mono text-[11px] md:text-xs text-zinc-300 uppercase tracking-widest leading-loose font-bold">
                         {item.a}
                       </p>

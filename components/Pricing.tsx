@@ -8,7 +8,6 @@ interface PricingProps {
 
 export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
   return (
-    // Normalized padding to py-24 md:py-48 to match other sections
     <section id="pricing" className="py-24 md:py-48 px-6 bg-[#050505] border-t border-white/10 relative overflow-hidden transform-gpu">
       <div className="max-w-7xl mx-auto">
         <motion.div 
@@ -41,7 +40,10 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
                 <h3 className="text-2xl font-black text-white uppercase tracking-widest">Core Plan</h3>
                 <p className="mono text-[11px] text-zinc-300 uppercase tracking-widest font-bold">Standard Access</p>
               </div>
-              <div className="text-4xl font-black text-white mono relative z-10">$497<span className="text-xs text-zinc-400 uppercase ml-2 tracking-widest font-bold">LIFETIME</span></div>
+              <div className="flex items-baseline gap-2 relative z-10">
+                <span className="text-4xl font-black text-white mono">$497</span>
+                <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">LIFETIME</span>
+              </div>
               <ul className="space-y-4 flex-1 relative z-10">
                  {['Fundamental Training', 'Weekly Reviews', 'Prop Firm Strategy', 'Access to Trader Hub'].map(item => (
                    <li key={item} className="mono text-[11px] text-zinc-200 uppercase flex items-center gap-3 font-bold">
@@ -73,7 +75,10 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
                 <h3 className="text-2xl font-black text-white uppercase tracking-widest">Advanced Access</h3>
                 <p className="mono text-[11px] text-purple-100 uppercase tracking-widest font-bold">Pro Trading Tools</p>
               </div>
-              <div className="text-4xl font-black text-white mono relative z-10">$997<span className="text-xs text-purple-200 uppercase ml-2 tracking-widest font-bold">LIFETIME</span></div>
+              <div className="flex items-baseline gap-2 relative z-10">
+                <span className="text-4xl font-black text-white mono">$997</span>
+                <span className="text-[10px] text-purple-200 uppercase tracking-widest font-bold">LIFETIME</span>
+              </div>
               <ul className="space-y-4 flex-1 relative z-10">
                  {['Advanced Strategies', 'Daily NY Morning Analysis', 'Priority Chat with Timon', 'Private Group Insights'].map(item => (
                    <li key={item} className="mono text-[11px] text-white uppercase flex items-center gap-3 font-black">

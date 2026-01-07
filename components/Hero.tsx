@@ -65,32 +65,40 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         variants={VARIANTS.staggerContainer}
         initial="initial"
         animate="animate"
-        className="relative z-10 max-w-7xl w-full text-center space-y-12"
+        className="relative z-10 max-w-7xl w-full text-center flex flex-col items-center gap-12"
       >
-        <motion.div variants={VARIANTS.reveal} className="relative">
+        <motion.div variants={VARIANTS.reveal} className="relative flex flex-col items-center">
           <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-[14rem] font-black text-white italic tracking-tighter uppercase leading-[0.8] select-none">
             ORK
           </h1>
-          <div className="mt-[-1rem] md:mt-[-2rem]">
+          <div className="md:-mt-4">
              <span className="text-5xl sm:text-6xl md:text-7xl lg:text-[9rem] font-black text-transparent stroke-text italic tracking-tighter uppercase leading-[0.8] select-none opacity-20">
-               TRADING
+               SYSTEMS
              </span>
+          </div>
+          <div className="mt-8 space-y-3">
+             <p className="mono text-[11px] md:text-sm text-zinc-300 font-black uppercase tracking-[0.4em]">
+               Structure // Liquidity // Execution
+             </p>
+             <p className="mono text-[10px] md:text-xs text-zinc-500 font-bold uppercase tracking-widest">
+               We do not predict. We react to price.
+             </p>
           </div>
         </motion.div>
 
         <motion.div
           variants={VARIANTS.reveal}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4 w-full"
         >
           <motion.button
             whileHover={VARIANTS.buttonHover}
             whileTap={VARIANTS.buttonTap}
             onClick={onStartPreview}
-            className="w-full sm:w-auto group relative px-12 py-6 bg-brand-purple overflow-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm"
+            className="w-full sm:w-auto group relative px-12 py-6 bg-brand-purple overflow-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm flex items-center justify-center min-h-[72px]"
           >
             <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
-            <span className="relative z-10 mono text-[11px] font-black text-white group-hover:text-black uppercase tracking-[0.4em]">
-              START TRADING
+            <span className="relative z-10 mono text-[11px] font-black text-white group-hover:text-black uppercase tracking-[0.4em] inline-block">
+              ENTER DESK
             </span>
           </motion.button>
           
@@ -98,25 +106,25 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
             whileHover={VARIANTS.buttonHover}
             whileTap={VARIANTS.buttonTap}
             href="#education"
-            className="w-full sm:w-auto group relative px-12 py-6 border border-white/20 hover:border-white overflow-hidden mono text-[11px] font-black text-white uppercase tracking-[0.4em] text-center focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm"
+            className="w-full sm:w-auto group relative px-12 py-6 border border-white/20 hover:border-white overflow-hidden mono text-[11px] font-black text-white uppercase tracking-[0.4em] text-center focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm flex items-center justify-center min-h-[72px]"
           >
-            <span className="relative z-10">VIEW THE PROCESS</span>
+            <span className="relative z-10 inline-block">VIEW PROTOCOL</span>
           </motion.a>
         </motion.div>
 
         <motion.div 
           variants={VARIANTS.reveal}
-          className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 pt-8 border-t border-white/5"
+          className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 pt-8 border-t border-white/5 w-full"
         >
           {SOCIAL_LINKS.map((social) => (
             <a 
               key={social.name} 
               href={social.url} 
-              className="group flex items-center gap-3 mono text-[11px] text-zinc-400 hover:text-white transition-all duration-300 font-black tracking-[0.4em] uppercase focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm p-2"
+              className="group flex items-center gap-3 mono text-[11px] text-zinc-400 hover:text-white transition-all duration-300 font-black tracking-[0.4em] uppercase focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm p-2 flex items-center justify-center"
               aria-label={`Visit ${social.name}`}
             >
-              <span className="text-zinc-600 group-hover:text-brand-purple transition-colors duration-300">{social.icon}</span>
-              <span className="relative overflow-hidden">
+              <span className="text-zinc-600 group-hover:text-brand-purple transition-colors duration-300 flex items-center">{social.icon}</span>
+              <span className="relative overflow-hidden leading-none">
                 {social.name}
                 <span className="absolute bottom-0 left-0 w-full h-[1px] bg-brand-purple translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
               </span>

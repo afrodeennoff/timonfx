@@ -1,30 +1,37 @@
+
 import { ModuleCard, Testimonial, PropFirm } from './types';
 
 export const BRAND_NAME = "ORK";
 
 /**
- * GLOBAL ANIMATION STANDARD - OPTIMIZED
+ * GLOBAL ANIMATION STANDARD - 3D DEPTH OPTIMIZED
  * Easing: cubic-bezier(0.22, 1, 0.36, 1)
- * Durations: Reveal (0.28s), Micro (0.14s)
- * Transitions: Opacity and Transform only. No springs.
  */
 export const ANIM_CONSTANTS = {
   ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-  duration: 0.28,
-  micro: 0.14,
-  stagger: 0.05,
-  viewport: { once: true, margin: "-10%" } // Reduced margin for safer triggering
+  duration: 0.32,
+  micro: 0.16,
+  stagger: 0.08,
+  viewport: { once: true, margin: "-10%" }
 };
 
-// Check for mobile for animation distance reduction
-// Use a safer check that doesn't break hydration
+/**
+ * PERFORMANCE-SAFE 3D PRESET (MANDATORY)
+ */
+export const THREE_D_PRESET = {
+  perspective: 1200,
+  maxRotation: 5,   // Strict max limit ±5 deg
+  zDepth: 40,       // Subtle Z-translation
+  hoverDuration: 0.16,  // 160ms
+  revealDuration: 0.32  // 320ms
+};
+
 const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
-const revealY = isMobile ? 8 : 16; // Reduced distance for mobile
+const revealY = isMobile ? 8 : 16;
 
 export const VARIANTS = {
-  // Unified Section/Card Reveal - GPU Optimized
   reveal: {
-    initial: { opacity: 0, y: revealY }, // Removed scale to prevent blurriness during anim on some screens
+    initial: { opacity: 0, y: revealY },
     animate: { 
       opacity: 1, 
       y: 0, 
@@ -35,44 +42,42 @@ export const VARIANTS = {
     }
   },
 
-  // Stagger Container
   staggerContainer: {
     initial: {},
     animate: {
       transition: {
         staggerChildren: ANIM_CONSTANTS.stagger,
-        delayChildren: 0.02
+        delayChildren: 0.05
       }
     }
   },
 
-  // Interaction: Card Hover (Stable & Weighted)
   cardHover: {
-    y: -2, // Reduced from -1 (or similar) to be purely transform
-    transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
+    y: -4,
+    transition: { duration: THREE_D_PRESET.hoverDuration, ease: ANIM_CONSTANTS.ease }
   },
 
-  // Interaction: Button Hover
+  // Fix: Added missing buttonHover variant
   buttonHover: {
     scale: 1.02,
-    transition: { duration: 0.12, ease: ANIM_CONSTANTS.ease }
+    transition: { duration: 0.2, ease: ANIM_CONSTANTS.ease }
   },
 
-  // Interaction: Button Press
+  // Fix: Added missing buttonTap variant
   buttonTap: {
-    scale: 0.98,
-    transition: { duration: 0.08, ease: ANIM_CONSTANTS.ease }
+    scale: 0.98
   },
 
-  // Interaction: Focus states
+  // Fix: Added missing buttonFocus variant
   buttonFocus: {
     scale: 1.02,
-    transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
+    outline: "none"
   },
 
+  // Fix: Added missing inputFocus variant
   inputFocus: {
-    scale: 1.005,
-    transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
+    borderColor: "rgba(139,92,246,1)", // brand-purple
+    transition: { duration: 0.2 }
   }
 };
 
