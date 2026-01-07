@@ -13,8 +13,9 @@ const CouponCode: React.FC<{ code: string }> = React.memo(({ code }) => {
   }, [code]);
 
   return (
-    <button
+    <motion.button
       onClick={handleCopy}
+      whileFocus={VARIANTS.buttonFocus}
       aria-label={`Copy coupon code ${code}`}
       className={`group relative px-6 py-3 border mono text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center min-w-[110px] cursor-pointer select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple ${
         copied 
@@ -23,7 +24,7 @@ const CouponCode: React.FC<{ code: string }> = React.memo(({ code }) => {
       }`}
     >
       <span className="relative z-10">{copied ? 'COPIED' : code}</span>
-    </button>
+    </motion.button>
   );
 });
 
@@ -48,15 +49,16 @@ export const PropFirmExplorer: React.FC = () => {
            </motion.div>
            <motion.div variants={VARIANTS.scaleIn} className="flex gap-1 p-1 bg-zinc-900 border border-white/10 rounded-sm">
               {(['ALL', 'FUTURES', 'CFD'] as const).map(f => (
-                <button
+                <motion.button
                   key={f}
                   onClick={() => setFilter(f)}
+                  whileFocus={{ backgroundColor: "rgba(139, 92, 246, 0.4)" }}
                   className={`px-6 py-3 mono text-[10px] uppercase tracking-widest transition-all duration-300 font-black focus:outline-none focus-visible:ring-1 focus-visible:ring-white/50 rounded-sm ${
                     filter === f ? 'bg-brand-purple text-white' : 'text-zinc-500 hover:text-white'
                   }`}
                 >
                   {f}
-                </button>
+                </motion.button>
               ))}
            </motion.div>
         </motion.div>
@@ -97,14 +99,16 @@ export const PropFirmExplorer: React.FC = () => {
                       </span>
                     </td>
                     <td className="py-8 text-right">
-                      <a 
+                      <motion.a 
                         href={firm.link} 
                         target="_blank" 
                         rel="noopener noreferrer"
+                        whileHover={{ x: 5 }}
+                        whileFocus={{ x: 5, color: "#8b5cf6" }}
                         className="mono text-[10px] font-black uppercase tracking-widest text-white hover:text-brand-purple transition-colors focus:outline-none focus:border-b focus:border-brand-purple pb-1"
                       >
                         Visit →
-                      </a>
+                      </motion.a>
                     </td>
                   </motion.tr>
                 ))}

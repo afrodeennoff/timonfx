@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { MarketStatus } from './components/MarketStatus';
 import { Background3D } from './components/Background3D';
 import { CustomCursor } from './components/CustomCursor';
@@ -14,15 +14,17 @@ import { PropFirmExplorer } from './components/PropFirmExplorer';
 import { About } from './components/About';
 import { Testimonials } from './components/Testimonials';
 import { FAQ } from './components/FAQ';
+import { Framework } from './components/Framework';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { AppMode } from './types';
 
+// Memoized Header to prevent re-renders on parent state changes
 const SystemHeader: React.FC<{ 
   onStartPreview: () => void; 
   onOpenAI: () => void;
   mode: AppMode;
   onToggleMode: () => void;
-}> = ({ onStartPreview, onOpenAI, mode, onToggleMode }) => {
+}> = React.memo(({ onStartPreview, onOpenAI, mode, onToggleMode }) => {
   const { scrollY } = useScroll();
   const headerOpacity = useTransform(scrollY, [0, 50], [0.92, 1]);
   const headerY = useTransform(scrollY, [0, 50], [-8, 0]);
@@ -42,6 +44,7 @@ const SystemHeader: React.FC<{
              {mode === 'STUDY' ? (
                <div className="flex items-center gap-8">
                  <a href="#about" className="mono text-[11px] text-zinc-500 hover:text-white transition-colors font-black tracking-[0.2em] uppercase">Trader</a>
+                 <a href="#framework" className="mono text-[11px] text-zinc-500 hover:text-white transition-colors font-black tracking-[0.2em] uppercase">Edge</a>
                  <a href="#education" className="mono text-[11px] text-zinc-500 hover:text-white transition-colors font-black tracking-[0.2em] uppercase">Process</a>
                  <a href="#pricing" className="mono text-[11px] text-zinc-500 hover:text-white transition-colors font-black tracking-[0.2em] uppercase">Access</a>
                </div>
@@ -89,14 +92,23 @@ const SystemHeader: React.FC<{
        </div>
     </motion.header>
   );
-};
+});
 
 export const App: React.FC = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isAIOpen, setIsAIOpen] = useState(false);
   const [mode, setMode] = useState<AppMode>('STUDY');
 
-  const toggleMode = () => setMode(prev => prev === 'STUDY' ? 'EXECUTION' : 'STUDY');
+  // Stable handlers
+  const toggleMode = useCallback(() => {
+    setMode(prev => prev === 'STUDY' ? 'EXECUTION' : 'STUDY');
+  }, []);
+
+  const openPreview = useCallback(() => setIsPreviewOpen(true), []);
+  const closePreview = useCallback(() => setIsPreviewOpen(false), []);
+  
+  const openAI = useCallback(() => setIsAIOpen(true), []);
+  const closeAI = useCallback(() => setIsAIOpen(false), []);
 
   return (
     <SmoothScroll>
@@ -107,14 +119,14 @@ export const App: React.FC = () => {
         <Background3D />
         
         <SystemHeader 
-          onStartPreview={() => setIsPreviewOpen(true)} 
-          onOpenAI={() => setIsAIOpen(true)}
+          onStartPreview={openPreview} 
+          onOpenAI={openAI}
           mode={mode}
           onToggleMode={toggleMode}
         />
         
-        <PreviewGate isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} />
-        <AIStrategyArchitect isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
+        <PreviewGate isOpen={isPreviewOpen} onClose={closePreview} />
+        <AIStrategyArchitect isOpen={isAIOpen} onClose={closeAI} />
 
         <div className="relative z-10 transition-all duration-700">
           <AnimatePresence mode="wait">
@@ -126,12 +138,13 @@ export const App: React.FC = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
               >
-                <Hero onStartPreview={() => setIsPreviewOpen(true)} />
-                <About onStartPreview={() => setIsPreviewOpen(true)} />
+                <Hero onStartPreview={openPreview} />
+                <About onStartPreview={openPreview} />
+                <Framework />
                 <Education />
-                <Pricing onStartPreview={() => setIsPreviewOpen(true)} />
+                <Pricing onStartPreview={openPreview} />
                 <PropFirmExplorer />
-                <Testimonials onStartPreview={() => setIsPreviewOpen(true)} />
+                <Testimonials onStartPreview={openPreview} />
                 <FAQ />
               </motion.div>
             ) : (

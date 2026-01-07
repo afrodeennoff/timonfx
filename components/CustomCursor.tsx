@@ -1,63 +1,97 @@
 
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState, memo, useRef } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 
 export const CustomCursor: React.FC = memo(() => {
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
 
-  // High stiffness for instant tracking, low damping for crisp stops
-  const springConfig = { damping: 35, stiffness: 800, mass: 0.1 };
+  // Performance optimized spring for smooth tracking without lag
+  const springConfig = { damping: 40, stiffness: 600, mass: 0.1 };
   const smoothX = useSpring(mouseX, springConfig);
   const smoothY = useSpring(mouseY, springConfig);
 
+  // Rotation interpolation
+  const rotation = useMotionValue(0);
+  const lastX = useRef(0);
+  const lastY = useRef(0);
+
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.matchMedia('(pointer: coarse)').matches);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    // 1. Efficient Position Tracking
     const handleMouseMove = (e: MouseEvent) => {
       if (!isVisible) setIsVisible(true);
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-      
-      const target = e.target as HTMLElement;
-      // More robust check for clickable elements
-      const isClickable = target.matches('button, a, input, select, textarea, [role="button"]') || 
-                          target.closest('button, a, [role="button"]') !== null;
-      
-      if (isHovering !== isClickable) setIsHovering(isClickable);
+
+      // Interpolate rotation based on movement direction
+      // Only calculate if moving to avoid jitter
+      if (!isHovering) {
+        const dx = e.clientX - lastX.current;
+        const dy = e.clientY - lastY.current;
+        if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+          const targetRotation = Math.atan2(dy, dx) * (180 / Math.PI);
+          rotation.set(targetRotation);
+        }
+      }
+
+      lastX.current = e.clientX;
+      lastY.current = e.clientY;
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
+    // 2. Efficient Hover Detection (Event Delegation)
+    // Checks only when crossing element boundaries, not every pixel
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.matches('button, a, input, select, textarea, [role="button"]') || 
+          target.closest('button, a, [role="button"]')) {
+        setIsHovering(true);
+      }
+    };
 
+    const handleMouseOut = (e: MouseEvent) => {
+      // Small delay check or immediate reset logic could go here
+      // But for hover state, relying on the 'over' event of the new target is often enough
+      // To be safe, we check if the new relatedTarget is NOT interactive
+      const related = e.relatedTarget as HTMLElement;
+      if (!related || !(related.matches('button, a, input, select, textarea, [role="button"]') || 
+          related.closest('button, a, [role="button"]'))) {
+        setIsHovering(false);
+      }
+    };
+
+    const handleMouseLeaveDoc = () => setIsVisible(false);
+    const handleMouseEnterDoc = () => setIsVisible(true);
+
+    // Passive listeners for scroll performance
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
+    document.addEventListener('mouseover', handleMouseOver, { passive: true });
+    document.addEventListener('mouseout', handleMouseOut, { passive: true });
+    document.addEventListener('mouseleave', handleMouseLeaveDoc);
+    document.addEventListener('mouseenter', handleMouseEnterDoc);
     
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
+      document.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mouseout', handleMouseOut);
+      document.removeEventListener('mouseleave', handleMouseLeaveDoc);
+      document.removeEventListener('mouseenter', handleMouseEnterDoc);
+      window.removeEventListener('resize', checkMobile);
     };
-  }, [isVisible, isHovering, mouseX, mouseY]);
+  }, [isVisible, isHovering, mouseX, mouseY, rotation]);
 
-  // Hide on touch devices via CSS media query check or if not visible
-  if (!isVisible) return null;
+  if (isMobile || !isVisible) return null;
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[9999] hidden lg:block overflow-hidden">
-      {/* Crosshairs - Extremely subtle */}
-      <motion.div 
-        style={{ y: smoothY }}
-        className="absolute left-0 right-0 h-[1px] bg-brand-purple/10 will-change-transform"
-      />
-      <motion.div 
-        style={{ x: smoothX }}
-        className="absolute top-0 bottom-0 w-[1px] bg-brand-purple/10 will-change-transform"
-      />
-
-      {/* Primary Reticle */}
+    <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
+      {/* Outer reactive ring */}
       <motion.div
         className="absolute flex items-center justify-center will-change-transform"
         style={{
@@ -67,38 +101,33 @@ export const CustomCursor: React.FC = memo(() => {
           translateY: '-50%',
         }}
       >
-        {/* Dynamic Brackets */}
         <motion.div
           animate={{
-            width: isHovering ? 40 : 20,
-            height: isHovering ? 40 : 20,
-            opacity: isHovering ? 1 : 0.3,
-            rotate: isHovering ? 90 : 0
+            scale: isHovering ? 1.5 : 1,
+            rotate: isHovering ? 0 : rotation.get(),
+            opacity: isHovering ? 1 : 0.4,
           }}
-          transition={{ type: 'spring', damping: 25, stiffness: 400 }}
-          className="relative flex items-center justify-center"
+          transition={{ duration: 0.14, ease: [0.22, 1, 0.36, 1] }}
+          className="relative w-10 h-10 flex items-center justify-center"
         >
-          <div className="absolute top-0 left-0 w-1.5 h-1.5 border-t border-l border-brand-purple" />
-          <div className="absolute top-0 right-0 w-1.5 h-1.5 border-t border-r border-brand-purple" />
-          <div className="absolute bottom-0 left-0 w-1.5 h-1.5 border-b border-l border-brand-purple" />
-          <div className="absolute bottom-0 right-0 w-1.5 h-1.5 border-b border-r border-brand-purple" />
-        </motion.div>
-
-        {/* Hover Data Tag */}
-        <motion.div 
-           animate={{ opacity: isHovering ? 1 : 0, x: isHovering ? 30 : 20 }}
-           transition={{ duration: 0.2 }}
-           className="absolute left-0 top-0"
-        >
-            <div className="bg-brand-purple/10 backdrop-blur-md border border-brand-purple/30 px-2 py-1 ml-2">
-                <span className="mono text-[8px] font-black text-brand-purple tracking-[0.2em] whitespace-nowrap">
-                TARGET_LOCKED
-                </span>
-            </div>
+          {/* ORK Themed Brackets */}
+          <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brand-purple" />
+          <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-brand-purple" />
+          <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-brand-purple" />
+          <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brand-purple" />
+          
+          {isHovering && (
+            <motion.div 
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1.2, opacity: [0, 0.2, 0] }}
+              transition={{ repeat: Infinity, duration: 1.2 }}
+              className="absolute inset-0 border border-brand-purple rounded-full"
+            />
+          )}
         </motion.div>
       </motion.div>
 
-      {/* Core Dot */}
+      {/* Inner precise core */}
       <motion.div
         className="absolute flex items-center justify-center will-change-transform"
         style={{
@@ -108,8 +137,13 @@ export const CustomCursor: React.FC = memo(() => {
           translateY: '-50%',
         }}
       >
-        <div 
-          className={`w-1 h-1 rounded-full transition-all duration-200 ${isHovering ? 'bg-brand-purple shadow-[0_0_10px_#7c3aed] scale-150' : 'bg-white'}`}
+        <motion.div 
+          animate={{
+            scale: isHovering ? 0.5 : 1,
+            backgroundColor: isHovering ? '#8b5cf6' : '#ffffff'
+          }}
+          transition={{ duration: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="w-1.5 h-1.5 rounded-full"
         />
       </motion.div>
     </div>

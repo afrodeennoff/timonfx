@@ -7,7 +7,7 @@ interface TestimonialsProps {
   onStartPreview: () => void;
 }
 
-const TestimonialItem: React.FC<{ testimonial: any; index: number }> = ({ testimonial, index }) => {
+const TestimonialItem: React.FC<{ testimonial: any; index: number }> = React.memo(({ testimonial, index }) => {
   return (
     <motion.div
       variants={VARIANTS.fadeInUp}
@@ -33,7 +33,7 @@ const TestimonialItem: React.FC<{ testimonial: any; index: number }> = ({ testim
       </div>
     </motion.div>
   );
-};
+});
 
 export const Testimonials: React.FC<TestimonialsProps> = ({ onStartPreview }) => {
   return (

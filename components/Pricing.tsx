@@ -15,7 +15,7 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
           initial="initial"
           whileInView="animate"
           viewport={ANIM_CONSTANTS.viewport}
-          variants={VARIANTS.fadeInUp}
+          variants={VARIANTS.reveal}
           className="text-center space-y-4 mb-24"
         >
            <span className="mono text-[10px] text-brand-purple font-black tracking-[0.4em] uppercase">Join the desk</span>
@@ -29,10 +29,10 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
           variants={VARIANTS.staggerContainer}
           className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto"
         >
-           {/* Tier 1 */}
            <motion.div 
-            variants={VARIANTS.fadeInUp}
-            className="bg-zinc-900/30 border border-white/20 p-12 space-y-10 relative overflow-hidden group hover:border-white/40 transition-all duration-500 shadow-2xl flex flex-col"
+            variants={VARIANTS.reveal}
+            whileHover={VARIANTS.cardHover}
+            className="bg-zinc-900/30 border border-white/20 p-12 space-y-10 relative overflow-hidden group hover:border-white/40 transition-all duration-300 shadow-2xl flex flex-col"
            >
               <div className="absolute top-0 right-0 p-6 opacity-[0.05] pointer-events-none">
                  <span className="text-9xl font-black italic">P1</span>
@@ -51,20 +51,20 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
                  ))}
               </ul>
               <motion.button 
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                whileHover={VARIANTS.buttonHover}
+                whileTap={VARIANTS.buttonTap}
                 onClick={onStartPreview}
-                className="group relative w-full z-10 py-5 border border-white/15 overflow-hidden transition-all duration-500 mono text-[11px] font-black uppercase tracking-[0.2em] text-white bg-white/5"
+                className="group relative w-full z-10 py-5 border border-white/15 overflow-hidden transition-all duration-300 mono text-[11px] font-black uppercase tracking-[0.2em] text-white bg-white/5"
               >
-                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-600 ease-[0.19,1,0.22,1]" />
-                <span className="relative z-10 group-hover:text-black transition-colors duration-500 font-black uppercase">Get Access</span>
+                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
+                <span className="relative z-10 group-hover:text-black transition-colors duration-300 font-black uppercase">Get Access</span>
               </motion.button>
            </motion.div>
 
-           {/* Tier 2 */}
            <motion.div 
-            variants={VARIANTS.fadeInUp}
-            className="bg-brand-purple p-12 space-y-10 relative overflow-hidden shadow-2xl shadow-brand-purple/20 group hover:scale-[1.01] transition-all duration-700 ease-[0.19,1,0.22,1] flex flex-col"
+            variants={VARIANTS.reveal}
+            whileHover={VARIANTS.cardHover}
+            className="bg-brand-purple p-12 space-y-10 relative overflow-hidden shadow-2xl shadow-brand-purple/20 group transition-all duration-300 ease-[0.22,1,0.36,1] flex flex-col"
            >
               <div className="absolute top-0 right-0 p-6 opacity-15 pointer-events-none">
                  <span className="text-9xl font-black italic text-black">P2</span>
@@ -83,13 +83,13 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
                  ))}
               </ul>
               <motion.button 
-                whileHover={{ scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
+                whileHover={VARIANTS.buttonHover}
+                whileTap={VARIANTS.buttonTap}
                 onClick={onStartPreview}
-                className="group relative w-full z-10 py-5 bg-white overflow-hidden transition-all duration-600 mono text-[11px] font-black uppercase tracking-[0.2em] text-black shadow-2xl"
+                className="group relative w-full z-10 py-5 bg-white overflow-hidden transition-all duration-300 mono text-[11px] font-black uppercase tracking-[0.2em] text-black shadow-2xl"
               >
-                <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-600 ease-[0.19,1,0.22,1]" />
-                <span className="relative z-10 group-hover:text-white transition-colors duration-500 font-black uppercase">Get Pro Access</span>
+                <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
+                <span className="relative z-10 group-hover:text-white transition-colors duration-300 font-black uppercase">Get Pro Access</span>
               </motion.button>
            </motion.div>
         </motion.div>

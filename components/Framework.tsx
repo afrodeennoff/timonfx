@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { VARIANTS } from '../constants';
+import { VARIANTS, ANIM_CONSTANTS } from '../constants';
 
 export const Framework: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ export const Framework: React.FC = () => {
         <motion.div 
           initial="initial"
           whileInView="animate"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={ANIM_CONSTANTS.viewport}
           variants={VARIANTS.staggerContainer}
           className="space-y-10 md:space-y-14"
         >
@@ -37,7 +37,8 @@ export const Framework: React.FC = () => {
                 key={step.id}
                 variants={VARIANTS.fadeInUp}
                 whileHover={{ x: 8 }}
-                className="group border-l-2 border-white/10 hover:border-brand-purple pl-6 md:pl-10 transition-all duration-500"
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="group border-l-2 border-white/10 hover:border-brand-purple pl-6 md:pl-10 transition-all duration-300"
               >
                 <span className="mono text-[10px] md:text-[11px] text-zinc-500 group-hover:text-brand-purple transition-colors font-black">{step.id} //</span>
                 <h4 className="text-lg md:text-xl font-black text-white uppercase tracking-widest mt-1 md:mt-2">{step.title}</h4>
@@ -51,8 +52,8 @@ export const Framework: React.FC = () => {
           variants={VARIANTS.scaleIn}
           initial="initial"
           whileInView="animate"
-          viewport={{ once: true }}
-          className="relative aspect-square bg-zinc-900/10 border border-white/20 flex items-center justify-center group overflow-hidden shadow-2xl backdrop-blur-md max-w-lg mx-auto w-full"
+          viewport={ANIM_CONSTANTS.viewport}
+          className="relative aspect-square bg-zinc-900/10 border border-white/20 flex items-center justify-center group overflow-hidden shadow-2xl backdrop-blur-md max-w-lg mx-auto w-full transform-gpu"
         >
           <div className="absolute inset-0 opacity-30 md:opacity-50 pointer-events-none">
              <div className="absolute inset-0 bg-[linear-gradient(to_right,#aaa2_1px,transparent_1px),linear-gradient(to_bottom,#aaa2_1px,transparent_1px)] bg-[size:40px_40px] md:bg-[size:50px_50px]" />
@@ -64,6 +65,7 @@ export const Framework: React.FC = () => {
             <motion.circle 
               initial={{ pathLength: 0 }}
               whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
               transition={{ duration: 1.5, ease: "easeInOut" }}
               cx="200" cy="200" r="140" fill="none" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="6 6"
               className="md:r-[160] md:stroke-[1.5]"
@@ -71,6 +73,7 @@ export const Framework: React.FC = () => {
             <motion.path 
               initial={{ pathLength: 0 }}
               whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
               transition={{ duration: 2, ease: "easeInOut", delay: 0.5 }}
               d="M80 320 L130 240 L180 280 L240 120 L320 180" fill="none" stroke="white" strokeWidth="3"
               className="md:stroke-5"
@@ -78,6 +81,7 @@ export const Framework: React.FC = () => {
             <motion.rect 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
               transition={{ delay: 2.5 }}
               x="230" y="110" width="20" height="20" fill="#8b5cf6" className="animate-pulse shadow-lg" 
             />

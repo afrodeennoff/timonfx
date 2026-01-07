@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FAQ_DATA } from '../constants';
+import { FAQ_DATA, VARIANTS } from '../constants';
 
 export const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -17,8 +17,9 @@ export const FAQ: React.FC = () => {
         <div className="space-y-4" role="tablist">
           {FAQ_DATA.map((item, i) => (
             <div key={i} className="border border-white/20 bg-zinc-900/10 hover:border-white/40 transition-colors group">
-              <button
+              <motion.button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                whileFocus={VARIANTS.buttonFocus}
                 className="w-full flex justify-between items-center p-8 text-left hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple focus-visible:bg-white/5"
                 aria-expanded={openIndex === i}
                 aria-controls={`faq-answer-${i}`}
@@ -26,7 +27,7 @@ export const FAQ: React.FC = () => {
               >
                 <span className="mono text-[11px] md:text-xs text-white uppercase tracking-widest font-black pr-4 leading-relaxed group-hover:text-zinc-200 transition-colors">{item.q}</span>
                 <span className="mono text-xs text-brand-purple font-bold shrink-0">{openIndex === i ? '[-]' : '[+]'}</span>
-              </button>
+              </motion.button>
               <AnimatePresence>
                 {openIndex === i && (
                   <motion.div

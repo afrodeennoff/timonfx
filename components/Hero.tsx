@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { VARIANTS } from '../constants';
+import { VARIANTS, ANIM_CONSTANTS } from '../constants';
 
 interface HeroProps {
   onStartPreview: () => void;
@@ -40,29 +40,21 @@ const SOCIAL_LINKS = [
 export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
   return (
     <section className="relative min-h-screen flex flex-col justify-center items-center px-6 pt-20 overflow-hidden bg-brand-black transform-gpu">
-      {/* Brand Image Background Element */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.8 }}
+        initial={{ opacity: 0, scale: 0.9 }}
         animate={{ 
           opacity: 0.4, 
           scale: 1,
-          transition: { duration: 2, ease: [0.19, 1, 0.22, 1] }
+          transition: { duration: 1, ease: ANIM_CONSTANTS.ease }
         }}
         className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"
       >
         <motion.img 
           src="https://raw.githubusercontent.com/user-attachments/assets/c79f323c-5872-430b-967b-12d93e185011" 
           alt="ORK Brand Mark" 
-          animate={{ 
-            scale: [1, 1.05, 1],
-            opacity: [0.4, 0.5, 0.4]
-          }}
-          transition={{ 
-            duration: 10, 
-            repeat: Infinity, 
-            ease: "easeInOut" 
-          }}
-          className="w-[80vw] h-[80vw] max-w-[1200px] max-h-[1200px] object-contain opacity-40 mix-blend-screen filter drop-shadow-[0_0_50px_rgba(139,92,246,0.3)]"
+          animate={{ scale: [1, 1.02, 1], opacity: [0.4, 0.45, 0.4] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="w-[80vw] h-[80vw] max-w-[1200px] max-h-[1200px] object-contain opacity-40 mix-blend-screen filter drop-shadow-[0_0_50px_rgba(139,92,246,0.2)]"
         />
       </motion.div>
 
@@ -72,7 +64,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         animate="animate"
         className="relative z-10 max-w-7xl w-full text-center space-y-12"
       >
-        <motion.div variants={VARIANTS.fadeInUp} className="relative">
+        <motion.div variants={VARIANTS.reveal} className="relative">
           <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-[14rem] font-black text-white italic tracking-tighter uppercase leading-[0.8] select-none">
             ORK
           </h1>
@@ -84,33 +76,35 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         </motion.div>
 
         <motion.div
-          variants={VARIANTS.scaleIn}
+          variants={VARIANTS.reveal}
           className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4"
         >
           <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={VARIANTS.buttonHover}
+            whileTap={VARIANTS.buttonTap}
+            whileFocus={VARIANTS.buttonFocus}
             onClick={onStartPreview}
-            className="w-full sm:w-auto group relative px-12 py-6 bg-brand-purple overflow-hidden transition-all duration-300 focus:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm"
+            className="w-full sm:w-auto group relative px-12 py-6 bg-brand-purple overflow-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm"
           >
-            <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+            <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
             <span className="relative z-10 mono text-[11px] font-black text-white group-hover:text-black uppercase tracking-[0.4em]">
               START TRADING
             </span>
           </motion.button>
           
           <motion.a
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={VARIANTS.buttonHover}
+            whileTap={VARIANTS.buttonTap}
+            whileFocus={VARIANTS.buttonFocus}
             href="#education"
-            className="w-full sm:w-auto group relative px-12 py-6 border border-white/20 hover:border-white overflow-hidden transition-all duration-300 mono text-[11px] font-black text-white uppercase tracking-[0.4em] text-center focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm"
+            className="w-full sm:w-auto group relative px-12 py-6 border border-white/20 hover:border-white overflow-hidden mono text-[11px] font-black text-white uppercase tracking-[0.4em] text-center focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm"
           >
             <span className="relative z-10">VIEW THE PROCESS</span>
           </motion.a>
         </motion.div>
 
         <motion.div 
-          variants={VARIANTS.fadeInUp}
+          variants={VARIANTS.reveal}
           className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 pt-8 border-t border-white/5"
         >
           {SOCIAL_LINKS.map((social) => (
@@ -120,10 +114,10 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
               className="group flex items-center gap-3 mono text-[11px] text-zinc-400 hover:text-white transition-all duration-300 font-black tracking-[0.4em] uppercase focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm p-2"
               aria-label={`Visit ${social.name}`}
             >
-              <span className="text-zinc-600 group-hover:text-brand-purple transition-colors duration-300 scale-125">{social.icon}</span>
+              <span className="text-zinc-600 group-hover:text-brand-purple transition-colors duration-300">{social.icon}</span>
               <span className="relative overflow-hidden">
                 {social.name}
-                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-brand-purple translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-500" />
+                <span className="absolute bottom-0 left-0 w-full h-[1px] bg-brand-purple translate-x-[-101%] group-hover:translate-x-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
               </span>
             </a>
           ))}

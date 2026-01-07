@@ -3,37 +3,99 @@ import { ModuleCard, Testimonial, PropFirm } from './types';
 
 export const BRAND_NAME = "ORK";
 
+/**
+ * GLOBAL FRAMER MOTION STANDARD
+ * Easing: cubic-bezier(0.22, 1, 0.36, 1)
+ * Durations: 0.28s (reveal), 0.14s (micro)
+ */
 export const ANIM_CONSTANTS = {
-  ease: [0.19, 1, 0.22, 1] as [number, number, number, number], 
-  duration: 0.6,
-  stagger: 0.04,
-  viewport: { once: true, amount: 0.15 }
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+  duration: 0.28,
+  micro: 0.14,
+  stagger: 0.05,
+  viewport: { once: true, margin: "-80px" }
 };
 
 export const VARIANTS = {
-  fadeInUp: {
-    initial: { opacity: 0, y: 15 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6, ease: ANIM_CONSTANTS.ease }
+  // Global Reveal Standard
+  reveal: {
+    initial: { opacity: 0, y: 12, scale: 0.96 },
+    animate: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: { 
+        duration: ANIM_CONSTANTS.duration, 
+        ease: ANIM_CONSTANTS.ease 
+      }
+    }
   },
+
+  // Reveal without scale for cleaner text
+  fadeInUp: {
+    initial: { opacity: 0, y: 12 },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: ANIM_CONSTANTS.duration, 
+        ease: ANIM_CONSTANTS.ease 
+      }
+    }
+  },
+
+  // Scale in for graphical elements
+  scaleIn: {
+    initial: { opacity: 0, scale: 0.95 },
+    animate: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { 
+        duration: ANIM_CONSTANTS.duration, 
+        ease: ANIM_CONSTANTS.ease 
+      }
+    }
+  },
+  
+  // Staggered container control
   staggerContainer: {
     initial: {},
     animate: {
       transition: {
-        staggerChildren: 0.04,
-        delayChildren: 0.05
+        staggerChildren: 0.05,
+        delayChildren: 0.02
       }
     }
   },
-  scaleIn: {
-    initial: { opacity: 0, scale: 0.99 },
-    animate: { opacity: 1, scale: 1 },
-    transition: { duration: 0.5, ease: ANIM_CONSTANTS.ease }
+
+  // Button interaction
+  buttonHover: {
+    scale: 1.02,
+    transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
   },
-  rowReveal: {
-    initial: { opacity: 0, x: -4 },
-    animate: { opacity: 1, x: 0 },
-    transition: { duration: 0.4, ease: [0.19, 1, 0.22, 1] }
+  buttonTap: {
+    scale: 0.98,
+    transition: { duration: 0.1, ease: ANIM_CONSTANTS.ease }
+  },
+  // Subtle focus highlight
+  buttonFocus: {
+    scale: 1.02,
+    boxShadow: "0 0 15px rgba(139, 92, 246, 0.4)",
+    transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
+  },
+
+  // Input focus highlight
+  inputFocus: {
+    boxShadow: "0 0 12px rgba(139, 92, 246, 0.2)",
+    borderColor: "rgba(139, 92, 246, 0.5)",
+    transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
+  },
+
+  // Card interaction
+  cardHover: {
+    scale: 1.015,
+    y: -1,
+    transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
   }
 };
 
@@ -111,7 +173,6 @@ export const PROP_FIRMS: PropFirm[] = [
   }
 ];
 
-// Locked Education Section
 export const MODULES: ModuleCard[] = [
   {
     id: "m1",
@@ -126,6 +187,13 @@ export const MODULES: ModuleCard[] = [
     objective: "Dedicated sessions to review trade logs, clarify concepts, and reinforce execution discipline.",
     checklist: ["Trade Log De-brief", "Technical Recalibration", "Process Refinement"],
     mistakes: ["Repeating Execution Errors", "Ignoring Journal Data"]
+  },
+  {
+    id: "m6",
+    title: "FUNDED // PATHWAY",
+    objective: "Structured guidance to prepare for prop firm evaluations and manage funded accounts with consistency.",
+    checklist: ["Evaluation Roadmap", "Drawdown Management", "Payout Consistency Plan"],
+    mistakes: ["Aggressive Rule Breaking", "Evaluation Tilt"]
   },
   {
     id: "m3",
@@ -147,13 +215,6 @@ export const MODULES: ModuleCard[] = [
     objective: "One-time access to all current and future educational content, execution tools, and updates.",
     checklist: ["Perpetual Resource Library", "Future Strategy Updates", "Permanent Desk Access"],
     mistakes: ["Methodology Drift", "Static Analysis"]
-  },
-  {
-    id: "m6",
-    title: "FUNDED // PATHWAY",
-    objective: "Structured guidance to prepare for prop firm evaluations and manage funded accounts with consistency.",
-    checklist: ["Evaluation Roadmap", "Drawdown Management", "Payout Consistency Plan"],
-    mistakes: ["Aggressive Rule Breaking", "Evaluation Tilt"]
   }
 ];
 
@@ -166,6 +227,6 @@ export const TESTIMONIALS: Testimonial[] = [
 
 export const FAQ_DATA = [
   { q: "Is this for beginners?", a: "This is for traders who have some experience but want a more professional process." },
-  { q: "What's the win rate?", a: "We focus on the quality of trades and risk management. Numbers follow discipline." },
-  { q: "Does this work for Crypto?", a: "Price action is universal. If the market has liquidity and volume, the process applies." }
+  { q: "Does this work for Crypto?", a: "Price action is universal. If the market has liquidity and volume, the process applies." },
+  { q: "What's the win rate?", a: "We focus on the quality of trades and risk management. Numbers follow discipline." }
 ];

@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GoogleGenAI, GenerateContentResponse } from '@google/genai';
 import { AIMessage } from '../types';
+import { VARIANTS } from '../constants';
 
 export const AIStrategyArchitect: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState<AIMessage[]>([
@@ -37,7 +38,7 @@ export const AIStrategyArchitect: React.FC<{ isOpen: boolean; onClose: () => voi
     setIsLoading(true);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const chat = ai.chats.create({
         model: 'gemini-3-pro-preview',
         config: {
@@ -53,7 +54,7 @@ export const AIStrategyArchitect: React.FC<{ isOpen: boolean; onClose: () => voi
       const modelText = result.text || 'ERROR: UNABLE TO DECODE RESPONSE.';
       
       setMessages(prev => [...prev, {
-        role: modelText.includes('ERROR') ? 'model' : 'model',
+        role: 'model',
         text: modelText,
         timestamp: Date.now(),
       }]);
@@ -95,13 +96,15 @@ export const AIStrategyArchitect: React.FC<{ isOpen: boolean; onClose: () => voi
                   <div className="w-3 h-3 rounded-full bg-brand-purple animate-pulse shadow-[0_0_15px_rgba(139,92,246,1)]" />
                   <span className="mono text-xs text-white font-black tracking-[0.4em] uppercase">TRADER CHAT</span>
                 </div>
-                <button 
+                <motion.button 
                   onClick={onClose}
+                  whileHover={{ scale: 1.05 }}
+                  whileFocus={VARIANTS.buttonFocus}
                   className="mono text-[10px] text-zinc-500 hover:text-white transition-colors font-black border border-white/10 px-4 py-2 hover:bg-white/5 focus:outline-none focus:ring-1 focus:ring-brand-purple"
                   aria-label="Close Chat"
                 >
                   [ DISCONNECT ]
-                </button>
+                </motion.button>
              </div>
 
              <div 
@@ -144,21 +147,25 @@ export const AIStrategyArchitect: React.FC<{ isOpen: boolean; onClose: () => voi
 
              <div className="p-8 border-t border-white/10 bg-zinc-950/50 backdrop-blur-xl">
                 <div className="flex gap-4">
-                  <input 
+                  <motion.input 
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                    whileFocus={VARIANTS.inputFocus}
                     placeholder="ENTER QUESTIONS..." 
                     className="flex-1 bg-zinc-950 border border-white/20 p-6 mono text-[11px] text-white uppercase tracking-widest focus:outline-none focus:border-brand-purple font-black placeholder:text-zinc-800 transition-colors caret-brand-purple"
                     aria-label="Message Input"
                   />
-                  <button 
+                  <motion.button 
                     onClick={handleSendMessage}
                     disabled={isLoading}
+                    whileHover={VARIANTS.buttonHover}
+                    whileTap={VARIANTS.buttonTap}
+                    whileFocus={VARIANTS.buttonFocus}
                     className="px-10 bg-brand-purple hover:bg-white text-white hover:text-black transition-all mono text-[11px] font-black uppercase tracking-widest disabled:opacity-50 focus:outline-none focus:ring-1 focus:ring-white"
                   >
                     ASK
-                  </button>
+                  </motion.button>
                 </div>
                 <div className="mt-4 flex justify-between px-2">
                    <span className="mono text-[8px] text-zinc-600 font-black tracking-widest uppercase">Private Chat</span>

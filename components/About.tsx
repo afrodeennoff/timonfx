@@ -79,8 +79,9 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
             <motion.button 
               whileHover={{ scale: 1.015 }}
               whileTap={{ scale: 0.99 }}
+              whileFocus={VARIANTS.buttonFocus}
               onClick={onStartPreview}
-              className="group relative w-full sm:w-auto px-12 md:px-16 py-6 md:py-8 bg-white/5 border border-white/20 hover:border-brand-purple transition-all duration-500 mono text-[10px] md:text-[11px] font-black text-white uppercase tracking-[0.4em] overflow-hidden"
+              className="group relative w-full sm:w-auto px-12 md:px-16 py-6 md:py-8 bg-white/5 border border-white/20 hover:border-brand-purple transition-all duration-500 mono text-[10px] md:text-[11px] font-black text-white uppercase tracking-[0.4em] overflow-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple"
             >
               <div className="absolute inset-0 bg-brand-purple translate-y-full group-hover:translate-y-0 transition-transform duration-600 ease-[0.19,1,0.22,1]" />
               <span className="relative z-10 group-hover:text-white transition-colors duration-500 font-black">REQUEST ACCESS</span>

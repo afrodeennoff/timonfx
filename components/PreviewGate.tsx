@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { VARIANTS } from '../constants';
 
 interface PreviewGateProps {
   isOpen: boolean;
@@ -37,24 +38,31 @@ export const PreviewGate: React.FC<PreviewGateProps> = ({ isOpen, onClose }) => 
                 </p>
 
                 <div className="space-y-4 md:space-y-6">
-                   <input 
+                   <motion.input 
                      placeholder="ENTRY CODE..." 
+                     whileFocus={VARIANTS.inputFocus}
                      className="w-full bg-zinc-950 border border-white/20 p-5 md:p-6 mono text-[11px] md:text-[12px] text-white uppercase tracking-widest focus:outline-none focus:border-brand-purple font-bold placeholder:text-zinc-800 transition-colors"
                    />
-                   <button className="group relative w-full py-5 md:py-6 bg-brand-purple overflow-hidden transition-all duration-500 hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]">
+                   <motion.button 
+                     whileHover={VARIANTS.buttonHover}
+                     whileTap={VARIANTS.buttonTap}
+                     whileFocus={VARIANTS.buttonFocus}
+                     className="group relative w-full py-5 md:py-6 bg-brand-purple overflow-hidden transition-all duration-500 hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] focus:outline-none focus-visible:ring-1 focus-visible:ring-white"
+                   >
                      <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                      <span className="relative z-10 mono text-[11px] md:text-[12px] font-black text-white group-hover:text-black uppercase tracking-widest transition-colors duration-500">
                        Unlock Access
                      </span>
-                   </button>
+                   </motion.button>
                 </div>
 
-                <button 
+                <motion.button 
                   onClick={onClose}
-                  className="mono text-[9px] text-zinc-500 hover:text-white uppercase tracking-[0.6em] transition-colors font-black py-2"
+                  whileFocus={{ scale: 1.05, color: "#fff" }}
+                  className="mono text-[9px] text-zinc-500 hover:text-white uppercase tracking-[0.6em] transition-colors font-black py-2 focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple"
                 >
                   Return to Main Page
-                </button>
+                </motion.button>
              </div>
           </motion.div>
         </>
