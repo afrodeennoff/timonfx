@@ -10,8 +10,8 @@ interface TestimonialsProps {
 const TestimonialItem: React.FC<{ testimonial: any; index: number }> = React.memo(({ testimonial, index }) => {
   return (
     <motion.div
-      variants={VARIANTS.fadeInUp}
-      className="group relative w-full py-12 md:py-16 border-t border-white/10 first:border-t-0 flex flex-col md:flex-row gap-6 md:gap-32 items-start transition-colors duration-500 hover:bg-white/[0.01]"
+      variants={VARIANTS.reveal}
+      className="group relative w-full py-12 md:py-16 border-t border-white/10 first:border-t-0 flex flex-col md:flex-row gap-6 md:gap-32 items-start transition-all duration-300 hover:bg-white/[0.01]"
     >
       <div className="w-full md:w-48 shrink-0 flex flex-row md:flex-col justify-between md:justify-start gap-4">
         <span className="mono text-[10px] text-zinc-500 font-black tracking-[0.4em] uppercase group-hover:text-brand-purple transition-colors">
@@ -28,7 +28,7 @@ const TestimonialItem: React.FC<{ testimonial: any; index: number }> = React.mem
         </p>
       </div>
 
-      <div className="hidden md:block w-32 shrink-0 text-right opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+      <div className="hidden md:block w-32 shrink-0 text-right opacity-0 group-hover:opacity-100 transition-opacity duration-300">
          <span className="mono text-[9px] text-zinc-600 uppercase tracking-widest font-black">CONFIRMED</span>
       </div>
     </motion.div>
@@ -46,7 +46,6 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ onStartPreview }) =>
           variants={VARIANTS.staggerContainer}
           className="space-y-24 md:space-y-32"
         >
-          {/* Header */}
           <div className="flex flex-col gap-8">
             <span className="mono text-[10px] text-brand-purple font-black tracking-[0.6em] uppercase">Trader Feedback</span>
             <h2 className="text-5xl md:text-7xl font-black text-white italic uppercase tracking-tighter">
@@ -55,16 +54,14 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ onStartPreview }) =>
             <div className="h-[1px] w-full bg-white/10" />
           </div>
 
-          {/* List */}
           <div className="flex flex-col">
             {TESTIMONIALS.map((t, i) => (
               <TestimonialItem key={t.id} testimonial={t} index={i} />
             ))}
           </div>
 
-          {/* Action */}
           <motion.div 
-            variants={VARIANTS.fadeInUp}
+            variants={VARIANTS.reveal}
             className="flex justify-center pt-8 md:pt-12"
           >
              <button 

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FAQ_DATA, VARIANTS } from '../constants';
@@ -7,7 +6,8 @@ export const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-32 px-6 bg-brand-black border-t border-white/10">
+    // Normalized padding to py-24 md:py-48
+    <section id="faq" className="py-24 md:py-48 px-6 bg-brand-black border-t border-white/10">
       <div className="max-w-4xl mx-auto">
         <div className="text-center space-y-4 mb-24">
            <span className="mono text-[10px] text-brand-purple font-black tracking-[0.4em] uppercase">Common // Questions</span>

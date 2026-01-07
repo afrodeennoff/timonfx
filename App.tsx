@@ -1,30 +1,42 @@
-
-import React, { useState, useCallback } from 'react';
-import { MarketStatus } from './components/MarketStatus';
-import { Background3D } from './components/Background3D';
-import { CustomCursor } from './components/CustomCursor';
-import { PreviewGate } from './components/PreviewGate';
-import { BackToTop } from './components/BackToTop';
-import { SmoothScroll } from './components/SmoothScroll';
-import { AIStrategyArchitect } from './components/AIStrategyArchitect';
+import React, { useState, useCallback, Suspense, lazy } from 'react';
 import { Hero } from './components/Hero';
-import { Education } from './components/Education';
-import { Pricing } from './components/Pricing';
-import { PropFirmExplorer } from './components/PropFirmExplorer';
-import { About } from './components/About';
-import { Testimonials } from './components/Testimonials';
-import { FAQ } from './components/FAQ';
-import { Framework } from './components/Framework';
+import { CustomCursor } from './components/CustomCursor';
+import { SmoothScroll } from './components/SmoothScroll';
+import { MarketStatus } from './components/MarketStatus'; // Eager load
+import { BackToTop } from './components/BackToTop'; // Eager load
+import { PreviewGate } from './components/PreviewGate'; // Eager load
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { AppMode } from './types';
+import { VARIANTS, ANIM_CONSTANTS } from './constants';
 
-// Memoized Header to prevent re-renders on parent state changes
+// Lazy load HEAVY content sections only to optimize FCP
+const Education = lazy(() => import('./components/Education').then(m => ({ default: m.Education })));
+const Pricing = lazy(() => import('./components/Pricing').then(m => ({ default: m.Pricing })));
+const PropFirmExplorer = lazy(() => import('./components/PropFirmExplorer').then(m => ({ default: m.PropFirmExplorer })));
+const About = lazy(() => import('./components/About').then(m => ({ default: m.About })));
+const Testimonials = lazy(() => import('./components/Testimonials').then(m => ({ default: m.Testimonials })));
+const FAQ = lazy(() => import('./components/FAQ').then(m => ({ default: m.FAQ })));
+const Framework = lazy(() => import('./components/Framework').then(m => ({ default: m.Framework })));
+
+// Lazy load execution terminal to keep main bundle light
+const ExecutionTerminal = lazy(() => import('./components/ExecutionTerminal').then(m => ({ default: m.ExecutionTerminal })));
+
+const DigitalLoader = () => (
+  <div className="min-h-[50vh] flex flex-col items-center justify-center space-y-4">
+    <div className="flex items-center gap-2">
+      <div className="w-1.5 h-1.5 bg-brand-purple animate-pulse" />
+      <span className="mono text-[10px] text-brand-purple font-black tracking-[0.3em] uppercase animate-pulse">
+        LOADING_MODULES...
+      </span>
+    </div>
+  </div>
+);
+
 const SystemHeader: React.FC<{ 
   onStartPreview: () => void; 
-  onOpenAI: () => void;
   mode: AppMode;
   onToggleMode: () => void;
-}> = React.memo(({ onStartPreview, onOpenAI, mode, onToggleMode }) => {
+}> = React.memo(({ onStartPreview, mode, onToggleMode }) => {
   const { scrollY } = useScroll();
   const headerOpacity = useTransform(scrollY, [0, 50], [0.92, 1]);
   const headerY = useTransform(scrollY, [0, 50], [-8, 0]);
@@ -57,32 +69,19 @@ const SystemHeader: React.FC<{
           <div className="w-[1px] h-8 bg-white/10 hidden md:block" />
           <div className="flex gap-6 md:gap-10 items-center ml-auto md:ml-0">
             <motion.button 
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={onOpenAI}
-              aria-label="Open Market Insights Chat"
-              className="group relative mono text-[10px] text-brand-purple hover:text-white uppercase tracking-[0.4em] font-black flex items-center gap-3 transition-colors px-4 py-2 focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm"
-            >
-              <span className="w-2 h-2 rounded-full bg-brand-purple shadow-[0_0_15px_rgba(139,92,246,1)] group-hover:scale-125 transition-transform duration-500" />
-              <span className="hidden sm:inline">INSIGHTS</span>
-              <span className="sm:hidden">INSIGHTS</span>
-              <div className="absolute inset-0 bg-brand-purple/5 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
-            </motion.button>
-            <motion.button 
-              whileHover={{ scale: 1.015 }}
-              whileTap={{ scale: 0.985 }}
+              whileHover={VARIANTS.buttonHover}
+              whileTap={VARIANTS.buttonTap}
               onClick={onToggleMode}
-              aria-label={mode === 'STUDY' ? 'Enter Trading Desk Mode' : 'Exit Trading Desk Mode'}
-              className={`group relative mono text-[10px] uppercase tracking-[0.5em] font-black px-8 md:px-12 py-3 md:py-4 border overflow-hidden transition-all duration-600 ease-[0.19,1,0.22,1] focus:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm ${
+              className={`group relative mono text-[10px] uppercase tracking-[0.5em] font-black px-8 md:px-12 py-3 md:py-4 border overflow-hidden transition-all duration-300 ease-[0.22,1,0.36,1] focus:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm ${
                 mode === 'STUDY' 
-                  ? 'border-white/15 text-white hover:border-brand-purple hover:text-brand-purple' 
-                  : 'border-white/30 text-white hover:border-white'
+                  ? 'border-white/15 text-white' 
+                  : 'border-white/30 text-white'
               }`}
             >
-              <div className={`absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-600 ease-[0.19,1,0.22,1] ${
+              <div className={`absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.22,1,0.36,1] ${
                 mode === 'STUDY' ? 'bg-brand-purple' : 'bg-white'
               }`} />
-              <span className={`relative z-10 transition-colors duration-400 ${
+              <span className={`relative z-10 transition-colors duration-300 ${
                 mode === 'STUDY' ? 'group-hover:text-white' : 'group-hover:text-black'
               }`}>
                 {mode === 'STUDY' ? 'OPEN DESK' : 'CLOSE DESK'}
@@ -96,192 +95,95 @@ const SystemHeader: React.FC<{
 
 export const App: React.FC = () => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [isAIOpen, setIsAIOpen] = useState(false);
   const [mode, setMode] = useState<AppMode>('STUDY');
 
-  // Stable handlers
   const toggleMode = useCallback(() => {
     setMode(prev => prev === 'STUDY' ? 'EXECUTION' : 'STUDY');
   }, []);
 
   const openPreview = useCallback(() => setIsPreviewOpen(true), []);
   const closePreview = useCallback(() => setIsPreviewOpen(false), []);
-  
-  const openAI = useCallback(() => setIsAIOpen(true), []);
-  const closeAI = useCallback(() => setIsAIOpen(false), []);
 
   return (
     <SmoothScroll>
-      <main className="relative bg-brand-black min-h-screen selection:bg-brand-purple selection:text-white overflow-x-hidden transform-gpu">
-        <CustomCursor />
-        <BackToTop />
-        <MarketStatus />
-        <Background3D />
-        
-        <SystemHeader 
-          onStartPreview={openPreview} 
-          onOpenAI={openAI}
-          mode={mode}
-          onToggleMode={toggleMode}
-        />
-        
-        <PreviewGate isOpen={isPreviewOpen} onClose={closePreview} />
-        <AIStrategyArchitect isOpen={isAIOpen} onClose={closeAI} />
-
-        <div className="relative z-10 transition-all duration-700">
+      <CustomCursor />
+      <MarketStatus />
+      <BackToTop />
+      <PreviewGate isOpen={isPreviewOpen} onClose={closePreview} />
+      
+      <SystemHeader 
+        onStartPreview={openPreview} 
+        mode={mode}
+        onToggleMode={toggleMode}
+      />
+      
+      <main className="relative bg-transparent min-h-screen selection:bg-brand-purple selection:text-white overflow-x-hidden transform-gpu">
+        <div className="relative z-10">
           <AnimatePresence mode="wait">
             {mode === 'STUDY' ? (
               <motion.div 
                 key="study-mode"
-                initial={{ opacity: 0 }} 
+                initial={{ opacity: 1 }} 
                 animate={{ opacity: 1 }} 
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
+                transition={{ duration: 0.3, ease: ANIM_CONSTANTS.ease }}
               >
                 <Hero onStartPreview={openPreview} />
-                <About onStartPreview={openPreview} />
-                <Framework />
-                <Education />
-                <Pricing onStartPreview={openPreview} />
-                <PropFirmExplorer />
-                <Testimonials onStartPreview={openPreview} />
-                <FAQ />
+                
+                <Suspense fallback={<DigitalLoader />}>
+                  <About onStartPreview={openPreview} />
+                  <Framework />
+                  <Education />
+                  <Pricing onStartPreview={openPreview} />
+                  <PropFirmExplorer />
+                  <Testimonials onStartPreview={openPreview} />
+                  <FAQ />
+                </Suspense>
               </motion.div>
             ) : (
               <motion.div 
                 key="execution-mode"
-                initial={{ opacity: 0, scale: 1.01 }} 
+                initial={{ opacity: 0, scale: 0.99 }} 
                 animate={{ opacity: 1, scale: 1 }} 
                 exit={{ opacity: 0, scale: 0.99 }}
-                transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+                transition={{ duration: 0.3, ease: ANIM_CONSTANTS.ease }}
                 className="pt-24 md:pt-32 px-4 md:px-12 min-h-screen flex flex-col gap-6 md:gap-8 pb-12"
               >
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 flex-1 overflow-y-auto lg:overflow-hidden scrollbar-hide">
                   <div className="bg-zinc-950/60 border border-white/15 p-8 md:p-12 lg:overflow-y-auto space-y-10 backdrop-blur-3xl shadow-2xl">
-                    <span className="mono text-[11px] text-brand-purple uppercase tracking-[0.5em] font-black text-glow">[ MARKET DATA ]</span>
-                    <div className="space-y-6 md:space-y-10">
-                       <div className="p-6 md:p-8 border border-white/10 bg-black/40">
-                          <span className="mono text-[10px] text-zinc-600 uppercase block mb-4 font-black tracking-widest">BIAS</span>
-                          <p className="mono text-sm md:text-base text-white uppercase font-black tracking-widest italic">BULLISH TREND CONFIRMED</p>
-                       </div>
-                       <div className="p-6 md:p-8 border border-white/10 bg-black/40">
-                          <span className="mono text-[10px] text-zinc-600 uppercase block mb-4 font-black tracking-widest">STRUCTURE</span>
-                          <p className="mono text-sm md:text-base text-white uppercase font-black tracking-widest italic">H4 BREAK VALIDATED</p>
-                       </div>
-                       <div className="p-6 md:p-8 border border-white/10 bg-black/40">
-                          <span className="mono text-[10px] text-zinc-600 uppercase block mb-4 font-black tracking-widest">LEVELS</span>
-                          <p className="mono text-[11px] md:text-xs text-zinc-200 uppercase leading-loose tracking-[0.2em] font-bold">
-                            NQ 18420 LIQUIDITY SWEEP<br/>ES 5120 OPENING GAP
-                          </p>
-                       </div>
-                    </div>
-                  </div>
-
-                  <div className="lg:col-span-1 bg-black/90 border border-white/20 p-8 md:p-14 flex flex-col gap-10 relative overflow-hidden backdrop-blur-3xl shadow-3xl">
-                    <div className="flex justify-between items-center border-b border-white/10 pb-8 md:pb-12">
-                      <span className="mono text-[11px] text-white uppercase tracking-[0.6em] font-black">FEED</span>
-                      <div className="flex items-center gap-4">
-                        <span className="w-2 h-2 rounded-full bg-brand-purple animate-pulse shadow-[0_0_10px_rgba(139,92,246,0.8)]" />
-                        <span className="mono text-[10px] text-brand-purple font-black tracking-[0.2em]">LIVE</span>
-                      </div>
-                    </div>
-                    <div className="flex-1 space-y-6 mono text-[12px] md:text-[14px] text-zinc-200 overflow-y-auto pr-6 font-medium tracking-[0.1em] min-h-[250px] scrollbar-hide">
-                      <p className="text-zinc-600 font-black tracking-widest uppercase">[09:27] ANCHOR FOUND // MOMENTUM</p>
-                      <p className="text-white border-l-2 border-brand-purple pl-6 font-black tracking-widest py-2 bg-brand-purple/5 uppercase">WATCHING MOMENTUM AT THE OPEN</p>
-                      <p className="text-zinc-600 font-black tracking-widest uppercase">[09:34] LIQUIDITY AT HIGHS</p>
-                      <div className="w-full h-[1px] bg-white/10 my-6" />
-                      <p className="text-zinc-300 font-black tracking-widest uppercase">[RISK] DEFINED</p>
-                    </div>
-                    <div className="bg-brand-purple/10 border border-brand-purple/20 p-8 md:p-10 shadow-[0_0_40px_rgba(139,92,246,0.1)]">
-                      <span className="mono text-[10px] text-brand-purple uppercase block mb-6 font-black tracking-[0.4em]">WATCHLIST</span>
-                      <div className="flex justify-between items-center">
-                        <span className="text-2xl md:text-3xl font-black text-white italic tracking-tighter uppercase">WAITING FOR CONFIRMATION</span>
-                        <div className="w-4 h-4 bg-brand-purple rounded-full shadow-[0_0_20px_rgba(139,92,246,1)]" />
+                    <span className="mono text-[11px] text-brand-purple font-black tracking-widest uppercase">DESK STATUS: ACTIVE</span>
+                    <div className="space-y-6">
+                      <h2 className="text-3xl font-black italic uppercase text-white">Market Intel</h2>
+                      <p className="mono text-xs text-zinc-400 leading-relaxed uppercase tracking-widest">Awaiting session displacement. Liquidity nodes identified at 09:27 open window.</p>
+                      
+                      <div className="h-[1px] w-full bg-white/10 my-8" />
+                      
+                      <div className="space-y-4">
+                        <span className="mono text-[9px] text-zinc-500 uppercase tracking-widest font-black">Key Levels [ES]</span>
+                        <div className="flex justify-between items-center p-3 border border-white/5 bg-white/5">
+                           <span className="mono text-xs text-brand-red font-bold">4520.50</span>
+                           <span className="mono text-[9px] text-zinc-500 uppercase">Weekly Supply</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 border border-white/5 bg-white/5">
+                           <span className="mono text-xs text-white font-bold">4450.00</span>
+                           <span className="mono text-[9px] text-zinc-500 uppercase">Mid-Pivot</span>
+                        </div>
+                        <div className="flex justify-between items-center p-3 border border-white/5 bg-white/5">
+                           <span className="mono text-xs text-green-500 font-bold">4385.25</span>
+                           <span className="mono text-[9px] text-zinc-500 uppercase">Demand Base</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                  <div className="bg-zinc-950/60 border border-white/15 p-8 md:p-12 lg:overflow-y-auto space-y-10 backdrop-blur-3xl shadow-2xl">
-                    <span className="mono text-[11px] text-zinc-100 uppercase tracking-[0.6em] font-black text-glow">[ CHECKLIST ]</span>
-                    <div className="space-y-6 md:space-y-8">
-                      {['STRUCTURE ALIGNED', 'LIQUIDITY SWEEP', 'TIMING CORRECT', 'RISK DEFINED', 'TARGETS SET'].map((item, i) => (
-                        <motion.div 
-                          key={item} 
-                          whileHover={{ x: 4 }}
-                          className="flex items-center gap-6 group cursor-pointer"
-                        >
-                          <div className="w-5 h-5 border border-white/15 flex items-center justify-center group-hover:border-brand-purple transition-all duration-400 bg-black/60 relative overflow-hidden">
-                             <div className="absolute inset-0 bg-brand-purple/15 scale-0 group-hover:scale-100 transition-transform duration-400" />
-                             <span className="relative mono text-[9px] text-brand-purple opacity-0 group-hover:opacity-100 transition-opacity font-black">OK</span>
-                          </div>
-                          <span className="mono text-[11px] text-zinc-400 uppercase tracking-[0.2em] font-black group-hover:text-white transition-colors duration-400">{item}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                    <div className="pt-10 md:pt-14 border-t border-white/10">
-                       <span className="mono text-[10px] text-zinc-600 uppercase block mb-6 font-black tracking-[0.4em]">DAILY RISK</span>
-                       <div className="flex justify-between items-center text-sm md:text-lg font-black text-white mono italic tracking-widest bg-brand-red/10 p-6 border border-brand-red/20 shadow-[0_0_30px_rgba(255,30,30,0.05)]">
-                          <span>MAX LOSS:</span>
-                          <span className="text-brand-red">$1,500.00</span>
-                       </div>
-                    </div>
+                  <div className="lg:col-span-2 h-[600px] lg:h-auto">
+                    <Suspense fallback={<div className="w-full h-full bg-zinc-900 animate-pulse border border-white/10" />}>
+                      <ExecutionTerminal />
+                    </Suspense>
                   </div>
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
-
-          <footer className="py-24 md:py-48 px-6 md:px-14 bg-brand-black border-t border-white/15 relative overflow-hidden">
-            <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16 md:gap-32 relative z-10">
-               <div className="space-y-8">
-                  <h2 className="text-4xl md:text-7xl font-black text-white italic tracking-tighter uppercase select-none">ORK <span className="text-brand-purple">//</span></h2>
-                  <p className="mono text-[11px] text-zinc-600 uppercase tracking-[0.4em] leading-relaxed max-w-sm font-black">
-                    Professional trading standards.<br/>
-                    Risk-focused process. Disciplined approach.
-                  </p>
-               </div>
-               <div className="grid grid-cols-2 gap-12 md:gap-32">
-                  <div className="space-y-10">
-                    <span className="mono text-[11px] text-brand-purple uppercase tracking-[0.6em] font-black">Links</span>
-                    <ul className="space-y-6">
-                        <li><a href="#about" className="group relative text-[11px] mono uppercase tracking-[0.3em] text-zinc-500 hover:text-white transition-all duration-500 font-black inline-block p-1">About<span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-brand-purple group-hover:w-full transition-all duration-500" /></a></li>
-                        <li><a href="#education" className="group relative text-[11px] mono uppercase tracking-[0.3em] text-zinc-500 hover:text-white transition-all duration-500 font-black inline-block p-1">Process<span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-brand-purple group-hover:w-full transition-all duration-500" /></a></li>
-                        <li><a href="#pricing" className="group relative text-[11px] mono uppercase tracking-[0.3em] text-zinc-500 hover:text-white transition-all duration-500 font-black inline-block p-1">Access<span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-brand-purple group-hover:w-full transition-all duration-500" /></a></li>
-                    </ul>
-                  </div>
-                  <div className="space-y-10">
-                    <span className="mono text-[11px] text-zinc-500 uppercase tracking-[0.6em] font-black">Socials</span>
-                    <ul className="space-y-6">
-                        {['X / Feed', 'YouTube', 'Discord'].map(i => (
-                            <li key={i}>
-                              <a 
-                                href="#" 
-                                className="group relative text-[11px] mono uppercase tracking-[0.3em] text-zinc-600 hover:text-white transition-all duration-500 font-black inline-block focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm p-1"
-                              >
-                                {i}
-                                <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-500" />
-                              </a>
-                            </li>
-                        ))}
-                    </ul>
-                  </div>
-               </div>
-            </div>
-            
-            <div className="max-w-7xl mx-auto mt-24 md:mt-48 pt-10 md:pt-16 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-10 md:gap-14 opacity-80">
-              <span className="mono text-[10px] md:text-[11px] uppercase tracking-[0.4em] text-zinc-700 text-center md:text-left font-black">
-                © 2024 ORK TRADING // LIVE DESK // TRADING PROCESS
-              </span>
-              <div className="flex gap-10 md:gap-14 items-center">
-                  <div className="flex items-center gap-4 px-6 py-3 bg-white/5 border border-white/10 backdrop-blur-md">
-                    <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.6)]" />
-                    <span className="mono text-[10px] text-white uppercase tracking-[0.3em] font-black">LIVE</span>
-                  </div>
-                  <div className="w-[1px] h-6 bg-white/20" />
-                  <span className="mono text-[10px] text-zinc-600 uppercase tracking-[0.3em] font-black">LIVE FEED</span>
-              </div>
-            </div>
-          </footer>
         </div>
       </main>
     </SmoothScroll>

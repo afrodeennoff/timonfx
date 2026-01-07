@@ -1,29 +1,33 @@
-
 import { ModuleCard, Testimonial, PropFirm } from './types';
 
 export const BRAND_NAME = "ORK";
 
 /**
- * GLOBAL FRAMER MOTION STANDARD
+ * GLOBAL ANIMATION STANDARD - OPTIMIZED
  * Easing: cubic-bezier(0.22, 1, 0.36, 1)
- * Durations: 0.28s (reveal), 0.14s (micro)
+ * Durations: Reveal (0.28s), Micro (0.14s)
+ * Transitions: Opacity and Transform only. No springs.
  */
 export const ANIM_CONSTANTS = {
   ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
   duration: 0.28,
   micro: 0.14,
   stagger: 0.05,
-  viewport: { once: true, margin: "-80px" }
+  viewport: { once: true, margin: "-10%" } // Reduced margin for safer triggering
 };
 
+// Check for mobile for animation distance reduction
+// Use a safer check that doesn't break hydration
+const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
+const revealY = isMobile ? 8 : 16; // Reduced distance for mobile
+
 export const VARIANTS = {
-  // Global Reveal Standard
+  // Unified Section/Card Reveal - GPU Optimized
   reveal: {
-    initial: { opacity: 0, y: 12, scale: 0.96 },
+    initial: { opacity: 0, y: revealY }, // Removed scale to prevent blurriness during anim on some screens
     animate: { 
       opacity: 1, 
       y: 0, 
-      scale: 1,
       transition: { 
         duration: ANIM_CONSTANTS.duration, 
         ease: ANIM_CONSTANTS.ease 
@@ -31,70 +35,43 @@ export const VARIANTS = {
     }
   },
 
-  // Reveal without scale for cleaner text
-  fadeInUp: {
-    initial: { opacity: 0, y: 12 },
-    animate: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        duration: ANIM_CONSTANTS.duration, 
-        ease: ANIM_CONSTANTS.ease 
-      }
-    }
-  },
-
-  // Scale in for graphical elements
-  scaleIn: {
-    initial: { opacity: 0, scale: 0.95 },
-    animate: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { 
-        duration: ANIM_CONSTANTS.duration, 
-        ease: ANIM_CONSTANTS.ease 
-      }
-    }
-  },
-  
-  // Staggered container control
+  // Stagger Container
   staggerContainer: {
     initial: {},
     animate: {
       transition: {
-        staggerChildren: 0.05,
+        staggerChildren: ANIM_CONSTANTS.stagger,
         delayChildren: 0.02
       }
     }
   },
 
-  // Button interaction
+  // Interaction: Card Hover (Stable & Weighted)
+  cardHover: {
+    y: -2, // Reduced from -1 (or similar) to be purely transform
+    transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
+  },
+
+  // Interaction: Button Hover
   buttonHover: {
     scale: 1.02,
-    transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
+    transition: { duration: 0.12, ease: ANIM_CONSTANTS.ease }
   },
+
+  // Interaction: Button Press
   buttonTap: {
     scale: 0.98,
-    transition: { duration: 0.1, ease: ANIM_CONSTANTS.ease }
+    transition: { duration: 0.08, ease: ANIM_CONSTANTS.ease }
   },
-  // Subtle focus highlight
+
+  // Interaction: Focus states
   buttonFocus: {
     scale: 1.02,
-    boxShadow: "0 0 15px rgba(139, 92, 246, 0.4)",
     transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
   },
 
-  // Input focus highlight
   inputFocus: {
-    boxShadow: "0 0 12px rgba(139, 92, 246, 0.2)",
-    borderColor: "rgba(139, 92, 246, 0.5)",
-    transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
-  },
-
-  // Card interaction
-  cardHover: {
-    scale: 1.015,
-    y: -1,
+    scale: 1.005,
     transition: { duration: ANIM_CONSTANTS.micro, ease: ANIM_CONSTANTS.ease }
   }
 };

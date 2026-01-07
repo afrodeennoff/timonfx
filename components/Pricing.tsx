@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { VARIANTS, ANIM_CONSTANTS } from '../constants';
@@ -9,7 +8,8 @@ interface PricingProps {
 
 export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
   return (
-    <section id="pricing" className="py-32 px-6 bg-[#050505] border-t border-white/10 relative overflow-hidden transform-gpu">
+    // Normalized padding to py-24 md:py-48 to match other sections
+    <section id="pricing" className="py-24 md:py-48 px-6 bg-[#050505] border-t border-white/10 relative overflow-hidden transform-gpu">
       <div className="max-w-7xl mx-auto">
         <motion.div 
           initial="initial"
@@ -32,7 +32,7 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
            <motion.div 
             variants={VARIANTS.reveal}
             whileHover={VARIANTS.cardHover}
-            className="bg-zinc-900/30 border border-white/20 p-12 space-y-10 relative overflow-hidden group hover:border-white/40 transition-all duration-300 shadow-2xl flex flex-col"
+            className="interactive-card bg-zinc-900/30 border border-white/20 p-12 space-y-10 relative overflow-hidden group hover:border-white/40 transition-colors duration-300 flex flex-col"
            >
               <div className="absolute top-0 right-0 p-6 opacity-[0.05] pointer-events-none">
                  <span className="text-9xl font-black italic">P1</span>
@@ -54,7 +54,7 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
                 whileHover={VARIANTS.buttonHover}
                 whileTap={VARIANTS.buttonTap}
                 onClick={onStartPreview}
-                className="group relative w-full z-10 py-5 border border-white/15 overflow-hidden transition-all duration-300 mono text-[11px] font-black uppercase tracking-[0.2em] text-white bg-white/5"
+                className="group relative w-full z-10 py-5 border border-white/15 overflow-hidden transition-all duration-300 mono text-[11px] font-black uppercase tracking-[0.2em] text-white bg-white/5 focus:outline-none focus:ring-1 focus:ring-brand-purple"
               >
                 <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
                 <span className="relative z-10 group-hover:text-black transition-colors duration-300 font-black uppercase">Get Access</span>
@@ -64,7 +64,7 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
            <motion.div 
             variants={VARIANTS.reveal}
             whileHover={VARIANTS.cardHover}
-            className="bg-brand-purple p-12 space-y-10 relative overflow-hidden shadow-2xl shadow-brand-purple/20 group transition-all duration-300 ease-[0.22,1,0.36,1] flex flex-col"
+            className="interactive-card bg-brand-purple p-12 space-y-10 relative overflow-hidden shadow-2xl shadow-brand-purple/20 group transition-all duration-300 ease-[0.22,1,0.36,1] flex flex-col"
            >
               <div className="absolute top-0 right-0 p-6 opacity-15 pointer-events-none">
                  <span className="text-9xl font-black italic text-black">P2</span>
@@ -86,7 +86,7 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
                 whileHover={VARIANTS.buttonHover}
                 whileTap={VARIANTS.buttonTap}
                 onClick={onStartPreview}
-                className="group relative w-full z-10 py-5 bg-white overflow-hidden transition-all duration-300 mono text-[11px] font-black uppercase tracking-[0.2em] text-black shadow-2xl"
+                className="group relative w-full z-10 py-5 bg-white overflow-hidden transition-all duration-300 mono text-[11px] font-black uppercase tracking-[0.2em] text-black shadow-2xl focus:outline-none focus:ring-1 focus:ring-white"
               >
                 <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
                 <span className="relative z-10 group-hover:text-white transition-colors duration-300 font-black uppercase">Get Pro Access</span>

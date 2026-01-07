@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PROP_FIRMS, VARIANTS, ANIM_CONSTANTS } from '../constants';
@@ -7,16 +6,20 @@ const CouponCode: React.FC<{ code: string }> = React.memo(({ code }) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(code).catch(() => console.error("Clipboard write failed"));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } else {
+        console.warn("Clipboard API not available");
+    }
   }, [code]);
 
   return (
     <motion.button
       onClick={handleCopy}
-      whileFocus={VARIANTS.buttonFocus}
-      aria-label={`Copy coupon code ${code}`}
+      whileHover={VARIANTS.buttonHover}
+      whileTap={VARIANTS.buttonTap}
       className={`group relative px-6 py-3 border mono text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 flex items-center justify-center min-w-[110px] cursor-pointer select-none focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple ${
         copied 
           ? 'bg-green-500 border-green-500 text-white' 
@@ -43,16 +46,17 @@ export const PropFirmExplorer: React.FC = () => {
           variants={VARIANTS.staggerContainer}
           className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-8"
         >
-           <motion.div variants={VARIANTS.fadeInUp} className="space-y-4">
+           <motion.div variants={VARIANTS.reveal} className="space-y-4">
               <span className="mono text-[10px] text-brand-purple font-black tracking-[0.5em] uppercase">Funding // Partners</span>
               <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter">Funding Options</h2>
            </motion.div>
-           <motion.div variants={VARIANTS.scaleIn} className="flex gap-1 p-1 bg-zinc-900 border border-white/10 rounded-sm">
+           <motion.div variants={VARIANTS.reveal} className="flex gap-1 p-1 bg-zinc-900 border border-white/10 rounded-sm">
               {(['ALL', 'FUTURES', 'CFD'] as const).map(f => (
                 <motion.button
                   key={f}
                   onClick={() => setFilter(f)}
-                  whileFocus={{ backgroundColor: "rgba(139, 92, 246, 0.4)" }}
+                  whileHover={VARIANTS.buttonHover}
+                  whileTap={VARIANTS.buttonTap}
                   className={`px-6 py-3 mono text-[10px] uppercase tracking-widest transition-all duration-300 font-black focus:outline-none focus-visible:ring-1 focus-visible:ring-white/50 rounded-sm ${
                     filter === f ? 'bg-brand-purple text-white' : 'text-zinc-500 hover:text-white'
                   }`}
@@ -79,10 +83,10 @@ export const PropFirmExplorer: React.FC = () => {
                 {filteredFirms.map((firm) => (
                   <motion.tr 
                     key={firm.id} 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
+                    initial="initial"
+                    whileInView="animate"
+                    viewport={ANIM_CONSTANTS.viewport}
+                    variants={VARIANTS.reveal}
                     className="group border-b border-white/5 hover:bg-white/[0.02]"
                   >
                     <td className="py-8">
@@ -104,8 +108,7 @@ export const PropFirmExplorer: React.FC = () => {
                         target="_blank" 
                         rel="noopener noreferrer"
                         whileHover={{ x: 5 }}
-                        whileFocus={{ x: 5, color: "#8b5cf6" }}
-                        className="mono text-[10px] font-black uppercase tracking-widest text-white hover:text-brand-purple transition-colors focus:outline-none focus:border-b focus:border-brand-purple pb-1"
+                        className="mono text-[10px] font-black uppercase tracking-widest text-white hover:text-brand-purple transition-all focus:outline-none focus:border-b focus:border-brand-purple pb-1"
                       >
                         Visit →
                       </motion.a>

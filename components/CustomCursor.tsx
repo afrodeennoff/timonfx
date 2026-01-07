@@ -1,149 +1,133 @@
-
 import React, { useEffect, useState, memo, useRef } from 'react';
-import { motion, useSpring, useMotionValue } from 'framer-motion';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export const CustomCursor: React.FC = memo(() => {
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
+  const [isMounted, setIsMounted] = useState(false);
+  const requestRef = useRef<number>(0);
+  
+  // Use springs with performance-optimized physics for cursor following
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
+  
+  const springConfig = { damping: 25, stiffness: 250, mass: 0.1 };
+  const springX = useSpring(mouseX, springConfig);
+  const springY = useSpring(mouseY, springConfig);
 
-  // Performance optimized spring for smooth tracking without lag
-  const springConfig = { damping: 40, stiffness: 600, mass: 0.1 };
-  const smoothX = useSpring(mouseX, springConfig);
-  const smoothY = useSpring(mouseY, springConfig);
-
-  // Rotation interpolation
-  const rotation = useMotionValue(0);
-  const lastX = useRef(0);
-  const lastY = useRef(0);
+  const rotateValue = useMotionValue(0);
+  const proximityScale = useMotionValue(1);
+  const proximityOpacity = useMotionValue(0.4);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.matchMedia('(pointer: coarse)').matches);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    // 1. Efficient Position Tracking
+    // strict check for touch devices to completely disable cursor
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
+        return;
+    }
+    setIsMounted(true);
+
+    const updateRotation = (time: number) => {
+      if (!isHovering) {
+        // Reduced frequency calc for optimization
+        rotateValue.set(Math.sin(time / 1500) * 5);
+      } else {
+        rotateValue.set(rotateValue.get() * 0.9);
+      }
+      requestRef.current = requestAnimationFrame(updateRotation);
+    };
+    requestRef.current = requestAnimationFrame(updateRotation);
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!isVisible) setIsVisible(true);
+      // Direct update of motion value is efficient
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
-
-      // Interpolate rotation based on movement direction
-      // Only calculate if moving to avoid jitter
-      if (!isHovering) {
-        const dx = e.clientX - lastX.current;
-        const dy = e.clientY - lastY.current;
-        if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-          const targetRotation = Math.atan2(dy, dx) * (180 / Math.PI);
-          rotation.set(targetRotation);
-        }
-      }
-
-      lastX.current = e.clientX;
-      lastY.current = e.clientY;
     };
 
-    // 2. Efficient Hover Detection (Event Delegation)
-    // Checks only when crossing element boundaries, not every pixel
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.matches('button, a, input, select, textarea, [role="button"]') || 
-          target.closest('button, a, [role="button"]')) {
-        setIsHovering(true);
+      if (!target) return;
+      
+      const isInteractive = target.closest('button, a, input, [role="button"], .interactive-card');
+      
+      if (isInteractive) {
+        if (!isHovering) {
+            setIsHovering(true);
+            proximityScale.set(1.25);
+            proximityOpacity.set(0.8);
+        }
+      } else {
+        if (isHovering) {
+            setIsHovering(false);
+            proximityScale.set(1);
+            proximityOpacity.set(0.4);
+        }
       }
     };
 
-    const handleMouseOut = (e: MouseEvent) => {
-      // Small delay check or immediate reset logic could go here
-      // But for hover state, relying on the 'over' event of the new target is often enough
-      // To be safe, we check if the new relatedTarget is NOT interactive
-      const related = e.relatedTarget as HTMLElement;
-      if (!related || !(related.matches('button, a, input, select, textarea, [role="button"]') || 
-          related.closest('button, a, [role="button"]'))) {
-        setIsHovering(false);
-      }
-    };
+    const handleMouseDown = () => proximityScale.set(0.85);
+    const handleMouseUp = () => proximityScale.set(isHovering ? 1.25 : 1);
+    const handleMouseLeave = () => setIsVisible(false);
+    const handleMouseEnter = () => setIsVisible(true);
 
-    const handleMouseLeaveDoc = () => setIsVisible(false);
-    const handleMouseEnterDoc = () => setIsVisible(true);
-
-    // Passive listeners for scroll performance
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    document.addEventListener('mouseover', handleMouseOver, { passive: true });
-    document.addEventListener('mouseout', handleMouseOut, { passive: true });
-    document.addEventListener('mouseleave', handleMouseLeaveDoc);
-    document.addEventListener('mouseenter', handleMouseEnterDoc);
-    
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
+    window.addEventListener('mousedown', handleMouseDown, { passive: true });
+    window.addEventListener('mouseup', handleMouseUp, { passive: true });
+    document.addEventListener('mouseleave', handleMouseLeave);
+    document.addEventListener('mouseenter', handleMouseEnter);
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseover', handleMouseOver);
-      document.removeEventListener('mouseout', handleMouseOut);
-      document.removeEventListener('mouseleave', handleMouseLeaveDoc);
-      document.removeEventListener('mouseenter', handleMouseEnterDoc);
-      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('mouseover', handleMouseOver);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mouseenter', handleMouseEnter);
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [isVisible, isHovering, mouseX, mouseY, rotation]);
+  }, [isHovering, isVisible, mouseX, mouseY, proximityOpacity, proximityScale, rotateValue]);
 
-  if (isMobile || !isVisible) return null;
+  if (!isMounted) return null;
+  // Double check render-time
+  if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return null;
+  if (!isVisible) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
-      {/* Outer reactive ring */}
       <motion.div
-        className="absolute flex items-center justify-center will-change-transform"
         style={{
-          x: smoothX,
-          y: smoothY,
+          x: springX,
+          y: springY,
           translateX: '-50%',
           translateY: '-50%',
+          rotate: rotateValue,
+          scale: proximityScale,
+          opacity: proximityOpacity
         }}
+        className="absolute w-12 h-12 flex items-center justify-center will-change-transform"
       >
-        <motion.div
-          animate={{
-            scale: isHovering ? 1.5 : 1,
-            rotate: isHovering ? 0 : rotation.get(),
-            opacity: isHovering ? 1 : 0.4,
-          }}
-          transition={{ duration: 0.14, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-10 h-10 flex items-center justify-center"
-        >
-          {/* ORK Themed Brackets */}
-          <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brand-purple" />
-          <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-brand-purple" />
-          <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-brand-purple" />
-          <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brand-purple" />
-          
-          {isHovering && (
-            <motion.div 
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1.2, opacity: [0, 0.2, 0] }}
-              transition={{ repeat: Infinity, duration: 1.2 }}
-              className="absolute inset-0 border border-brand-purple rounded-full"
-            />
-          )}
-        </motion.div>
-      </motion.div>
-
-      {/* Inner precise core */}
-      <motion.div
-        className="absolute flex items-center justify-center will-change-transform"
-        style={{
-          x: mouseX,
-          y: mouseY,
-          translateX: '-50%',
-          translateY: '-50%',
-        }}
-      >
+        <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-brand-purple" />
+        <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t border-r border-brand-purple" />
+        <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b border-l border-brand-purple" />
+        <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b border-r border-brand-purple" />
         <motion.div 
           animate={{
-            scale: isHovering ? 0.5 : 1,
-            backgroundColor: isHovering ? '#8b5cf6' : '#ffffff'
+            scale: isHovering ? [1, 1.1, 1] : 1,
+            opacity: isHovering ? [0.1, 0.3, 0.1] : 0
           }}
-          transition={{ duration: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="w-1.5 h-1.5 rounded-full"
+          transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+          className="absolute inset-0 border border-brand-purple rounded-full"
+        />
+      </motion.div>
+      <motion.div
+        style={{ x: mouseX, y: mouseY, translateX: '-50%', translateY: '-50%' }}
+        className="absolute flex items-center justify-center will-change-transform"
+      >
+        <motion.div 
+          animate={{ scale: isHovering ? 0.6 : 1, backgroundColor: isHovering ? '#8b5cf6' : '#ffffff' }}
+          transition={{ duration: 0.12, ease: [0.22, 1, 0.36, 1] }}
+          className="w-1.5 h-1.5 rounded-full shadow-[0_0_10px_rgba(139,92,246,0.3)]"
         />
       </motion.div>
     </div>

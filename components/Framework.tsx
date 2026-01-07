@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { VARIANTS, ANIM_CONSTANTS } from '../constants';
@@ -14,7 +13,7 @@ export const Framework: React.FC = () => {
           variants={VARIANTS.staggerContainer}
           className="space-y-10 md:space-y-14"
         >
-          <motion.div variants={VARIANTS.fadeInUp} className="space-y-4 md:space-y-6">
+          <motion.div variants={VARIANTS.reveal} className="space-y-4 md:space-y-6">
             <span className="mono text-[10px] md:text-[11px] text-brand-purple font-black tracking-[0.4em] md:tracking-[0.5em] uppercase">Execution Process</span>
             <h2 className="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter leading-[1] md:leading-[0.9]">
               The 09:27 <br />
@@ -22,7 +21,7 @@ export const Framework: React.FC = () => {
             </h2>
           </motion.div>
 
-          <motion.p variants={VARIANTS.fadeInUp} className="mono text-xs md:text-sm text-zinc-300 uppercase tracking-widest leading-loose max-w-xl font-black">
+          <motion.p variants={VARIANTS.reveal} className="mono text-xs md:text-sm text-zinc-300 uppercase tracking-widest leading-loose max-w-xl font-black">
             Edge is found through strict observation. 
             The ORK process identifies liquidity nodes prior to institutional expansion.
           </motion.p>
@@ -35,10 +34,10 @@ export const Framework: React.FC = () => {
             ].map((step) => (
               <motion.div 
                 key={step.id}
-                variants={VARIANTS.fadeInUp}
+                variants={VARIANTS.reveal}
                 whileHover={{ x: 8 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="group border-l-2 border-white/10 hover:border-brand-purple pl-6 md:pl-10 transition-all duration-300"
+                transition={{ duration: 0.14, ease: ANIM_CONSTANTS.ease }}
+                className="group border-l-2 border-white/10 hover:border-brand-purple pl-6 md:pl-10 transition-colors duration-300"
               >
                 <span className="mono text-[10px] md:text-[11px] text-zinc-500 group-hover:text-brand-purple transition-colors font-black">{step.id} //</span>
                 <h4 className="text-lg md:text-xl font-black text-white uppercase tracking-widest mt-1 md:mt-2">{step.title}</h4>
@@ -49,7 +48,7 @@ export const Framework: React.FC = () => {
         </motion.div>
 
         <motion.div 
-          variants={VARIANTS.scaleIn}
+          variants={VARIANTS.reveal}
           initial="initial"
           whileInView="animate"
           viewport={ANIM_CONSTANTS.viewport}
@@ -66,7 +65,7 @@ export const Framework: React.FC = () => {
               initial={{ pathLength: 0 }}
               whileInView={{ pathLength: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
+              transition={{ duration: 1.5, ease: ANIM_CONSTANTS.ease }}
               cx="200" cy="200" r="140" fill="none" stroke="#8b5cf6" strokeWidth="1" strokeDasharray="6 6"
               className="md:r-[160] md:stroke-[1.5]"
             />
@@ -74,16 +73,17 @@ export const Framework: React.FC = () => {
               initial={{ pathLength: 0 }}
               whileInView={{ pathLength: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 2, ease: "easeInOut", delay: 0.5 }}
+              transition={{ duration: 2, ease: ANIM_CONSTANTS.ease, delay: 0.5 }}
               d="M80 320 L130 240 L180 280 L240 120 L320 180" fill="none" stroke="white" strokeWidth="3"
               className="md:stroke-5"
             />
+            {/* Optimized: Removed shadow-lg animation. Pulse opacity is cheap. */}
             <motion.rect 
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 2.5 }}
-              x="230" y="110" width="20" height="20" fill="#8b5cf6" className="animate-pulse shadow-lg" 
+              x="230" y="110" width="20" height="20" fill="#8b5cf6" className="animate-pulse" 
             />
             <circle cx="240" cy="120" r="5" fill="white" className="md:r-7" />
           </svg>

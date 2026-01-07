@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { VARIANTS, ANIM_CONSTANTS } from '../constants';
@@ -52,8 +51,12 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         <motion.img 
           src="https://raw.githubusercontent.com/user-attachments/assets/c79f323c-5872-430b-967b-12d93e185011" 
           alt="ORK Brand Mark" 
-          animate={{ scale: [1, 1.02, 1], opacity: [0.4, 0.45, 0.4] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          loading="eager"
+          decoding="sync"
+          // @ts-ignore
+          fetchpriority="high"
+          animate={{ scale: [1, 1.05, 1], opacity: [0.35, 0.4, 0.35] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
           className="w-[80vw] h-[80vw] max-w-[1200px] max-h-[1200px] object-contain opacity-40 mix-blend-screen filter drop-shadow-[0_0_50px_rgba(139,92,246,0.2)]"
         />
       </motion.div>
@@ -82,7 +85,6 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
           <motion.button
             whileHover={VARIANTS.buttonHover}
             whileTap={VARIANTS.buttonTap}
-            whileFocus={VARIANTS.buttonFocus}
             onClick={onStartPreview}
             className="w-full sm:w-auto group relative px-12 py-6 bg-brand-purple overflow-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm"
           >
@@ -95,7 +97,6 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
           <motion.a
             whileHover={VARIANTS.buttonHover}
             whileTap={VARIANTS.buttonTap}
-            whileFocus={VARIANTS.buttonFocus}
             href="#education"
             className="w-full sm:w-auto group relative px-12 py-6 border border-white/20 hover:border-white overflow-hidden mono text-[11px] font-black text-white uppercase tracking-[0.4em] text-center focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm"
           >

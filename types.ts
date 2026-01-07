@@ -48,12 +48,6 @@ export interface PropFirm {
   isRecommended?: boolean;
 }
 
-export interface AIMessage {
-  role: 'user' | 'model';
-  text: string;
-  timestamp: number;
-}
-
 export enum SectionID {
   Hero = 'hero',
   Founder = 'founder',
