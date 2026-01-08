@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { TESTIMONIALS, ANIM_SYSTEM, VARIANTS, GLASS_STYLES } from '../constants';
+import React, { useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { TESTIMONIALS, ANIM_SYSTEM, VARIANTS, GLASS_STYLES, GLOBAL_3D_PRESET, MOTION_KILL_SWITCH } from '../constants';
 import { ConicGradient } from './ConicGradient';
 import { GhostText } from './GhostText';
 
@@ -12,18 +12,57 @@ const VerifiedBadge = () => (
 );
 
 const TestimonialCard: React.FC<{ testimonial: typeof TESTIMONIALS[0]; index: number }> = ({ testimonial, index }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const springConfig = { stiffness: 120, damping: 25, mass: 1.1 };
+  const xSpring = useSpring(x, springConfig);
+  const ySpring = useSpring(y, springConfig);
+
+  const rotateX = useTransform(ySpring, [-0.5, 0.5], [GLOBAL_3D_PRESET.maxRotation, -GLOBAL_3D_PRESET.maxRotation]);
+  const rotateY = useTransform(xSpring, [-0.5, 0.5], [-GLOBAL_3D_PRESET.maxRotation, GLOBAL_3D_PRESET.maxRotation]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current || MOTION_KILL_SWITCH) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    x.set((e.clientX - centerX) / rect.width);
+    y.set((e.clientY - centerY) / rect.height);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
   return (
     <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       variants={VARIANTS.reveal}
-      className={`relative group p-6 md:p-10 transition-all duration-300 flex flex-col justify-between min-h-[240px] rounded-[2rem] ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}
+      whileHover={{ 
+        y: -8,
+        z: GLOBAL_3D_PRESET.zDepth,
+        transition: { duration: ANIM_SYSTEM.hoverDuration, ease: ANIM_SYSTEM.ease }
+      }}
+      style={{
+        transformStyle: 'preserve-3d',
+        perspective: GLOBAL_3D_PRESET.perspective,
+        rotateX: !MOTION_KILL_SWITCH ? rotateX : 0,
+        rotateY: !MOTION_KILL_SWITCH ? rotateY : 0,
+      }}
+      className={`relative group p-6 md:p-10 transition-all duration-300 flex flex-col justify-between min-h-[240px] rounded-[2rem] will-change-transform ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}
     >
-      <div className="absolute top-0 right-0 p-5 opacity-20 group-hover:opacity-40 transition-opacity">
+      <div className="absolute top-0 right-0 p-5 opacity-20 group-hover:opacity-40 transition-opacity" style={{ transform: 'translateZ(25px)' }}>
         <span className="mono text-[8px] text-zinc-500 font-black tracking-widest uppercase">
           SEQ_{testimonial.id.toUpperCase()}
         </span>
       </div>
 
-      <div className="space-y-6 relative z-10">
+      <div className="space-y-6 relative z-10" style={{ transform: 'translateZ(30px)' }}>
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-0.5">
             <span className="mono text-[8px] text-zinc-600 font-bold uppercase tracking-[0.3em]">Trader_Profile</span>
@@ -37,7 +76,7 @@ const TestimonialCard: React.FC<{ testimonial: typeof TESTIMONIALS[0]; index: nu
         </blockquote>
       </div>
 
-      <div className="pt-6 mt-auto border-t border-white/5 flex items-center justify-between">
+      <div className="pt-6 mt-auto border-t border-white/5 flex items-center justify-between" style={{ transform: 'translateZ(20px)' }}>
         <div className="flex items-center gap-2">
           <div className="h-px w-6 bg-brand-purple/30 group-hover:w-10 transition-all duration-300" />
           <span className="mono text-[8px] text-zinc-500 uppercase tracking-[0.4em] font-black">Entry_Logged</span>
@@ -95,6 +134,7 @@ export const Testimonials: React.FC = () => {
           viewport={ANIM_SYSTEM.viewport}
           variants={VARIANTS.staggerContainer}
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          style={{ transformStyle: 'preserve-3d' }}
         >
           {TESTIMONIALS.map((testimonial, i) => (
             <TestimonialCard 

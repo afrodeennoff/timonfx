@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { VARIANTS, ANIM_SYSTEM, GLASS_STYLES, MOTION_KILL_SWITCH } from '../constants';
+import { VARIANTS, ANIM_SYSTEM, GLASS_STYLES, MOTION_KILL_SWITCH, GLOBAL_3D_PRESET } from '../constants';
 import { ConicGradient } from './ConicGradient';
 import { GhostText } from './GhostText';
 import { GoogleGenAI } from "@google/genai";
@@ -24,33 +24,32 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedLogo, setGeneratedLogo] = useState<string | null>(null);
   const [generationStep, setGenerationStep] = useState('');
+  const cardRef = useRef<HTMLDivElement>(null);
 
-  // Parallax motion values
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  // Parallax motion values synchronized with Pricing standard
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
-  // Smooth springs for fluid movement
-  const springX = useSpring(mouseX, { stiffness: 100, damping: 20 });
-  const springY = useSpring(mouseY, { stiffness: 100, damping: 20 });
+  // High-fidelity spring synchronized with Pricing standard
+  const springConfig = { stiffness: 120, damping: 25, mass: 1.1 };
+  const xSpring = useSpring(x, springConfig);
+  const ySpring = useSpring(y, springConfig);
 
-  // Map relative position to pixel movement (-15px to 15px range for subtle effect)
-  const moveX = useTransform(springX, [-1, 1], [-15, 15]);
-  const moveY = useTransform(springY, [-1, 1], [-15, 15]);
+  const rotateX = useTransform(ySpring, [-0.5, 0.5], [GLOBAL_3D_PRESET.maxRotation * 1.5, -GLOBAL_3D_PRESET.maxRotation * 1.5]);
+  const rotateY = useTransform(xSpring, [-0.5, 0.5], [-GLOBAL_3D_PRESET.maxRotation * 1.5, GLOBAL_3D_PRESET.maxRotation * 1.5]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (MOTION_KILL_SWITCH) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width;
-    const y = (e.clientY - rect.top) / rect.height;
-    
-    // Normalize to -1 to 1 range
-    mouseX.set(x * 2 - 1);
-    mouseY.set(y * 2 - 1);
+    if (!cardRef.current || MOTION_KILL_SWITCH) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    x.set((e.clientX - centerX) / rect.width);
+    y.set((e.clientY - centerY) / rect.height);
   };
 
   const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
+    x.set(0);
+    y.set(0);
   };
 
   const handleGenerateLogo = async () => {
@@ -125,33 +124,40 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
 
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-16 items-center relative z-10">
          <motion.div 
+           ref={cardRef}
            variants={VARIANTS.reveal} 
-           className="w-full lg:w-5/12 relative group"
+           className="w-full lg:w-5/12 relative group will-change-transform"
            onMouseMove={handleMouseMove}
            onMouseLeave={handleMouseLeave}
+           style={{
+             transformStyle: 'preserve-3d',
+             perspective: GLOBAL_3D_PRESET.perspective,
+             rotateX: !MOTION_KILL_SWITCH ? rotateX : 0,
+             rotateY: !MOTION_KILL_SWITCH ? rotateY : 0,
+           }}
+           whileHover={{ 
+             y: -8, 
+             scale: 1.002,
+             transition: { duration: ANIM_SYSTEM.hoverDuration, ease: ANIM_SYSTEM.ease }
+           }}
          >
             <div className={`aspect-[4/5] overflow-hidden relative border border-white/10 shadow-2xl flex items-center justify-center p-8 rounded-[2.5rem] ${GLASS_STYLES.card}`}>
-               <motion.img 
+               <img 
                  src="https://raw.githubusercontent.com/afrodeennoff/ork-orginal-/25e7b64e21207cd0988dc6cf704f230b51e73b74/IMG_1213.png" 
                  alt="ORK Trading Logo" 
-                 style={{ 
-                   x: !MOTION_KILL_SWITCH ? moveX : 0, 
-                   y: !MOTION_KILL_SWITCH ? moveY : 0,
-                   scale: 1.05 
-                 }}
                  className="w-full h-full object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-700 ease-[0.22,1,0.36,1]"
                  loading="lazy"
                />
                <div className="absolute inset-0 bg-gradient-to-t from-brand-black/40 via-transparent to-transparent pointer-events-none" />
             </div>
-            <motion.div 
-              variants={VARIANTS.reveal}
+            <div 
               className={`absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 w-36 md:w-48 p-5 md:p-6 shadow-2xl rounded-[1.5rem] ${GLASS_STYLES.card}`}
+              style={{ transform: 'translateZ(40px)' }}
             >
                <span className="mono text-[8px] text-brand-purple uppercase tracking-[0.5em] font-black">HEAD TRADER</span>
                <p className="mt-2 mono text-[11px] md:text-[13px] text-white uppercase font-black italic tracking-widest leading-none">TIMON</p>
                <p className="mt-1.5 mono text-[7px] text-zinc-600 uppercase tracking-widest font-black">FOCUS: EXECUTION</p>
-            </motion.div>
+            </div>
          </motion.div>
 
          <div className="w-full lg:w-7/12 space-y-6">

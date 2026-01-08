@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { PROP_FIRMS, VARIANTS, ANIM_SYSTEM, GLOBAL_3D_PRESET, MOTION_KILL_SWITCH, GLASS_STYLES } from '../constants';
@@ -23,7 +22,8 @@ const ElevationCard: React.FC<{ firm: PropFirm; index: number }> = React.memo(({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   
-  const springConfig = { stiffness: 200, damping: 25, mass: 1 };
+  // High-fidelity spring synchronized with Pricing standard
+  const springConfig = { stiffness: 120, damping: 25, mass: 1.1 };
   const xSpring = useSpring(x, springConfig);
   const ySpring = useSpring(y, springConfig);
 
@@ -43,8 +43,8 @@ const ElevationCard: React.FC<{ firm: PropFirm; index: number }> = React.memo(({
     const rect = cardRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    x.set((e.clientX - centerX) / (rect.width / 2));
-    y.set((e.clientY - centerY) / (rect.height / 2));
+    x.set((e.clientX - centerX) / rect.width);
+    y.set((e.clientY - centerY) / rect.height);
   };
 
   const handleMouseLeave = () => {
@@ -57,21 +57,19 @@ const ElevationCard: React.FC<{ firm: PropFirm; index: number }> = React.memo(({
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial="initial"
+      whileInView="animate"
+      variants={VARIANTS.reveal}
       whileHover={{ 
+        y: -8,
+        scale: 1.002,
         z: MOTION_KILL_SWITCH ? 0 : GLOBAL_3D_PRESET.zDepth, 
         transition: { duration: ANIM_SYSTEM.hoverDuration, ease: ANIM_SYSTEM.ease }
       }}
-      viewport={{ once: true, margin: "-5%" }}
-      transition={{ 
-        duration: ANIM_SYSTEM.revealDuration, 
-        ease: ANIM_SYSTEM.ease, 
-        delay: index * ANIM_SYSTEM.stagger 
-      }}
+      viewport={ANIM_SYSTEM.viewport}
       style={{ 
         transformStyle: 'preserve-3d', 
-        perspective: MOTION_KILL_SWITCH ? 'none' : GLOBAL_3D_PRESET.perspective,
+        perspective: GLOBAL_3D_PRESET.perspective,
         rotateX: !MOTION_KILL_SWITCH ? rotateX : 0,
         rotateY: !MOTION_KILL_SWITCH ? rotateY : 0
       }}

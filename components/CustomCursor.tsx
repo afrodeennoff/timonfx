@@ -7,11 +7,11 @@ export const CustomCursor: React.FC = memo(() => {
   const [isMounted, setIsMounted] = useState(false);
   const requestRef = useRef<number>(0);
   
-  // Use springs with performance-optimized physics for cursor following
+  // High-performance springs for premium following motion
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
   
-  const springConfig = { damping: 25, stiffness: 250, mass: 0.1 };
+  const springConfig = { damping: 35, stiffness: 350, mass: 0.2 };
   const springX = useSpring(mouseX, springConfig);
   const springY = useSpring(mouseY, springConfig);
 
@@ -20,7 +20,6 @@ export const CustomCursor: React.FC = memo(() => {
   const proximityOpacity = useMotionValue(0.4);
 
   useEffect(() => {
-    // strict check for touch devices to completely disable cursor
     if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
         return;
     }
@@ -28,10 +27,9 @@ export const CustomCursor: React.FC = memo(() => {
 
     const updateRotation = (time: number) => {
       if (!isHovering) {
-        // Reduced frequency calc for optimization
-        rotateValue.set(Math.sin(time / 1500) * 5);
+        rotateValue.set(Math.sin(time / 2000) * 3); // More subtle rotation
       } else {
-        rotateValue.set(rotateValue.get() * 0.9);
+        rotateValue.set(rotateValue.get() * 0.95);
       }
       requestRef.current = requestAnimationFrame(updateRotation);
     };
@@ -39,7 +37,6 @@ export const CustomCursor: React.FC = memo(() => {
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!isVisible) setIsVisible(true);
-      // Direct update of motion value is efficient
       mouseX.set(e.clientX);
       mouseY.set(e.clientY);
     };
@@ -53,8 +50,8 @@ export const CustomCursor: React.FC = memo(() => {
       if (isInteractive) {
         if (!isHovering) {
             setIsHovering(true);
-            proximityScale.set(1.25);
-            proximityOpacity.set(0.8);
+            proximityScale.set(1.2);
+            proximityOpacity.set(0.7);
         }
       } else {
         if (isHovering) {
@@ -65,8 +62,8 @@ export const CustomCursor: React.FC = memo(() => {
       }
     };
 
-    const handleMouseDown = () => proximityScale.set(0.85);
-    const handleMouseUp = () => proximityScale.set(isHovering ? 1.25 : 1);
+    const handleMouseDown = () => proximityScale.set(0.9);
+    const handleMouseUp = () => proximityScale.set(isHovering ? 1.2 : 1);
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
@@ -89,7 +86,6 @@ export const CustomCursor: React.FC = memo(() => {
   }, [isHovering, isVisible, mouseX, mouseY, proximityOpacity, proximityScale, rotateValue]);
 
   if (!isMounted) return null;
-  // Double check render-time
   if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return null;
   if (!isVisible) return null;
 
@@ -113,11 +109,11 @@ export const CustomCursor: React.FC = memo(() => {
         <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b border-r border-brand-purple" />
         <motion.div 
           animate={{
-            scale: isHovering ? [1, 1.1, 1] : 1,
-            opacity: isHovering ? [0.1, 0.3, 0.1] : 0
+            scale: isHovering ? [1, 1.08, 1] : 1,
+            opacity: isHovering ? [0.05, 0.2, 0.05] : 0
           }}
-          transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-          className="absolute inset-0 border border-brand-purple rounded-full"
+          transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
+          className="absolute inset-0 border border-brand-purple/40 rounded-full"
         />
       </motion.div>
       <motion.div
@@ -125,9 +121,12 @@ export const CustomCursor: React.FC = memo(() => {
         className="absolute flex items-center justify-center will-change-transform"
       >
         <motion.div 
-          animate={{ scale: isHovering ? 0.6 : 1, backgroundColor: isHovering ? '#8b5cf6' : '#ffffff' }}
-          transition={{ duration: 0.12, ease: [0.22, 1, 0.36, 1] }}
-          className="w-1.5 h-1.5 rounded-full shadow-[0_0_10px_rgba(139,92,246,0.3)]"
+          animate={{ 
+            scale: isHovering ? 0.6 : 1, 
+            backgroundColor: isHovering ? '#8b5cf6' : '#ffffff' 
+          }}
+          transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          className="w-1.5 h-1.5 rounded-full shadow-[0_0_12px_rgba(139,92,246,0.25)]"
         />
       </motion.div>
     </div>

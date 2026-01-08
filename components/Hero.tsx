@@ -99,9 +99,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
       <ConicGradient opacity={0.15} size="120%" />
 
       <motion.div 
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 0.3, scale: 1 }}
-        transition={{ duration: 1, ease: ANIM_SYSTEM.ease }}
+        initial="initial"
+        animate="animate"
+        variants={VARIANTS.reveal}
         className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"
       >
         <img 
@@ -118,29 +118,33 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         className="relative z-10 max-w-7xl w-full text-center flex flex-col items-center gap-6 md:gap-10"
       >
         <div className="relative flex flex-col items-center">
-          <p 
+          <motion.p 
+            variants={VARIANTS.reveal}
             className="mono text-[10px] md:text-xs text-zinc-300 font-black uppercase tracking-[0.4em] md:tracking-[0.6em] mb-6"
             style={{ textShadow: '0 0 15px rgba(161, 161, 170, 0.45)' }}
           >
             JOIN THE ELITE
-          </p>
-          <h1 className="text-7xl sm:text-8xl md:text-9xl lg:text-[13rem] font-black text-white italic tracking-tighter uppercase leading-[0.75] select-none">
+          </motion.p>
+          <motion.h1 
+            variants={VARIANTS.reveal}
+            className="text-7xl sm:text-8xl md:text-9xl lg:text-[13rem] font-black text-white italic tracking-tighter uppercase leading-[0.75] select-none"
+          >
             ORK
-          </h1>
-          <div className="md:-mt-6">
+          </motion.h1>
+          <motion.div variants={VARIANTS.reveal} className="md:-mt-6">
              <GhostText 
                text="TRADING"
                className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] font-black text-transparent stroke-text italic tracking-tighter uppercase leading-[0.75] select-none opacity-40"
              />
-          </div>
-          <div className="mt-12 md:mt-10 space-y-6 px-4 max-w-2xl mx-auto">
+          </motion.div>
+          <motion.div variants={VARIANTS.reveal} className="mt-12 md:mt-10 space-y-6 px-4 max-w-2xl mx-auto">
              <div className="space-y-6">
                 <RotatingHeadline />
                 <p className="mono text-[10px] md:text-[11px] text-zinc-500 font-bold uppercase tracking-widest leading-relaxed">
                   For traders who refuse to stay average. Join the ORK — a private, elite mentorship designed to turn inconsistent traders into confident, rule-based performers.
                 </p>
              </div>
-          </div>
+          </motion.div>
         </div>
 
         <motion.div

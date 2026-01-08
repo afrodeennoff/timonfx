@@ -4,31 +4,33 @@ export const BRAND_NAME = "ORK";
 
 /**
  * GLOBAL MOTION SYSTEM - Institutional Refinement
+ * Standardized easing and timings for an elite, invisible-feel UX.
  */
 export const ANIM_SYSTEM = {
   ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-  hoverDuration: 0.16,  // Institutional standard: 160ms
-  revealDuration: 0.32, // Transition standard: 320ms
-  stagger: 0.08,
-  viewport: { once: true, margin: "-10%" }
+  microDuration: 0.14,  // Micro interactions (140ms)
+  hoverDuration: 0.2,   // Hover transitions (200ms)
+  revealDuration: 0.32, // Section reveals (320ms)
+  stagger: 0.06,
+  viewport: { once: true, margin: "-12%" }
 };
 
 /**
  * UNIFIED GLASS SYSTEM - Refined glow & depth
  */
 export const GLASS_STYLES = {
-  card: "bg-zinc-950/40 backdrop-blur-2xl border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.05)] rounded-[2.5rem] transition-all duration-300",
+  card: "bg-zinc-950/40 backdrop-blur-2xl border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.05)] rounded-[2.5rem] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
   cardHover: "hover:border-white/20 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.1)]",
-  button: "bg-white/5 backdrop-blur-md border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] transition-all duration-300 rounded-full",
+  button: "bg-white/5 backdrop-blur-md border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] rounded-full",
   buttonHover: "hover:bg-white/10 hover:border-white/25 hover:shadow-[0_0_15px_rgba(139,92,246,0.15)]",
-  accentButton: "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.05)] rounded-full",
+  accentButton: "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.05)] rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
   accentButtonHover: "hover:bg-zinc-200 hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]"
 };
 
 export const GLOBAL_3D_PRESET = {
   perspective: 1200,
-  maxRotation: 1.5,
-  zDepth: 8,    
+  maxRotation: 1.2, // Reduced for a more subtle, premium feel
+  zDepth: 6,    
   scale: 1.0 
 };
 
@@ -43,7 +45,7 @@ export const MOTION_KILL_SWITCH = checkKillSwitch();
 
 export const VARIANTS = {
   reveal: {
-    initial: { opacity: 0, y: 8 },
+    initial: { opacity: 0, y: 12 },
     animate: { 
       opacity: 1, 
       y: 0, 
@@ -68,9 +70,9 @@ export const VARIANTS = {
     borderColor: "rgba(255, 255, 255, 0.2)",
     transition: { duration: ANIM_SYSTEM.hoverDuration, ease: ANIM_SYSTEM.ease }
   },
-  buttonTap: { opacity: 0.95 },
-  buttonFocus: { outline: "none", boxShadow: "0 0 0 2px rgba(139,92,246,0.4)" },
-  inputFocus: { borderColor: "rgba(139,92,246,0.4)", transition: { duration: ANIM_SYSTEM.hoverDuration } }
+  buttonTap: { opacity: 0.9, scale: 0.98 },
+  buttonFocus: { outline: "none", boxShadow: "0 0 0 2px rgba(139,92,246,0.3)" },
+  inputFocus: { borderColor: "rgba(139,92,246,0.35)", transition: { duration: ANIM_SYSTEM.microDuration } }
 };
 
 export const PROP_FIRMS: PropFirm[] = [

@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FAQ_DATA, VARIANTS, GLASS_STYLES } from '../constants';
+import { FAQ_DATA, VARIANTS, GLASS_STYLES, ANIM_SYSTEM } from '../constants';
 
 export const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -9,14 +8,31 @@ export const FAQ: React.FC = () => {
   return (
     <section id="faq" className="py-12 md:py-16 px-6 bg-brand-black border-t border-white/10 scroll-mt-24 md:scroll-mt-32">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center space-y-3 mb-10 md:mb-12">
+        <motion.div 
+          initial="initial"
+          whileInView="animate"
+          viewport={ANIM_SYSTEM.viewport}
+          variants={VARIANTS.reveal}
+          className="text-center space-y-3 mb-10 md:mb-12"
+        >
            <span className="mono text-[10px] text-brand-purple font-black tracking-[0.4em] uppercase">Common // Questions</span>
            <h2 className="text-3xl md:text-4xl font-black text-white italic uppercase tracking-tighter">FAQs</h2>
-        </div>
+        </motion.div>
 
-        <div className="space-y-4" role="tablist">
+        <motion.div 
+          initial="initial"
+          whileInView="animate"
+          viewport={ANIM_SYSTEM.viewport}
+          variants={VARIANTS.staggerContainer}
+          className="space-y-4" 
+          role="tablist"
+        >
           {FAQ_DATA.map((item, i) => (
-            <div key={i} className={`group rounded-[1.5rem] overflow-hidden transition-all duration-500 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}>
+            <motion.div 
+              key={i} 
+              variants={VARIANTS.reveal}
+              className={`group rounded-[1.5rem] overflow-hidden transition-all duration-500 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}
+            >
               <motion.button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 whileFocus={VARIANTS.buttonFocus}
@@ -38,6 +54,7 @@ export const FAQ: React.FC = () => {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: ANIM_SYSTEM.revealDuration, ease: ANIM_SYSTEM.ease }}
                     className="overflow-hidden"
                     role="region"
                     aria-labelledby={`faq-question-${i}`}
@@ -51,9 +68,9 @@ export const FAQ: React.FC = () => {
                   </motion.div>
                 )}
               </AnimatePresence>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
