@@ -105,7 +105,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"
       >
         <img 
-          src="https://raw.githubusercontent.com/user-attachments/assets/c79f323c-5872-430b-967b-12d93e185011" 
+          src="https://raw.githubusercontent.com/afrodeennoff/ork-orginal-/25e7b64e21207cd0988dc6cf704f230b51e73b74/IMG_1213.png" 
           alt="ORK Brand Mark" 
           className="w-[100vw] h-[100vw] md:w-[80vw] md:h-[80vw] max-w-[1200px] max-h-[1200px] object-contain mix-blend-screen filter drop-shadow-[0_0_100px_rgba(139,92,246,0.12)] opacity-40 md:opacity-100"
         />
@@ -129,7 +129,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
           </h1>
           <div className="md:-mt-6">
              <GhostText 
-               text="SYSTEMS"
+               text="TRADING"
                className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] font-black text-transparent stroke-text italic tracking-tighter uppercase leading-[0.75] select-none opacity-40"
              />
           </div>
@@ -165,7 +165,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
             className={GLASS_STYLES.button + " " + GLASS_STYLES.buttonHover + " w-full sm:w-auto px-8 md:px-10 py-5 md:py-4 flex items-center justify-center min-h-[56px]"}
           >
             <span className="relative z-10 mono text-[10px] font-black text-white uppercase tracking-[0.4em] inline-block">
-              VIEW PROTOCOL
+              VIEW METHOD
             </span>
           </motion.a>
         </motion.div>

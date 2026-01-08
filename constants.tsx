@@ -1,15 +1,14 @@
-
 import { ModuleCard, Testimonial, PropFirm } from './types';
 
 export const BRAND_NAME = "ORK";
 
 /**
- * GLOBAL MOTION SYSTEM - Refined durations & easing
+ * GLOBAL MOTION SYSTEM - Institutional Refinement
  */
 export const ANIM_SYSTEM = {
   ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-  hoverDuration: 0.16,  // Micro interaction: 160ms
-  revealDuration: 0.32, // Section transition: 320ms
+  hoverDuration: 0.16,  // Institutional standard: 160ms
+  revealDuration: 0.32, // Transition standard: 320ms
   stagger: 0.08,
   viewport: { once: true, margin: "-10%" }
 };
@@ -28,7 +27,7 @@ export const GLASS_STYLES = {
 
 export const GLOBAL_3D_PRESET = {
   perspective: 1200,
-  maxRotation: 1.5, // Further reduced for calm interaction
+  maxRotation: 1.5,
   zDepth: 8,    
   scale: 1.0 
 };
@@ -180,28 +179,28 @@ export const MODULES: ModuleCard[] = [
   {
     id: "m4",
     title: "TRADER // COMMUNITY",
-    objective: "A focused environment for professional traders to share ideas, review setups, and maintain accountability.",
+    objective: "A focused environment for traders to share ideas, review setups, and maintain accountability.",
     checklist: ["Setup Validation", "Peer Review", "High-Signal Intel Share"],
     mistakes: ["Echo Chamber Trading", "External Noise Contamination"]
   },
   {
     id: "m5",
     title: "LIFETIME // ACCESS",
-    objective: "One-time access to all current and future educational content, execution tools, and updates.",
+    objective: "One-time entry to all current and future trading content, execution tools, and updates.",
     checklist: ["Perpetual Resource Library", "Future Strategy Updates", "Permanent Desk Access"],
     mistakes: ["Methodology Drift", "Static Analysis"]
   }
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
-  { id: "t1", quote: "Execution is clear now. I wait for structure.", context: "PROP TRADER" },
+  { id: "t1", quote: "Execution is clear now. I wait for structure.", context: "TRADER" },
   { id: "t2", quote: "Risk is controlled. Consistency is the result.", context: "SESSION TRADER" },
   { id: "t3", quote: "Entries are precise. No guessing at the open.", context: "FUTURES TRADER" },
   { id: "t4", quote: "The noise is gone. I only trade liquidity.", context: "SENIOR ANALYST" }
 ];
 
 export const FAQ_DATA = [
-  { q: "Is this for beginners?", a: "This is for traders who have some experience but want a more professional process." },
-  { q: "Does this work for Crypto?", a: "Price action is universal. If the market has liquidity and volume, the process applies." },
+  { q: "Is this for beginners?", a: "This is for traders who have some experience but want a more professional method." },
+  { q: "Does this work for Crypto?", a: "Price action is universal. If the market has liquidity and volume, the approach applies." },
   { q: "What's the win rate?", a: "We focus on the quality of trades and risk management. Numbers follow discipline." }
 ];

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VARIANTS, ANIM_SYSTEM, GLASS_STYLES } from '../constants';
@@ -101,7 +100,7 @@ export const PreviewGate: React.FC<PreviewGateProps> = ({ isOpen, onClose }) => 
                       </div>
 
                       <p className="mono text-[9px] text-zinc-500 uppercase tracking-widest leading-relaxed font-bold border-l border-brand-purple/30 pl-4">
-                        THIS SECURE PORTAL IS RESERVED FOR REGISTERED OPERATORS ONLY. UNAUTHORIZED ATTEMPTS ARE LOGGED.
+                        THIS SECURE PORTAL IS RESERVED FOR REGISTERED TRADERS ONLY. UNAUTHORIZED ATTEMPTS ARE LOGGED.
                       </p>
                    </div>
 
@@ -115,7 +114,7 @@ export const PreviewGate: React.FC<PreviewGateProps> = ({ isOpen, onClose }) => 
                              value={authCode}
                              onChange={(e) => setAuthCode(e.target.value)}
                              whileFocus={VARIANTS.inputFocus}
-                             className="w-full bg-zinc-950 border border-white/10 p-5 mono text-[11px] text-white uppercase tracking-[0.3em] focus:outline-none focus:border-brand-purple font-black placeholder:text-zinc-800 transition-colors rounded-2xl"
+                             className="w-full bg-zinc-950 border border-white/10 p-5 mono text-[11px] text-white uppercase tracking-[0.3em] focus:outline-none focus:border-brand-purple font-black placeholder:text-zinc-800 transition-colors duration-300 rounded-2xl"
                            />
                         </div>
                         
@@ -124,7 +123,7 @@ export const PreviewGate: React.FC<PreviewGateProps> = ({ isOpen, onClose }) => 
                            whileTap={VARIANTS.buttonTap}
                            disabled={isVerifying}
                            onClick={handleInitialize}
-                           className={`group relative w-full py-5 rounded-full mono text-[11px] font-black text-white uppercase tracking-[0.4em] transition-all duration-500 ${isVerifying ? 'opacity-50 cursor-wait' : `${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover}`}`}
+                           className={`group relative w-full py-5 rounded-full mono text-[11px] font-black text-white uppercase tracking-[0.4em] transition-all duration-300 ${isVerifying ? 'opacity-50 cursor-wait' : `${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover}`}`}
                         >
                            <span className="relative z-10">
                              {isVerifying ? 'SYNCING...' : 'INITIALIZE ACCESS'}
@@ -134,7 +133,7 @@ export const PreviewGate: React.FC<PreviewGateProps> = ({ isOpen, onClose }) => 
 
                       <button 
                         onClick={onClose}
-                        className={`w-full py-4 rounded-full mono text-[9px] text-zinc-600 hover:text-white uppercase tracking-[0.6em] transition-all font-black ${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover}`}
+                        className={`w-full py-4 rounded-full mono text-[9px] text-zinc-600 hover:text-white uppercase tracking-[0.6em] transition-all duration-300 font-black ${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover}`}
                       >
                         Abort Connection
                       </button>

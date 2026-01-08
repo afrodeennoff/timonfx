@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TESTIMONIALS, ANIM_SYSTEM, VARIANTS, GLASS_STYLES } from '../constants';
@@ -16,7 +15,7 @@ const TestimonialCard: React.FC<{ testimonial: typeof TESTIMONIALS[0]; index: nu
   return (
     <motion.div
       variants={VARIANTS.reveal}
-      className={`relative group p-6 md:p-10 transition-all duration-500 flex flex-col justify-between min-h-[240px] rounded-[2rem] ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}
+      className={`relative group p-6 md:p-10 transition-all duration-300 flex flex-col justify-between min-h-[240px] rounded-[2rem] ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}
     >
       <div className="absolute top-0 right-0 p-5 opacity-20 group-hover:opacity-40 transition-opacity">
         <span className="mono text-[8px] text-zinc-500 font-black tracking-widest uppercase">
@@ -27,7 +26,7 @@ const TestimonialCard: React.FC<{ testimonial: typeof TESTIMONIALS[0]; index: nu
       <div className="space-y-6 relative z-10">
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-0.5">
-            <span className="mono text-[8px] text-zinc-600 font-bold uppercase tracking-[0.3em]">Operator_Profile</span>
+            <span className="mono text-[8px] text-zinc-600 font-bold uppercase tracking-[0.3em]">Trader_Profile</span>
             <span className="mono text-[9px] text-white font-black uppercase tracking-widest">{testimonial.context}</span>
           </div>
           <VerifiedBadge />
@@ -40,7 +39,7 @@ const TestimonialCard: React.FC<{ testimonial: typeof TESTIMONIALS[0]; index: nu
 
       <div className="pt-6 mt-auto border-t border-white/5 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-px w-6 bg-brand-purple/30 group-hover:w-10 transition-all duration-500" />
+          <div className="h-px w-6 bg-brand-purple/30 group-hover:w-10 transition-all duration-300" />
           <span className="mono text-[8px] text-zinc-500 uppercase tracking-[0.4em] font-black">Entry_Logged</span>
         </div>
         <div className="flex gap-1">
@@ -85,7 +84,7 @@ export const Testimonials: React.FC = () => {
           
           <motion.div variants={VARIANTS.reveal} className="max-w-xs md:text-right">
             <p className="mono text-[9px] text-zinc-500 uppercase tracking-widest leading-relaxed font-bold italic">
-              Verified performance audits and operator feedback logs from the ORK internal framework.
+              Verified performance and trader feedback logs from the ORK internal method.
             </p>
           </motion.div>
         </motion.div>

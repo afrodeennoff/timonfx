@@ -40,11 +40,11 @@ export const Footer: React.FC = () => {
               <span className="text-xl font-black tracking-tighter text-brand-purple italic leading-none">//</span>
             </div>
             <p className="mono text-[9px] text-zinc-500 uppercase tracking-widest leading-relaxed max-w-xs font-bold italic">
-              Professional execution framework built for disciplined operators. We focus on structure, liquidity, and risk control.
+              Professional execution method built for disciplined traders. We focus on structure, liquidity, and risk control.
             </p>
             <div className="flex items-center gap-3 pt-1">
               <div className="w-1 h-1 rounded-full bg-brand-purple shadow-[0_0_6px_rgba(139,92,246,0.3)]" />
-              <span className="mono text-[8px] text-brand-purple uppercase tracking-[0.4em] font-black">SYSTEM_ACTIVE</span>
+              <span className="mono text-[8px] text-brand-purple uppercase tracking-[0.4em] font-black">TRADING_READY</span>
             </div>
           </div>
 
@@ -54,7 +54,7 @@ export const Footer: React.FC = () => {
             <nav className="flex flex-col gap-3">
               <FooterLink id="about" label="Trader Profile" />
               <FooterLink id="edge" label="Methodology" />
-              <FooterLink id="join" label="Protocol Access" />
+              <FooterLink id="join" label="Method Entry" />
               <FooterLink id="coupon" label="Funding Dossier" />
             </nav>
           </div>
@@ -82,7 +82,7 @@ export const Footer: React.FC = () => {
         <div className="pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
            <div className="flex items-center gap-4 opacity-40">
               <span className="mono text-[8px] text-zinc-500 uppercase tracking-widest font-black">
-                © {currentYear} {BRAND_NAME} SYSTEMS
+                © {currentYear} {BRAND_NAME} TRADING
               </span>
               <div className="h-2 w-[1px] bg-white/10 hidden md:block" />
               <span className="mono text-[8px] text-zinc-600 uppercase tracking-[0.3em] font-black">
