@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { VARIANTS, ANIM_CONSTANTS } from '../constants';
+import { VARIANTS, ANIM_SYSTEM, GLASS_STYLES } from '../constants';
 
 const GridBackground = () => (
   <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
@@ -19,13 +20,13 @@ const MarketTicker: React.FC<{ symbol: string; price: string; change: string; is
 
 const OrderButton: React.FC<{ type: 'BUY' | 'SELL'; onClick: () => void }> = ({ type, onClick }) => (
   <motion.button
-    whileHover={{ scale: 1.02, backgroundColor: type === 'BUY' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(255, 30, 30, 0.1)' }}
-    whileTap={{ scale: 0.98 }}
+    whileHover={{ backgroundColor: type === 'BUY' ? 'rgba(34, 197, 94, 0.12)' : 'rgba(255, 30, 30, 0.12)', borderColor: type === 'BUY' ? 'rgba(34, 197, 94, 0.3)' : 'rgba(255, 30, 30, 0.3)' }}
+    whileTap={{ opacity: 0.9 }}
     onClick={onClick}
-    className={`flex-1 py-4 flex flex-col items-center justify-center border transition-colors duration-300 ${
+    className={`flex-1 py-4 flex flex-col items-center justify-center border backdrop-blur-md transition-all duration-300 rounded-full shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] ${
       type === 'BUY' 
-        ? 'border-green-900/50 bg-green-900/10 hover:border-green-500/50' 
-        : 'border-red-900/50 bg-red-900/10 hover:border-red-500/50'
+        ? 'border-green-500/20 bg-green-500/5' 
+        : 'border-red-500/20 bg-red-500/5'
     }`}
   >
     <span className={`mono text-[10px] font-black tracking-[0.2em] mb-1 ${type === 'BUY' ? 'text-green-500' : 'text-brand-red'}`}>
@@ -39,19 +40,17 @@ export const ExecutionTerminal: React.FC = () => {
   const [qty, setQty] = useState(1);
   const [stopLoss, setStopLoss] = useState(5);
   const [takeProfit, setTakeProfit] = useState(10);
-  const [activeTab, setActiveTab] = useState<'CHART' | 'DOM'>('CHART');
   const [pnl, setPnl] = useState(0);
 
-  // Simulated live P&L flicker
   useEffect(() => {
     const interval = setInterval(() => {
-      setPnl(prev => prev + (Math.random() - 0.5) * 10);
-    }, 2000);
+      setPnl(prev => prev + (Math.random() - 0.5) * 5);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="h-full flex flex-col bg-zinc-950/60 border border-white/15 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+    <div className={`h-full flex flex-col relative overflow-hidden group rounded-[2rem] ${GLASS_STYLES.card}`}>
       {/* Header Bar */}
       <div className="h-12 border-b border-white/10 flex items-center justify-between bg-black/20 px-2">
         <div className="flex items-center">
@@ -62,7 +61,7 @@ export const ExecutionTerminal: React.FC = () => {
         </div>
         <div className="flex items-center gap-4 px-4">
           <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)] animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500/60 shadow-[0_0_6px_rgba(34,197,94,0.3)]" />
             <span className="mono text-[9px] text-zinc-500 uppercase tracking-widest font-black">CONNECTED_MS_12</span>
           </div>
           <div className="h-4 w-[1px] bg-white/10" />
@@ -70,54 +69,45 @@ export const ExecutionTerminal: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content Area */}
+      {/* Main Area */}
       <div className="flex-1 flex relative">
-        {/* Chart Area */}
         <div className="flex-1 relative border-r border-white/10 bg-[#050505]">
           <GridBackground />
-          
-          {/* Chart Controls Overlay */}
           <div className="absolute top-4 left-4 z-10 flex gap-2">
              {['1M', '5M', '15M', '1H', '4H'].map((tf) => (
-               <button key={tf} className="px-2 py-1 bg-zinc-900/80 border border-white/10 mono text-[9px] text-zinc-400 hover:text-white hover:border-white/30 transition-colors uppercase font-bold rounded-sm">
+               <button key={tf} className={GLASS_STYLES.button + " " + GLASS_STYLES.buttonHover + " px-3 py-1.5 mono text-[9px] text-zinc-400 hover:text-white uppercase font-bold"}>
                  {tf}
                </button>
              ))}
           </div>
 
-          {/* Simulated Chart SVG */}
           <div className="absolute inset-0 flex items-center justify-center p-8">
             <svg viewBox="0 0 800 400" className="w-full h-full text-zinc-800 overflow-visible">
-               {/* Reference Lines */}
                <line x1="0" y1="100" x2="800" y2="100" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4" />
                <line x1="0" y1="200" x2="800" y2="200" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4" />
                <line x1="0" y1="300" x2="800" y2="300" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4" />
                
-               {/* Candle Path (Simplified Line for aesthetic) */}
                <motion.path 
                  initial={{ pathLength: 0, opacity: 0 }}
                  animate={{ pathLength: 1, opacity: 1 }}
-                 transition={{ duration: 2, ease: "easeInOut" }}
+                 transition={{ duration: 1.5, ease: ANIM_SYSTEM.ease }}
                  d="M0,350 L50,340 L80,360 L120,300 L150,310 L200,250 L240,280 L300,200 L350,220 L400,150 L450,180 L500,120 L550,140 L600,80 L650,100 L700,50 L750,70 L800,40"
                  fill="none"
                  stroke="#8b5cf6"
-                 strokeWidth="1.5"
-                 className="drop-shadow-[0_0_10px_rgba(139,92,246,0.3)]"
+                 strokeWidth="1"
+                 className="drop-shadow-[0_0_8px_rgba(139,92,246,0.15)] opacity-60"
                />
                
-               {/* Liquidity Zone Box */}
-               <rect x="600" y="30" width="200" height="60" fill="rgba(255, 30, 30, 0.05)" stroke="rgba(255, 30, 30, 0.2)" strokeDasharray="2 2" />
-               <text x="610" y="50" className="mono text-[9px] fill-red-500/50 uppercase font-black tracking-widest">Supply Zone [H4]</text>
+               <rect x="600" y="30" width="200" height="60" fill="rgba(255, 30, 30, 0.03)" stroke="rgba(255, 30, 30, 0.15)" strokeDasharray="2 2" />
+               <text x="610" y="50" className="mono text-[9px] fill-red-500/40 uppercase font-black tracking-widest">Supply Zone [H4]</text>
 
-               {/* Current Price Line */}
-               <line x1="0" y1="40" x2="800" y2="40" stroke="#8b5cf6" strokeWidth="0.5" strokeDasharray="2 2" />
-               <rect x="740" y="30" width="60" height="20" fill="#8b5cf6" />
+               <line x1="0" y1="40" x2="800" y2="40" stroke="#8b5cf6" strokeWidth="0.5" strokeDasharray="2 2" className="opacity-40" />
+               <rect x="740" y="30" width="60" height="20" fill="#8b5cf6" rx="4" className="rounded-sm opacity-80" />
                <text x="750" y="43" className="mono text-[10px] fill-black font-bold tracking-wider">4450.25</text>
             </svg>
           </div>
         </div>
 
-        {/* DOM / Depth (Hidden on mobile) */}
         <div className="hidden lg:flex w-24 flex-col border-l border-white/5 bg-zinc-950/30">
            <div className="h-8 border-b border-white/5 flex items-center justify-center bg-white/5">
              <span className="mono text-[9px] text-zinc-500 uppercase tracking-widest">DOM</span>
@@ -133,30 +123,27 @@ export const ExecutionTerminal: React.FC = () => {
         </div>
       </div>
 
-      {/* Control Panel (Bottom) */}
       <div className="h-auto border-t border-white/15 bg-zinc-950">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10">
           
-          {/* Execution Controls */}
-          <div className="col-span-1 md:col-span-2 p-4 space-y-4">
+          <div className="col-span-1 md:col-span-2 p-6 space-y-6">
              <div className="flex gap-4">
                <OrderButton type="BUY" onClick={() => {}} />
                <OrderButton type="SELL" onClick={() => {}} />
              </div>
              <div className="flex gap-4">
-                <button className="flex-1 py-2 bg-zinc-900 border border-white/10 text-zinc-400 mono text-[10px] uppercase hover:bg-zinc-800 hover:text-white transition-colors">Flatten All</button>
-                <button className="flex-1 py-2 bg-zinc-900 border border-white/10 text-zinc-400 mono text-[10px] uppercase hover:bg-zinc-800 hover:text-white transition-colors">Cancel All</button>
+                <button className={GLASS_STYLES.button + " " + GLASS_STYLES.buttonHover + " flex-1 py-3 mono text-[10px] uppercase text-zinc-400"}>Flatten All</button>
+                <button className={GLASS_STYLES.button + " " + GLASS_STYLES.buttonHover + " flex-1 py-3 mono text-[10px] uppercase text-zinc-400"}>Cancel All</button>
              </div>
           </div>
 
-          {/* Risk Parameters */}
-          <div className="p-4 space-y-4 flex flex-col justify-center">
+          <div className="p-6 space-y-4 flex flex-col justify-center">
              <div className="flex justify-between items-center">
                <span className="mono text-[9px] text-zinc-500 uppercase tracking-widest font-black">QTY (Lots)</span>
                <div className="flex items-center gap-2">
-                 <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-6 h-6 flex items-center justify-center bg-zinc-900 border border-white/10 text-zinc-400 hover:text-white hover:border-brand-purple transition-colors">-</button>
+                 <button onClick={() => setQty(Math.max(1, qty - 1))} className={GLASS_STYLES.button + " " + GLASS_STYLES.buttonHover + " w-8 h-8 flex items-center justify-center rounded-full"}>-</button>
                  <span className="mono text-sm text-white font-black w-8 text-center">{qty}</span>
-                 <button onClick={() => setQty(qty + 1)} className="w-6 h-6 flex items-center justify-center bg-zinc-900 border border-white/10 text-zinc-400 hover:text-white hover:border-brand-purple transition-colors">+</button>
+                 <button onClick={() => setQty(qty + 1)} className={GLASS_STYLES.button + " " + GLASS_STYLES.buttonHover + " w-8 h-8 flex items-center justify-center rounded-full"}>+</button>
                </div>
              </div>
              <div className="flex justify-between items-center">
@@ -175,8 +162,7 @@ export const ExecutionTerminal: React.FC = () => {
              </div>
           </div>
 
-          {/* Risk Monitor */}
-          <div className="p-4 flex flex-col justify-between bg-zinc-900/30">
+          <div className="p-6 flex flex-col justify-between bg-white/[0.02]">
              <div className="space-y-1">
                <span className="mono text-[9px] text-zinc-500 uppercase tracking-widest font-black">Open P&L</span>
                <div className={`mono text-xl font-black tracking-tight ${pnl >= 0 ? 'text-green-500' : 'text-brand-red'}`}>
@@ -188,8 +174,8 @@ export const ExecutionTerminal: React.FC = () => {
                  <span>Daily Risk</span>
                  <span>12% Used</span>
                </div>
-               <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
-                 <div className="h-full w-[12%] bg-brand-purple" />
+               <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                 <div className="h-full w-[12%] bg-brand-purple opacity-60 shadow-[0_0_8px_rgba(139,92,246,0.3)]" />
                </div>
              </div>
           </div>

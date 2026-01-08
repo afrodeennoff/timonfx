@@ -4,81 +4,74 @@ import { ModuleCard, Testimonial, PropFirm } from './types';
 export const BRAND_NAME = "ORK";
 
 /**
- * GLOBAL ANIMATION STANDARD - 3D DEPTH OPTIMIZED
- * Easing: cubic-bezier(0.22, 1, 0.36, 1)
+ * GLOBAL MOTION SYSTEM - Refined durations & easing
  */
-export const ANIM_CONSTANTS = {
+export const ANIM_SYSTEM = {
   ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-  duration: 0.32,
-  micro: 0.16,
+  hoverDuration: 0.16,  // Micro interaction: 160ms
+  revealDuration: 0.32, // Section transition: 320ms
   stagger: 0.08,
   viewport: { once: true, margin: "-10%" }
 };
 
 /**
- * PERFORMANCE-SAFE 3D PRESET (MANDATORY)
+ * UNIFIED GLASS SYSTEM - Refined glow & depth
  */
-export const THREE_D_PRESET = {
-  perspective: 1200,
-  maxRotation: 5,   // Strict max limit ±5 deg
-  zDepth: 40,       // Subtle Z-translation
-  hoverDuration: 0.16,  // 160ms
-  revealDuration: 0.32  // 320ms
+export const GLASS_STYLES = {
+  card: "bg-zinc-950/40 backdrop-blur-2xl border border-white/10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.05)] rounded-[2.5rem] transition-all duration-300",
+  cardHover: "hover:border-white/20 hover:shadow-[0_0_30px_-5px_rgba(139,92,246,0.1)]",
+  button: "bg-white/5 backdrop-blur-md border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] transition-all duration-300 rounded-full",
+  buttonHover: "hover:bg-white/10 hover:border-white/25 hover:shadow-[0_0_15px_rgba(139,92,246,0.15)]",
+  accentButton: "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.05)] rounded-full",
+  accentButtonHover: "hover:bg-zinc-200 hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]"
 };
 
-const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
-const revealY = isMobile ? 8 : 16;
+export const GLOBAL_3D_PRESET = {
+  perspective: 1200,
+  maxRotation: 1.5, // Further reduced for calm interaction
+  zDepth: 8,    
+  scale: 1.0 
+};
+
+const checkKillSwitch = () => {
+  if (typeof window === 'undefined') return true;
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return isTouch || prefersReduced;
+};
+
+export const MOTION_KILL_SWITCH = checkKillSwitch();
 
 export const VARIANTS = {
   reveal: {
-    initial: { opacity: 0, y: revealY },
+    initial: { opacity: 0, y: 8 },
     animate: { 
       opacity: 1, 
       y: 0, 
-      transition: { 
-        duration: ANIM_CONSTANTS.duration, 
-        ease: ANIM_CONSTANTS.ease 
-      }
+      transition: { duration: ANIM_SYSTEM.revealDuration, ease: ANIM_SYSTEM.ease }
     }
   },
-
   staggerContainer: {
     initial: {},
     animate: {
       transition: {
-        staggerChildren: ANIM_CONSTANTS.stagger,
+        staggerChildren: ANIM_SYSTEM.stagger,
         delayChildren: 0.05
       }
     }
   },
-
-  cardHover: {
-    y: -4,
-    transition: { duration: THREE_D_PRESET.hoverDuration, ease: ANIM_CONSTANTS.ease }
-  },
-
-  // Fix: Added missing buttonHover variant
   buttonHover: {
-    scale: 1.02,
-    transition: { duration: 0.2, ease: ANIM_CONSTANTS.ease }
+    backgroundColor: "rgba(255, 255, 255, 0.12)",
+    borderColor: "rgba(255, 255, 255, 0.25)",
+    transition: { duration: ANIM_SYSTEM.hoverDuration, ease: ANIM_SYSTEM.ease }
   },
-
-  // Fix: Added missing buttonTap variant
-  buttonTap: {
-    scale: 0.98
+  cardHover: {
+    borderColor: "rgba(255, 255, 255, 0.2)",
+    transition: { duration: ANIM_SYSTEM.hoverDuration, ease: ANIM_SYSTEM.ease }
   },
-
-  // Fix: Added missing buttonFocus variant
-  buttonFocus: {
-    scale: 1.02,
-    outline: "none"
-  },
-
-  // Fix: Added missing inputFocus variant
-  inputFocus: {
-    borderColor: "rgba(139,92,246,1)", // brand-purple
-    transition: { duration: 0.2 }
-  }
+  buttonTap: { opacity: 0.95 },
+  buttonFocus: { outline: "none", boxShadow: "0 0 0 2px rgba(139,92,246,0.4)" },
+  inputFocus: { borderColor: "rgba(139,92,246,0.4)", transition: { duration: ANIM_SYSTEM.hoverDuration } }
 };
 
 export const PROP_FIRMS: PropFirm[] = [

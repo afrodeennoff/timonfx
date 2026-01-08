@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { VARIANTS, ANIM_CONSTANTS } from '../constants';
+import { VARIANTS, ANIM_SYSTEM, GLASS_STYLES } from '../constants';
+import { ConicGradient } from './ConicGradient';
 
 interface PricingProps {
   onStartPreview: () => void;
@@ -8,46 +9,49 @@ interface PricingProps {
 
 export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
   return (
-    <section id="pricing" className="py-24 md:py-48 px-6 bg-[#050505] border-t border-white/10 relative overflow-hidden transform-gpu">
-      <div className="max-w-7xl mx-auto">
+    <section id="access" className="py-12 md:py-16 px-6 bg-[#050505] border-t border-white/5 relative overflow-hidden transform-gpu scroll-mt-24 md:scroll-mt-32">
+      <ConicGradient opacity={0.04} size="100%" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div 
           initial="initial"
           whileInView="animate"
-          viewport={ANIM_CONSTANTS.viewport}
+          viewport={ANIM_SYSTEM.viewport}
           variants={VARIANTS.reveal}
-          className="text-center space-y-4 mb-24"
+          className="text-center space-y-4 mb-10 md:mb-12"
         >
-           <span className="mono text-[10px] text-brand-purple font-black tracking-[0.4em] uppercase">Join the desk</span>
-           <h2 className="text-5xl md:text-6xl font-black text-white italic uppercase tracking-tighter">Get Funded</h2>
+           <span className="mono text-[10px] text-brand-purple font-black tracking-[0.5em] uppercase italic">Enrollment_Portal</span>
+           <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter leading-none">Protocol Access</h2>
         </motion.div>
 
         <motion.div 
           initial="initial"
           whileInView="animate"
-          viewport={ANIM_CONSTANTS.viewport}
+          viewport={ANIM_SYSTEM.viewport}
           variants={VARIANTS.staggerContainer}
-          className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto"
+          className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto"
         >
+           {/* Core Tier */}
            <motion.div 
             variants={VARIANTS.reveal}
             whileHover={VARIANTS.cardHover}
-            className="interactive-card bg-zinc-900/30 border border-white/20 p-12 space-y-10 relative overflow-hidden group hover:border-white/40 transition-colors duration-300 flex flex-col"
+            className={`p-8 md:p-10 relative overflow-hidden flex flex-col rounded-[2.5rem] transition-all duration-500 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}
            >
-              <div className="absolute top-0 right-0 p-6 opacity-[0.05] pointer-events-none">
-                 <span className="text-9xl font-black italic">P1</span>
+              <div className="space-y-2 relative z-10">
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-600" />
+                  <h3 className="text-xl font-black text-white uppercase tracking-widest italic">Core Plan</h3>
+                </div>
+                <p className="mono text-[9px] text-zinc-500 uppercase font-black tracking-widest">Validated Entry Framework</p>
               </div>
-              <div className="space-y-3 relative z-10">
-                <h3 className="text-2xl font-black text-white uppercase tracking-widest">Core Plan</h3>
-                <p className="mono text-[11px] text-zinc-300 uppercase tracking-widest font-bold">Standard Access</p>
+              <div className="flex items-baseline gap-2 relative z-10 py-4 border-y border-white/5 my-4">
+                <span className="text-4xl font-black text-white mono tracking-tighter">$497</span>
+                <span className="text-[9px] text-zinc-600 uppercase tracking-[0.4em] font-black">LIFETIME</span>
               </div>
-              <div className="flex items-baseline gap-2 relative z-10">
-                <span className="text-4xl font-black text-white mono">$497</span>
-                <span className="text-[10px] text-zinc-400 uppercase tracking-widest font-bold">LIFETIME</span>
-              </div>
-              <ul className="space-y-4 flex-1 relative z-10">
-                 {['Fundamental Training', 'Weekly Reviews', 'Prop Firm Strategy', 'Access to Trader Hub'].map(item => (
-                   <li key={item} className="mono text-[11px] text-zinc-200 uppercase flex items-center gap-3 font-bold">
-                      <span className="w-1.5 h-[1px] bg-brand-purple" />
+              <ul className="space-y-4 flex-1 relative z-10 mb-6">
+                 {['Fundamental Training', 'Weekly Reviews', 'Prop Strategy', 'Trader Hub Access'].map(item => (
+                   <li key={item} className="mono text-[10px] text-zinc-300 uppercase flex items-center gap-3 font-bold group/li transition-all">
+                      <span className="w-1 h-1 rounded-full bg-brand-purple/20 group-hover/li:bg-brand-purple transition-colors" />
                       {item}
                    </li>
                  ))}
@@ -56,33 +60,33 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
                 whileHover={VARIANTS.buttonHover}
                 whileTap={VARIANTS.buttonTap}
                 onClick={onStartPreview}
-                className="group relative w-full z-10 py-5 border border-white/15 overflow-hidden transition-all duration-300 mono text-[11px] font-black uppercase tracking-[0.2em] text-white bg-white/5 focus:outline-none focus:ring-1 focus:ring-brand-purple"
+                className={`group relative w-full z-10 py-4 rounded-full mono text-[10px] font-black uppercase tracking-[0.4em] text-white ${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover}`}
               >
-                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
-                <span className="relative z-10 group-hover:text-black transition-colors duration-300 font-black uppercase">Get Access</span>
+                <span className="relative z-10 font-black uppercase">INITIALIZE</span>
               </motion.button>
            </motion.div>
 
+           {/* Pro Tier */}
            <motion.div 
             variants={VARIANTS.reveal}
             whileHover={VARIANTS.cardHover}
-            className="interactive-card bg-brand-purple p-12 space-y-10 relative overflow-hidden shadow-2xl shadow-brand-purple/20 group transition-all duration-300 ease-[0.22,1,0.36,1] flex flex-col"
+            className={`p-8 md:p-10 relative overflow-hidden flex flex-col rounded-[2.5rem] transition-all duration-500 border-brand-purple/30 bg-brand-purple/10 backdrop-blur-3xl shadow-[0_40px_80px_-20px_rgba(139,92,246,0.3)] hover:border-brand-purple/50`}
            >
-              <div className="absolute top-0 right-0 p-6 opacity-15 pointer-events-none">
-                 <span className="text-9xl font-black italic text-black">P2</span>
+              <div className="space-y-2 relative z-10">
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-brand-purple shadow-[0_0_8px_rgba(139,92,246,0.8)]" />
+                  <h3 className="text-xl font-black text-white uppercase tracking-widest italic">Pro Execution</h3>
+                </div>
+                <p className="mono text-[9px] text-brand-purple font-black tracking-widest uppercase italic">Advanced Institutional Dossier</p>
               </div>
-              <div className="space-y-3 relative z-10">
-                <h3 className="text-2xl font-black text-white uppercase tracking-widest">Advanced Access</h3>
-                <p className="mono text-[11px] text-purple-100 uppercase tracking-widest font-bold">Pro Trading Tools</p>
+              <div className="flex items-baseline gap-2 relative z-10 py-4 border-y border-brand-purple/20 my-4">
+                <span className="text-4xl font-black text-white mono tracking-tighter">$997</span>
+                <span className="text-[9px] text-brand-purple/60 uppercase tracking-[0.4em] font-black">LIFETIME</span>
               </div>
-              <div className="flex items-baseline gap-2 relative z-10">
-                <span className="text-4xl font-black text-white mono">$997</span>
-                <span className="text-[10px] text-purple-200 uppercase tracking-widest font-bold">LIFETIME</span>
-              </div>
-              <ul className="space-y-4 flex-1 relative z-10">
-                 {['Advanced Strategies', 'Daily NY Morning Analysis', 'Priority Chat with Timon', 'Private Group Insights'].map(item => (
-                   <li key={item} className="mono text-[11px] text-white uppercase flex items-center gap-3 font-black">
-                      <span className="w-1.5 h-[1px] bg-white" />
+              <ul className="space-y-4 flex-1 relative z-10 mb-6">
+                 {['Advanced Strategies', 'NY Live Analysis', 'Priority Intel', 'Private Insights'].map(item => (
+                   <li key={item} className="mono text-[10px] text-white uppercase flex items-center gap-3 font-black group/li">
+                      <span className="w-1 h-1 rounded-full bg-white group-hover/li:shadow-[0_0_8px_white] transition-all" />
                       {item}
                    </li>
                  ))}
@@ -91,10 +95,9 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
                 whileHover={VARIANTS.buttonHover}
                 whileTap={VARIANTS.buttonTap}
                 onClick={onStartPreview}
-                className="group relative w-full z-10 py-5 bg-white overflow-hidden transition-all duration-300 mono text-[11px] font-black uppercase tracking-[0.2em] text-black shadow-2xl focus:outline-none focus:ring-1 focus:ring-white"
+                className={`group relative w-full z-10 py-4 rounded-full mono text-[10px] font-black uppercase tracking-[0.4em] text-black bg-white shadow-[0_15px_40px_rgba(139,92,246,0.4)] hover:bg-zinc-200 transition-all duration-300`}
               >
-                <div className="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
-                <span className="relative z-10 group-hover:text-white transition-colors duration-300 font-black uppercase">Get Pro Access</span>
+                <span className="relative z-10 font-black uppercase">DEPLOY PRO</span>
               </motion.button>
            </motion.div>
         </motion.div>

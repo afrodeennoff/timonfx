@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { VARIANTS, ANIM_CONSTANTS } from '../constants';
+import { VARIANTS, ANIM_SYSTEM, GLASS_STYLES } from '../constants';
+import { ConicGradient } from './ConicGradient';
 
 interface HeroProps {
   onStartPreview: () => void;
@@ -38,26 +39,19 @@ const SOCIAL_LINKS = [
 
 export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center items-center px-6 pt-20 overflow-hidden bg-brand-black transform-gpu">
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center px-6 pt-16 overflow-hidden bg-brand-black transform-gpu scroll-mt-24 md:scroll-mt-32">
+      <ConicGradient opacity={0.15} size="120%" />
+
       <motion.div 
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ 
-          opacity: 0.4, 
-          scale: 1,
-          transition: { duration: 1, ease: ANIM_CONSTANTS.ease }
-        }}
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 0.4, scale: 1 }}
+        transition={{ duration: 1, ease: ANIM_SYSTEM.ease }}
         className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"
       >
-        <motion.img 
+        <img 
           src="https://raw.githubusercontent.com/user-attachments/assets/c79f323c-5872-430b-967b-12d93e185011" 
           alt="ORK Brand Mark" 
-          loading="eager"
-          decoding="sync"
-          // @ts-ignore
-          fetchpriority="high"
-          animate={{ scale: [1, 1.05, 1], opacity: [0.35, 0.4, 0.35] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-          className="w-[80vw] h-[80vw] max-w-[1200px] max-h-[1200px] object-contain opacity-40 mix-blend-screen filter drop-shadow-[0_0_50px_rgba(139,92,246,0.2)]"
+          className="w-[80vw] h-[80vw] max-w-[1200px] max-h-[1200px] object-contain mix-blend-screen filter drop-shadow-[0_0_100px_rgba(139,92,246,0.12)]"
         />
       </motion.div>
 
@@ -65,22 +59,22 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         variants={VARIANTS.staggerContainer}
         initial="initial"
         animate="animate"
-        className="relative z-10 max-w-7xl w-full text-center flex flex-col items-center gap-12"
+        className="relative z-10 max-w-7xl w-full text-center flex flex-col items-center gap-8 md:gap-10"
       >
         <motion.div variants={VARIANTS.reveal} className="relative flex flex-col items-center">
-          <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-[14rem] font-black text-white italic tracking-tighter uppercase leading-[0.8] select-none">
+          <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-[12rem] font-black text-white italic tracking-tighter uppercase leading-[0.8] select-none">
             ORK
           </h1>
-          <div className="md:-mt-4">
-             <span className="text-5xl sm:text-6xl md:text-7xl lg:text-[9rem] font-black text-transparent stroke-text italic tracking-tighter uppercase leading-[0.8] select-none opacity-20">
+          <div className="md:-mt-2">
+             <span className="text-5xl sm:text-6xl md:text-7xl lg:text-[8rem] font-black text-transparent stroke-text italic tracking-tighter uppercase leading-[0.8] select-none opacity-20">
                SYSTEMS
              </span>
           </div>
-          <div className="mt-8 space-y-3">
-             <p className="mono text-[11px] md:text-sm text-zinc-300 font-black uppercase tracking-[0.4em]">
+          <div className="mt-6 space-y-2">
+             <p className="mono text-[10px] md:text-xs text-zinc-300 font-black uppercase tracking-[0.4em]">
                Structure // Liquidity // Execution
              </p>
-             <p className="mono text-[10px] md:text-xs text-zinc-500 font-bold uppercase tracking-widest">
+             <p className="mono text-[9px] md:text-[10px] text-zinc-500 font-bold uppercase tracking-widest">
                We do not predict. We react to price.
              </p>
           </div>
@@ -88,16 +82,15 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
 
         <motion.div
           variants={VARIANTS.reveal}
-          className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4 w-full"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2 w-full"
         >
           <motion.button
             whileHover={VARIANTS.buttonHover}
             whileTap={VARIANTS.buttonTap}
             onClick={onStartPreview}
-            className="w-full sm:w-auto group relative px-12 py-6 bg-brand-purple overflow-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-sm flex items-center justify-center min-h-[72px]"
+            className={GLASS_STYLES.button + " " + GLASS_STYLES.buttonHover + " w-full sm:w-auto px-10 py-4 flex items-center justify-center min-h-[56px]"}
           >
-            <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-[0.22,1,0.36,1]" />
-            <span className="relative z-10 mono text-[11px] font-black text-white group-hover:text-black uppercase tracking-[0.4em] inline-block">
+            <span className="relative z-10 mono text-[10px] font-black text-white uppercase tracking-[0.4em] inline-block">
               ENTER DESK
             </span>
           </motion.button>
@@ -105,23 +98,24 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
           <motion.a
             whileHover={VARIANTS.buttonHover}
             whileTap={VARIANTS.buttonTap}
-            href="#education"
-            className="w-full sm:w-auto group relative px-12 py-6 border border-white/20 hover:border-white overflow-hidden mono text-[11px] font-black text-white uppercase tracking-[0.4em] text-center focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm flex items-center justify-center min-h-[72px]"
+            href="#edge"
+            className={GLASS_STYLES.button + " " + GLASS_STYLES.buttonHover + " w-full sm:w-auto px-10 py-4 flex items-center justify-center min-h-[56px]"}
           >
-            <span className="relative z-10 inline-block">VIEW PROTOCOL</span>
+            <span className="relative z-10 mono text-[10px] font-black text-white uppercase tracking-[0.4em] inline-block">
+              VIEW PROTOCOL
+            </span>
           </motion.a>
         </motion.div>
 
         <motion.div 
           variants={VARIANTS.reveal}
-          className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 pt-8 border-t border-white/5 w-full"
+          className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 pt-6 border-t border-white/5 w-full"
         >
           {SOCIAL_LINKS.map((social) => (
             <a 
               key={social.name} 
               href={social.url} 
-              className="group flex items-center gap-3 mono text-[11px] text-zinc-400 hover:text-white transition-all duration-300 font-black tracking-[0.4em] uppercase focus:outline-none focus-visible:ring-1 focus-visible:ring-brand-purple rounded-sm p-2 flex items-center justify-center"
-              aria-label={`Visit ${social.name}`}
+              className="group flex items-center gap-2 mono text-[10px] text-zinc-400 hover:text-white transition-all duration-300 font-black tracking-[0.4em] uppercase focus:outline-none"
             >
               <span className="text-zinc-600 group-hover:text-brand-purple transition-colors duration-300 flex items-center">{social.icon}</span>
               <span className="relative overflow-hidden leading-none">

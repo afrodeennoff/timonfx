@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { GLASS_STYLES } from '../constants';
 
 export const BackToTop: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -15,14 +16,15 @@ export const BackToTop: React.FC = () => {
     <AnimatePresence>
       {visible && (
         <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.8, y: 20 }}
+          whileHover={{ backgroundColor: 'rgba(139, 92, 246, 0.2)' }}
+          whileTap={{ scale: 0.9 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-8 right-8 z-[100] w-12 h-12 bg-white text-black flex items-center justify-center mono text-[10px] font-black group transition-all"
+          className={`fixed bottom-8 right-8 z-[100] w-14 h-14 ${GLASS_STYLES.button} flex items-center justify-center mono text-[10px] font-black group transition-all`}
         >
-          <div className="absolute inset-0 bg-brand-purple scale-0 group-hover:scale-100 transition-transform" />
-          <span className="relative z-10 group-hover:text-white">TOP</span>
+          <span className="relative z-10 tracking-[0.2em]">TOP</span>
         </motion.button>
       )}
     </AnimatePresence>
