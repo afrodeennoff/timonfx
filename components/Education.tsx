@@ -17,7 +17,7 @@ const DossierCard: React.FC<{ module: ModuleCard; index: number }> = React.memo(
         duration: ANIM_SYSTEM.hoverDuration, 
         ease: ANIM_SYSTEM.ease 
       }}
-      className="group relative w-full border-t border-white/5 py-10 md:py-14 bg-brand-black transition-all duration-[160ms] ease-[cubic-bezier(0.22,1,0.36,1)] cursor-default"
+      className="group relative w-full border-t border-white/5 py-10 md:py-14 bg-brand-black transition-all duration-300 cursor-default"
     >
       <div className="max-w-[1600px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
         <motion.div variants={VARIANTS.reveal} className="lg:col-span-2 hidden lg:flex flex-col items-start sticky top-32">
@@ -47,7 +47,7 @@ const DossierCard: React.FC<{ module: ModuleCard; index: number }> = React.memo(
            </div>
 
            <motion.div variants={VARIANTS.reveal} className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div className={`p-6 md:p-8 space-y-4 rounded-[2rem] transition-all duration-[160ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}>
+              <div className={`p-6 md:p-8 space-y-4 rounded-[2rem] transition-all duration-500 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}>
                  <div className="flex items-center justify-between">
                    <span className="mono text-[9px] text-zinc-500 font-black tracking-[0.3em] uppercase italic">Deliverables</span>
                    <div className="w-6 h-px bg-white/10" />
@@ -61,7 +61,7 @@ const DossierCard: React.FC<{ module: ModuleCard; index: number }> = React.memo(
                    ))}
                  </ul>
               </div>
-              <div className={`p-6 md:p-8 space-y-4 rounded-[2rem] transition-all duration-[160ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}>
+              <div className={`p-6 md:p-8 space-y-4 rounded-[2rem] transition-all duration-500 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}>
                  <div className="flex items-center justify-between">
                    <span className="mono text-[9px] text-zinc-500 font-black tracking-[0.3em] uppercase italic">Directives</span>
                    <div className="w-6 h-px bg-white/10" />
