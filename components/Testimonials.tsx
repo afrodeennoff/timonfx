@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TESTIMONIALS, ANIM_SYSTEM, VARIANTS, GLASS_STYLES } from '../constants';
 import { ConicGradient } from './ConicGradient';
+import { GhostText } from './GhostText';
 
 const VerifiedBadge = () => (
   <div className="flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 backdrop-blur-md rounded-full shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
@@ -77,7 +79,7 @@ export const Testimonials: React.FC = () => {
             </motion.div>
             <motion.h2 variants={VARIANTS.reveal} className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none">
               Execution <br />
-              <span className="text-transparent stroke-text opacity-40">Records.</span>
+              <GhostText text="Records." className="text-transparent stroke-text opacity-45" />
             </motion.h2>
           </div>
           

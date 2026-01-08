@@ -1,7 +1,9 @@
+
 import React, { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { PROP_FIRMS, VARIANTS, ANIM_SYSTEM, GLOBAL_3D_PRESET, MOTION_KILL_SWITCH, GLASS_STYLES } from '../constants';
 import { PropFirm } from '../types';
+import { GhostText } from './GhostText';
 
 const MetricBadge: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="flex flex-col gap-1 p-3 bg-white/[0.02] border border-white/5 group/metric hover:bg-white/[0.04] hover:border-white/10 transition-all rounded-xl">
@@ -164,7 +166,7 @@ export const PropFirmExplorer: React.FC = () => {
             </div>
             <h2 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-[0.8]">
               Comparison <br />
-              <span className="text-transparent stroke-text">Dossier.</span>
+              <GhostText text="Dossier." className="text-transparent stroke-text" />
             </h2>
           </div>
 
@@ -201,7 +203,7 @@ export const PropFirmExplorer: React.FC = () => {
       </div>
 
       <style>{`
-        .stroke-text { -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
+        .stroke-text { -webkit-text-stroke: 1px rgba(255,255,255,0.4); }
       `}</style>
     </section>
   );

@@ -88,43 +88,43 @@ export const App: React.FC = () => {
             ) : (
               <motion.div 
                 key="execution-mode"
-                initial={{ opacity: 0, scale: 1 }} 
+                initial={{ opacity: 0, scale: 0.98 }} 
                 animate={{ opacity: 1, scale: 1 }} 
-                exit={{ opacity: 0, scale: 1 }}
-                transition={{ duration: 0.3, ease: ANIM_SYSTEM.ease }}
-                className="pt-20 md:pt-24 px-4 md:px-8 min-h-screen flex flex-col gap-4 md:gap-6 pb-8"
+                exit={{ opacity: 0, scale: 1.02 }}
+                transition={{ duration: 0.4, ease: ANIM_SYSTEM.ease }}
+                className="pt-24 md:pt-28 px-4 md:px-8 min-h-[calc(100vh-80px)] flex flex-col gap-4 md:gap-6 pb-8"
               >
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 flex-1 overflow-y-auto lg:overflow-hidden scrollbar-hide">
-                  <div className={`p-6 md:p-10 lg:overflow-y-auto space-y-8 ${GLASS_STYLES.card}`}>
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6 flex-1 overflow-y-auto lg:overflow-hidden scrollbar-hide">
+                  <div className={`p-6 md:p-8 lg:overflow-y-auto space-y-6 md:space-y-8 ${GLASS_STYLES.card} lg:col-span-1`}>
                     <div className="flex items-center gap-2">
                       <div className="w-1 h-1 rounded-full bg-brand-purple shadow-[0_0_8px_rgba(139,92,246,0.6)]" />
                       <span className="mono text-[10px] text-brand-purple font-black tracking-widest uppercase">DESK STATUS: ACTIVE</span>
                     </div>
                     <div className="space-y-4">
-                      <h2 className="text-2xl font-black italic uppercase text-white">Market Intel</h2>
-                      <p className="mono text-[11px] text-zinc-400 leading-relaxed uppercase tracking-widest border-l border-brand-purple/30 pl-4">Awaiting session displacement. Liquidity nodes identified at 09:27 open window.</p>
+                      <h2 className="text-xl md:text-2xl font-black italic uppercase text-white">Market Intel</h2>
+                      <p className="mono text-[10px] md:text-[11px] text-zinc-400 leading-relaxed uppercase tracking-widest border-l border-brand-purple/30 pl-4">Awaiting session displacement. Liquidity nodes identified at 09:27 open window.</p>
                       
-                      <div className="h-[1px] w-full bg-white/10 my-6" />
+                      <div className="h-[1px] w-full bg-white/10 my-4 md:my-6" />
                       
                       <div className="space-y-4">
                         <span className="mono text-[9px] text-zinc-500 uppercase tracking-widest font-black italic">Key Levels [ES]</span>
                         <div className={`flex justify-between items-center p-3 ${GLASS_STYLES.button} rounded-xl`}>
                            <span className="mono text-xs text-brand-red font-bold tracking-tighter">4520.50</span>
-                           <span className="mono text-[8px] text-zinc-500 uppercase tracking-widest font-black">Supply_Zone</span>
+                           <span className="mono text-[8px] text-zinc-500 uppercase tracking-widest font-black">Supply</span>
                         </div>
                         <div className={`flex justify-between items-center p-3 ${GLASS_STYLES.button} rounded-xl`}>
                            <span className="mono text-xs text-white font-bold tracking-tighter">4450.00</span>
-                           <span className="mono text-[8px] text-zinc-500 uppercase tracking-widest font-black">Mid_Pivot</span>
+                           <span className="mono text-[8px] text-zinc-500 uppercase tracking-widest font-black">Pivot</span>
                         </div>
                         <div className={`flex justify-between items-center p-3 ${GLASS_STYLES.button} rounded-xl`}>
                            <span className="mono text-xs text-green-500 font-bold tracking-tighter">4385.25</span>
-                           <span className="mono text-[8px] text-zinc-500 uppercase tracking-widest font-black">Demand_Base</span>
+                           <span className="mono text-[8px] text-zinc-500 uppercase tracking-widest font-black">Demand</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="lg:col-span-2 h-[500px] lg:h-auto">
-                    <Suspense fallback={<div className={`w-full h-full bg-zinc-900/50 ${GLASS_STYLES.card}`} />}>
+                  <div className="lg:col-span-3 h-[450px] md:h-[600px] lg:h-auto">
+                    <Suspense fallback={<div className={`w-full h-full bg-zinc-900/50 ${GLASS_STYLES.card} flex items-center justify-center mono text-[10px] text-zinc-500`}>BOOTING TERMINAL...</div>}>
                       <ExecutionTerminal />
                     </Suspense>
                   </div>

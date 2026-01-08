@@ -1,8 +1,10 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MODULES, VARIANTS, ANIM_SYSTEM, GLASS_STYLES } from '../constants';
 import { ModuleCard } from '../types';
 import { ConicGradient } from './ConicGradient';
+import { GhostText } from './GhostText';
 
 const DossierCard: React.FC<{ module: ModuleCard; index: number }> = React.memo(({ module, index }) => {
   return (
@@ -21,9 +23,10 @@ const DossierCard: React.FC<{ module: ModuleCard; index: number }> = React.memo(
     >
       <div className="max-w-[1600px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
         <motion.div variants={VARIANTS.reveal} className="lg:col-span-2 hidden lg:flex flex-col items-start sticky top-32">
-           <span className="text-7xl font-black italic text-transparent stroke-text opacity-10 group-hover:opacity-25 transition-all duration-700 select-none">
-             0{index + 1}
-           </span>
+           <GhostText 
+             text={`0${index + 1}`}
+             className="text-7xl font-black italic text-transparent stroke-text opacity-30 group-hover:opacity-50 transition-all duration-700 select-none"
+           />
         </motion.div>
 
         <div className="lg:col-span-10 flex flex-col gap-6 md:gap-8">
@@ -105,7 +108,7 @@ export const Education: React.FC = () => {
                   className="text-3xl md:text-5xl lg:text-6xl font-black text-white italic uppercase tracking-tighter leading-none"
                 >
                    What Makes <br />
-                   <span className="text-transparent stroke-text">ORK Different?</span>
+                   <GhostText text="ORK Different?" className="text-transparent stroke-text" />
                 </motion.h2>
              </div>
 
@@ -130,7 +133,7 @@ export const Education: React.FC = () => {
        </motion.div>
 
        <style>{`
-        .stroke-text { -webkit-text-stroke: 1px rgba(255,255,255,0.2); }
+        .stroke-text { -webkit-text-stroke: 1px rgba(255,255,255,0.4); }
        `}</style>
     </section>
   );

@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { VARIANTS, ANIM_SYSTEM, GLASS_STYLES } from '../constants';
 import { ConicGradient } from './ConicGradient';
+import { GhostText } from './GhostText';
 
 interface AboutProps {
   onStartPreview: () => void;
@@ -19,9 +21,9 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
     >
       <ConicGradient opacity={0.05} size="100%" />
 
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-[0.02]">
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-[0.1]">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[15vw] font-black text-white italic tracking-tighter select-none whitespace-nowrap">
-          TIMON // TRADER
+          <GhostText text="TIMON // TRADER" />
         </div>
       </div>
 
