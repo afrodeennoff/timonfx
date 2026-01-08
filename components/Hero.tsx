@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { VARIANTS, ANIM_SYSTEM, GLASS_STYLES } from '../constants';
@@ -45,16 +44,21 @@ const RotatingHeadline = () => {
   }, [subIndex, index, reverse, isPaused]);
 
   return (
-    <div className="mono text-[10px] md:text-xs text-zinc-400 font-bold uppercase tracking-widest leading-relaxed text-center">
-      <span>ACCELERATE YOUR </span>
-      <span 
-        className="text-brand-purple italic transition-all duration-300"
-        style={{ textShadow: '0 0 15px rgba(139, 92, 246, 0.25)' }}
-      >
-        {WORDS[index].substring(0, subIndex)}
-        {!isPaused && subIndex > 0 && <span className="opacity-70 ml-0.5 inline-block">|</span>}
-      </span>
-      <span> IN THE MARKETS</span>
+    <div className="mono text-[13px] md:text-[15px] text-zinc-300 font-black uppercase tracking-[0.2em] md:tracking-[0.3em] leading-relaxed text-center flex flex-col items-center">
+      {/* Line 1: Static */}
+      <div className="mb-1">ACCELERATE YOUR</div>
+      
+      {/* Line 2: Dynamic + Static */}
+      <div className="flex items-center justify-center whitespace-nowrap">
+        <span 
+          className="text-brand-purple italic transition-all duration-300"
+          style={{ textShadow: '0 0 20px rgba(139, 92, 246, 0.4)' }}
+        >
+          {WORDS[index].substring(0, subIndex)}
+          {!isPaused && subIndex > 0 && <span className="opacity-70 ml-0.5 inline-block">|</span>}
+        </span>
+        <span className="ml-[0.6em]">IN THE MARKETS</span>
+      </div>
     </div>
   );
 };
@@ -115,24 +119,24 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
       >
         <div className="relative flex flex-col items-center">
           <p 
-            className="mono text-[9px] md:text-xs text-zinc-300 font-black uppercase tracking-[0.3em] md:tracking-[0.4em] mb-4"
-            style={{ textShadow: '0 0 12px rgba(161, 161, 170, 0.35)' }}
+            className="mono text-[10px] md:text-xs text-zinc-300 font-black uppercase tracking-[0.4em] md:tracking-[0.6em] mb-6"
+            style={{ textShadow: '0 0 15px rgba(161, 161, 170, 0.45)' }}
           >
-            
+            JOIN THE ELITE
           </p>
-          <h1 className="text-7xl sm:text-8xl md:text-9xl lg:text-[12rem] font-black text-white italic tracking-tighter uppercase leading-[0.8] select-none">
+          <h1 className="text-7xl sm:text-8xl md:text-9xl lg:text-[13rem] font-black text-white italic tracking-tighter uppercase leading-[0.75] select-none">
             ORK
           </h1>
-          <div className="md:-mt-2">
+          <div className="md:-mt-6">
              <GhostText 
                text="SYSTEMS"
-               className="text-5xl sm:text-7xl md:text-8xl lg:text-[8rem] font-black text-transparent stroke-text italic tracking-tighter uppercase leading-[0.8] select-none opacity-35"
+               className="text-5xl sm:text-7xl md:text-8xl lg:text-[9rem] font-black text-transparent stroke-text italic tracking-tighter uppercase leading-[0.75] select-none opacity-40"
              />
           </div>
-          <div className="mt-8 md:mt-6 space-y-4 px-4 max-w-2xl mx-auto">
-             <div className="space-y-4">
+          <div className="mt-12 md:mt-10 space-y-6 px-4 max-w-2xl mx-auto">
+             <div className="space-y-6">
                 <RotatingHeadline />
-                <p className="mono text-[9px] md:text-[10px] text-zinc-500 font-medium uppercase tracking-widest leading-relaxed">
+                <p className="mono text-[10px] md:text-[11px] text-zinc-500 font-bold uppercase tracking-widest leading-relaxed">
                   For traders who refuse to stay average. Join the ORK — a private, elite mentorship designed to turn inconsistent traders into confident, rule-based performers.
                 </p>
              </div>
@@ -168,7 +172,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
 
         <motion.div 
           variants={VARIANTS.reveal}
-          className="flex flex-wrap justify-center items-center gap-x-12 gap-y-4 pt-8 md:pt-6 border-t border-white/5 w-full max-w-xl mx-auto"
+          className="flex flex-wrap justify-center items-center gap-x-12 gap-y-4 pt-10 md:pt-8 border-t border-white/5 w-full max-w-xl mx-auto"
         >
           {SOCIAL_LINKS.map((social) => (
             <a 
@@ -185,7 +189,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
       </motion.div>
 
       <style>{`
-        .stroke-text { -webkit-text-stroke: 1px rgba(255,255,255,0.4); }
+        .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0.4); }
       `}</style>
     </section>
   );
