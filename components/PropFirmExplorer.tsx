@@ -145,8 +145,8 @@ export const PropFirmExplorer: React.FC = () => {
 
   return (
     <section 
-      id="coupons" 
-      className="py-12 md:py-16 px-6 bg-brand-black relative overflow-hidden transform-gpu" 
+      id="coupon" 
+      className="py-12 md:py-16 px-6 bg-brand-black relative overflow-hidden transform-gpu scroll-mt-24 md:scroll-mt-32" 
       style={{ perspective: MOTION_KILL_SWITCH ? 'none' : GLOBAL_3D_PRESET.perspective }}
     >
       <div className="max-w-7xl mx-auto relative z-10">

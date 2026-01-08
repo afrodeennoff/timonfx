@@ -10,7 +10,7 @@ interface AboutProps {
 export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
   return (
     <motion.section 
-      id="trader" 
+      id="about" 
       initial="initial"
       whileInView="animate"
       viewport={ANIM_SYSTEM.viewport}

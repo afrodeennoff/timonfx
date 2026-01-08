@@ -2,13 +2,27 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { BRAND_NAME, GLASS_STYLES, ANIM_SYSTEM } from '../constants';
 
-const FooterLink: React.FC<{ href: string; label: string }> = ({ href, label }) => (
-  <a 
-    href={href} 
-    className="mono text-[10px] text-zinc-500 hover:text-brand-purple uppercase tracking-[0.2em] font-black transition-colors duration-300"
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    const headerOffset = 100;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+};
+
+const FooterLink: React.FC<{ id: string; label: string }> = ({ id, label }) => (
+  <button 
+    onClick={(e) => { e.preventDefault(); scrollToSection(id); }}
+    className="mono text-left text-[10px] text-zinc-500 hover:text-brand-purple uppercase tracking-[0.2em] font-black transition-colors duration-300 focus:outline-none"
   >
     {label}
-  </a>
+  </button>
 );
 
 export const Footer: React.FC = () => {
@@ -38,10 +52,10 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-3 space-y-4">
             <span className="mono text-[9px] text-zinc-700 uppercase tracking-[0.6em] font-black">Indices</span>
             <nav className="flex flex-col gap-3">
-              <FooterLink href="#trader" label="Trader Profile" />
-              <FooterLink href="#edge" label="Methodology" />
-              <FooterLink href="#access" label="Protocol Access" />
-              <FooterLink href="#coupons" label="Funding Dossier" />
+              <FooterLink id="about" label="Trader Profile" />
+              <FooterLink id="edge" label="Methodology" />
+              <FooterLink id="join" label="Protocol Access" />
+              <FooterLink id="coupon" label="Funding Dossier" />
             </nav>
           </div>
 
@@ -49,9 +63,9 @@ export const Footer: React.FC = () => {
           <div className="md:col-span-3 space-y-4">
             <span className="mono text-[9px] text-zinc-700 uppercase tracking-[0.6em] font-black">Connect</span>
             <nav className="flex flex-col gap-3">
-              <FooterLink href="#" label="Instagram" />
-              <FooterLink href="#" label="X (Twitter)" />
-              <FooterLink href="#" label="Discord Hub" />
+              <a href="#" className="mono text-[10px] text-zinc-500 hover:text-brand-purple uppercase tracking-[0.2em] font-black transition-colors duration-300">Instagram</a>
+              <a href="#" className="mono text-[10px] text-zinc-500 hover:text-brand-purple uppercase tracking-[0.2em] font-black transition-colors duration-300">X (Twitter)</a>
+              <a href="#" className="mono text-[10px] text-zinc-500 hover:text-brand-purple uppercase tracking-[0.2em] font-black transition-colors duration-300">Discord Hub</a>
             </nav>
           </div>
 

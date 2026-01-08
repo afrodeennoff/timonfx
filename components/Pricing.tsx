@@ -9,7 +9,7 @@ interface PricingProps {
 
 export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
   return (
-    <section id="access" className="py-12 md:py-16 px-6 bg-[#050505] border-t border-white/5 relative overflow-hidden transform-gpu scroll-mt-24 md:scroll-mt-32">
+    <section id="join" className="py-12 md:py-16 px-6 bg-[#050505] border-t border-white/5 relative overflow-hidden transform-gpu scroll-mt-24 md:scroll-mt-32">
       <ConicGradient opacity={0.04} size="100%" />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -85,7 +85,7 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
               </div>
               <ul className="space-y-4 flex-1 relative z-10 mb-6">
                  {['Advanced Strategies', 'NY Live Analysis', 'Priority Intel', 'Private Insights'].map(item => (
-                   <li key={item} className="mono text-[10px] text-white uppercase flex items-center gap-3 font-black group/li">
+                   <li key={item} className="mono text-[10px] text-white uppercase flex items-center gap-4 font-black group/li">
                       <span className="w-1 h-1 rounded-full bg-white group-hover/li:shadow-[0_0_8px_white] transition-all" />
                       {item}
                    </li>

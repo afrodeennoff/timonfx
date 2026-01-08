@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FAQ_DATA, VARIANTS, GLASS_STYLES } from '../constants';
@@ -6,7 +7,7 @@ export const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="py-12 md:py-16 px-6 bg-brand-black border-t border-white/10">
+    <section id="faq" className="py-12 md:py-16 px-6 bg-brand-black border-t border-white/10 scroll-mt-24 md:scroll-mt-32">
       <div className="max-w-4xl mx-auto">
         <div className="text-center space-y-3 mb-10 md:mb-12">
            <span className="mono text-[10px] text-brand-purple font-black tracking-[0.4em] uppercase">Common // Questions</span>

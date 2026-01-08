@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, Suspense, lazy } from 'react';
 import { Hero } from './components/Hero';
 import { CustomCursor } from './components/CustomCursor';
@@ -72,7 +73,7 @@ export const App: React.FC = () => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3, ease: ANIM_SYSTEM.ease }}
               >
-                <Hero onStartPreview={openPreview} />
+                <Hero onStartPreview={toggleMode} />
                 
                 <Suspense fallback={<DigitalLoader />}>
                   <About onStartPreview={openPreview} />

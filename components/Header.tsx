@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AppMode } from '../types';
@@ -11,23 +10,46 @@ interface HeaderProps {
 }
 
 const NAV_ITEMS = [
-  { label: 'Trader', id: 'trader' },
-  { label: 'Edge', id: 'edge' },
-  { label: 'Access', id: 'access' }
+  { label: 'Home', id: 'hero' },
+  { label: 'About', id: 'about' },
+  { label: 'Coupon', id: 'coupon' },
+  { label: 'Testimonial', id: 'testimonial' },
+  { label: 'FAQ', id: 'faq' }
 ];
 
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id);
+  if (element) {
+    // Lenis is present in the project, so a simple scrollIntoView or 
+    // window.scrollTo with the right offset will be intercepted and smoothed.
+    const headerOffset = 100;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+};
+
 const NavLink: React.FC<{ 
-  href: string; 
+  id: string; 
   label: string; 
   index: number; 
   isActive: boolean;
-}> = ({ href, label, index, isActive }) => (
-  <motion.a
-    href={href}
+  onClick: () => void;
+}> = ({ id, label, index, isActive, onClick }) => (
+  <motion.button
+    onClick={(e) => {
+      e.preventDefault();
+      scrollToSection(id);
+      onClick();
+    }}
     initial={{ opacity: 0, y: -10 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: 0.1 + index * 0.05, ease: ANIM_SYSTEM.ease }}
-    className="relative px-4 py-2 group"
+    className="relative px-3 py-2 group focus:outline-none"
   >
     <span className={`relative z-10 mono text-[10px] transition-colors duration-300 font-black tracking-[0.2em] uppercase ${
       isActive ? 'text-brand-purple' : 'text-zinc-400 group-hover:text-white'
@@ -37,7 +59,7 @@ const NavLink: React.FC<{
     <span className={`absolute inset-x-0 bottom-0 h-[1px] bg-brand-purple transition-transform duration-300 origin-left ease-[0.22,1,0.36,1] ${
       isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
     }`} />
-  </motion.a>
+  </motion.button>
 );
 
 export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMode }) => {
@@ -64,8 +86,11 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
-    NAV_ITEMS.forEach((item) => {
-      const el = document.getElementById(item.id);
+    
+    const idsToObserve = ['hero', 'about', 'coupon', 'testimonial', 'faq', 'join'];
+    
+    idsToObserve.forEach((id) => {
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
 
@@ -93,10 +118,13 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
           <div className={`border border-white/10 rounded-full px-4 md:px-2 py-2 md:h-16 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 md:gap-0 ${GLASS_STYLES.card}`}>
             
             <div className="flex items-center justify-between md:justify-start px-4 md:border-r border-white/5 md:pr-8 h-10 md:h-auto">
-               <a href="#hero" className="flex items-center gap-2 select-none group">
+               <button 
+                 onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}
+                 className="flex items-center gap-2 select-none group focus:outline-none"
+               >
                  <span className="text-xl font-black tracking-tighter text-white uppercase italic leading-none group-hover:text-brand-purple transition-colors">ORK</span>
                  <span className="text-xl font-black tracking-tighter text-brand-purple italic leading-none">//</span>
-               </a>
+               </button>
                
                <button 
                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -111,16 +139,17 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                </button>
             </div>
 
-            <nav className="hidden md:flex items-center gap-2 px-6">
+            <nav className="hidden md:flex items-center gap-1 px-4">
               {mode === 'STUDY' ? (
                 <>
                   {NAV_ITEMS.map((item, i) => (
                     <NavLink 
                       key={item.label} 
-                      href={`#${item.id}`} 
+                      id={item.id} 
                       label={item.label} 
                       index={i} 
                       isActive={activeSection === item.id}
+                      onClick={handleMobileNavClick}
                     />
                   ))}
                 </>
@@ -139,23 +168,29 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
             </nav>
 
             <div className="hidden md:flex items-center gap-4 pl-8 border-l border-white/5">
-               <button 
-                 onClick={onToggleMode}
-                 className={`relative h-11 px-7 rounded-full flex items-center gap-3 transition-all duration-300 overflow-hidden group ${
-                   mode === 'STUDY' 
-                     ? `${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover}` 
-                     : 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]'
-                 }`}
-               >
-                 <div className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                   mode === 'STUDY' ? 'bg-zinc-500 group-hover:bg-brand-purple' : 'bg-brand-red animate-ping'
-                 }`} />
-                 <span className={`mono text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
-                   mode === 'STUDY' ? 'text-zinc-300 group-hover:text-white' : 'text-black'
-                 }`}>
-                   {mode === 'STUDY' ? 'OPEN DESK' : 'CLOSE DESK'}
-                 </span>
-               </button>
+               {mode === 'STUDY' ? (
+                 <motion.button 
+                   onClick={(e) => { e.preventDefault(); scrollToSection('join'); }}
+                   whileHover={VARIANTS.buttonHover}
+                   whileTap={VARIANTS.buttonTap}
+                   className={`relative h-11 px-7 rounded-full flex items-center gap-3 transition-all duration-300 overflow-hidden group focus:outline-none ${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} ${activeSection === 'join' ? 'border-brand-purple/60' : ''}`}
+                 >
+                   <div className="w-1.5 h-1.5 rounded-full bg-brand-purple shadow-[0_0_8px_rgba(139,92,246,0.5)]" />
+                   <span className={`mono text-[10px] font-black uppercase tracking-[0.2em] ${activeSection === 'join' ? 'text-brand-purple' : 'text-white'}`}>
+                     JOIN
+                   </span>
+                 </motion.button>
+               ) : (
+                 <button 
+                   onClick={onToggleMode}
+                   className="relative h-11 px-7 rounded-full flex items-center gap-3 transition-all duration-300 overflow-hidden bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:bg-zinc-200 focus:outline-none"
+                 >
+                   <div className="w-1.5 h-1.5 rounded-full bg-brand-red animate-ping" />
+                   <span className="mono text-[10px] font-black uppercase tracking-[0.2em]">
+                     CLOSE DESK
+                   </span>
+                 </button>
+               )}
             </div>
           </div>
 
@@ -171,16 +206,15 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                     {mode === 'STUDY' ? (
                       <div className="flex flex-col gap-6">
                         {NAV_ITEMS.map((item) => (
-                          <a 
+                          <button 
                             key={item.label} 
-                            href={`#${item.id}`}
-                            onClick={handleMobileNavClick}
-                            className={`mono text-sm uppercase tracking-widest font-black transition-colors ${
+                            onClick={(e) => { e.preventDefault(); scrollToSection(item.id); handleMobileNavClick(); }}
+                            className={`mono text-left text-sm uppercase tracking-widest font-black transition-colors focus:outline-none ${
                               activeSection === item.id ? 'text-brand-purple' : 'text-zinc-300'
                             }`}
                           >
                             {item.label}
-                          </a>
+                          </button>
                         ))}
                       </div>
                     ) : (
@@ -189,14 +223,21 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                       </span>
                     )}
                     <div className="h-[1px] bg-white/10" />
-                    <button 
-                       onClick={() => { onToggleMode(); setMobileMenuOpen(false); }}
-                       className={`w-full py-5 rounded-full mono text-xs font-black uppercase tracking-widest ${
-                         mode === 'STUDY' ? `${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} text-white` : 'bg-white text-black'
-                       }`}
-                    >
-                       {mode === 'STUDY' ? 'OPEN DESK' : 'CLOSE DESK'}
-                    </button>
+                    {mode === 'STUDY' ? (
+                      <button 
+                         onClick={(e) => { e.preventDefault(); scrollToSection('join'); handleMobileNavClick(); }}
+                         className={`w-full py-5 rounded-full mono text-xs font-black uppercase text-center tracking-widest bg-brand-purple text-white shadow-[0_10px_30px_rgba(139,92,246,0.3)] focus:outline-none`}
+                      >
+                         JOIN
+                      </button>
+                    ) : (
+                      <button 
+                         onClick={() => { onToggleMode(); setMobileMenuOpen(false); }}
+                         className="w-full py-5 rounded-full mono text-xs font-black uppercase tracking-widest bg-white text-black focus:outline-none"
+                      >
+                         CLOSE DESK
+                      </button>
+                    )}
                  </div>
                </motion.div>
             )}

@@ -55,7 +55,7 @@ const TestimonialCard: React.FC<{ testimonial: typeof TESTIMONIALS[0]; index: nu
 
 export const Testimonials: React.FC = () => {
   return (
-    <section id="testimonials" className="relative py-12 md:py-16 px-6 bg-brand-black overflow-hidden">
+    <section id="testimonial" className="relative py-12 md:py-16 px-6 bg-brand-black overflow-hidden scroll-mt-24 md:scroll-mt-32">
       <ConicGradient opacity={0.08} size="130%" />
 
       <div className="absolute inset-0 z-0 pointer-events-none opacity-10">
