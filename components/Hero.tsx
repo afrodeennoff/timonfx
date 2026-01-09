@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { VARIANTS, MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH } from '../constants';
+import { motion } from 'framer-motion';
+import { VARIANTS, MOTION_RULES, GLASS_STYLES } from '../constants';
 import { ConicGradient } from './ConicGradient';
 
 interface HeroProps {
@@ -23,11 +23,11 @@ const scrollToSection = (id: string) => {
   }
 };
 
-const FloatingNode: React.FC<{ x: string; y: string; delay: number; scale: number; label?: string }> = ({ x, y, delay, scale, label }) => (
+const FloatingNode: React.FC<{ x: string; y: string; delay: number; label?: string }> = ({ x, y, delay, label }) => (
   <motion.div
-    initial={{ opacity: 0, scale: 0 }}
-    animate={{ opacity: [0.1, 0.4, 0.1], scale: [scale, scale * 1.1, scale] }}
-    transition={{ duration: 6, repeat: Infinity, delay, ease: "easeInOut" }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: [0.08, 0.24, 0.08] }}
+    transition={{ duration: 8, repeat: Infinity, delay, ease: "easeInOut" }}
     className="absolute pointer-events-none flex flex-col items-center gap-1"
     style={{ left: x, top: y }}
   >
@@ -82,58 +82,25 @@ const RotatingHeadline = () => {
 };
 
 export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  
-  const springX = useSpring(mouseX, { stiffness: 50, damping: 24 });
-  const springY = useSpring(mouseY, { stiffness: 50, damping: 24 });
-
-  const deepX = useTransform(springX, [-0.5, 0.5], [-25, 25]);
-  const deepY = useTransform(springY, [-0.5, 0.5], [-25, 25]);
-  
-  const midX = useTransform(springX, [-0.5, 0.5], [-50, 50]);
-  const midY = useTransform(springY, [-0.5, 0.5], [-50, 50]);
-  
-  const rotateX = useTransform(springY, [-0.5, 0.5], [3, -3]);
-  const rotateY = useTransform(springX, [-0.5, 0.5], [-3, 3]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (MOTION_KILL_SWITCH) return;
-    const { innerWidth, innerHeight } = window;
-    mouseX.set((e.clientX / innerWidth) - 0.5);
-    mouseY.set((e.clientY / innerHeight) - 0.5);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
   return (
     <section 
-      ref={containerRef}
       id="hero" 
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       className="relative min-h-[85vh] flex flex-col justify-center items-center px-6 pt-24 pb-14 md:pt-32 md:pb-20 overflow-hidden bg-brand-black transform-gpu scroll-mt-24 md:scroll-mt-32"
     >
       <ConicGradient opacity={0.15} size="110%" />
 
-      <motion.div style={{ x: deepX, y: deepY }} className="absolute inset-0 pointer-events-none">
-        <FloatingNode x="12%" y="18%" delay={0} scale={1} label="LQD_01" />
-        <FloatingNode x="88%" y="22%" delay={1} scale={0.8} label="STR_NODE" />
-        <FloatingNode x="18%" y="78%" delay={2} scale={1.2} label="EXP_0X" />
-        <FloatingNode x="78%" y="82%" delay={0.5} scale={0.9} label="RISK_MD" />
+      <div className="absolute inset-0 pointer-events-none">
+        <FloatingNode x="12%" y="18%" delay={0} label="LQD_01" />
+        <FloatingNode x="88%" y="22%" delay={1} label="STR_NODE" />
+        <FloatingNode x="18%" y="78%" delay={2} label="EXP_0X" />
+        <FloatingNode x="78%" y="82%" delay={0.5} label="RISK_MD" />
         <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay" />
-      </motion.div>
+      </div>
 
       <motion.div 
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 0.2, scale: 1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.2 }}
         transition={{ duration: 1.6, ease: MOTION_RULES.ease }}
-        style={{ x: midX, y: midY, rotateX: !MOTION_KILL_SWITCH ? rotateX : 0, rotateY: !MOTION_KILL_SWITCH ? rotateY : 0 }}
         className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"
       >
         <img 
@@ -147,10 +114,9 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         variants={VARIANTS.staggerContainer as any}
         initial="initial"
         animate="animate"
-        style={{ rotateX: !MOTION_KILL_SWITCH ? rotateX : 0, rotateY: !MOTION_KILL_SWITCH ? rotateY : 0, transformStyle: 'preserve-3d' }}
         className="relative z-20 max-w-7xl w-full text-center flex flex-col items-center gap-7 md:gap-12"
       >
-        <div className="relative flex flex-col items-center" style={{ transform: 'translateZ(60px)' }}>
+        <div className="relative flex flex-col items-center">
           <motion.p 
             variants={VARIANTS.reveal as any}
             className="mono text-[9px] text-zinc-600 font-black uppercase tracking-[0.6em] mb-7 md:mb-12"
@@ -177,7 +143,6 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         <motion.div
           variants={VARIANTS.reveal as any}
           className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 w-full px-4"
-          style={{ transform: 'translateZ(40px)' }}
         >
           <motion.button
             whileHover={VARIANTS.buttonHover}

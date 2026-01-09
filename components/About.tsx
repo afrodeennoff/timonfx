@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { VARIANTS, MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH, DEPTH_PRESETS } from '../constants';
+import { motion, AnimatePresence } from 'framer-motion';
+import { VARIANTS, MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH } from '../constants';
 import { ConicGradient } from './ConicGradient';
 import { GhostText } from './GhostText';
 
@@ -25,30 +25,6 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedLogo, setGeneratedLogo] = useState<string | null>(null);
   const [generationStep, setGenerationStep] = useState('');
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const xSpring = useSpring(x, DEPTH_PRESETS.spring);
-  const ySpring = useSpring(y, DEPTH_PRESETS.spring);
-
-  const rotateX = useTransform(ySpring, [-0.5, 0.5], [DEPTH_PRESETS.maxRotation * 4, -DEPTH_PRESETS.maxRotation * 4]);
-  const rotateY = useTransform(xSpring, [-0.5, 0.5], [-DEPTH_PRESETS.maxRotation * 4, DEPTH_PRESETS.maxRotation * 4]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current || MOTION_KILL_SWITCH) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    x.set((e.clientX - centerX) / rect.width);
-    y.set((e.clientY - centerY) / rect.height);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
 
   const handleGenerateLogo = async () => {
     try {
@@ -99,6 +75,8 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
     }
   };
 
+  const timonText = "TIMON";
+
   return (
     <motion.section 
       id="about" 
@@ -112,22 +90,9 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
 
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-center relative z-10">
          <motion.div 
-           ref={cardRef}
            variants={VARIANTS.reveal} 
            className="w-full lg:w-5/12 relative group/main will-change-transform"
-           onMouseMove={handleMouseMove}
-           onMouseLeave={handleMouseLeave}
-           style={{
-             transformStyle: 'preserve-3d',
-             perspective: DEPTH_PRESETS.perspective,
-             rotateX: !MOTION_KILL_SWITCH ? rotateX : 0,
-             rotateY: !MOTION_KILL_SWITCH ? rotateY : 0,
-           }}
-           whileHover={{ 
-             y: -8,
-             z: DEPTH_PRESETS.zDepth,
-             scale: DEPTH_PRESETS.scale
-           }}
+           whileHover={VARIANTS.cardHover}
          >
             <div className={`aspect-[4/5] overflow-hidden relative shadow-2xl flex items-center justify-center p-8 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}>
                <img 
@@ -137,17 +102,38 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
                  loading="lazy"
                />
             </div>
-            <div 
+            <motion.div 
+              initial="initial"
+              whileInView="animate"
+              viewport={MOTION_RULES.viewport}
+              variants={VARIANTS.staggerContainer}
               className={`absolute bottom-[-1.5rem] right-[-1.5rem] w-40 md:w-52 p-6 shadow-2xl ${GLASS_STYLES.card} group/sub`}
-              style={{ transform: 'translateZ(30px)' }}
             >
-               <span className="mono text-[8px] text-brand-purple uppercase tracking-[0.5em] font-black relative z-10">HEAD_TRADER</span>
-               <p className="mt-1 mono text-[12px] text-white uppercase font-black italic tracking-widest leading-none relative z-10 group-hover/sub:text-brand-purple transition-colors duration-300">TIMON</p>
-            </div>
+               <motion.p 
+                 className="mono text-xl text-white uppercase font-extrabold italic tracking-widest leading-none relative z-10 group-hover/sub:text-brand-purple transition-colors duration-300 flex"
+                 animate={{ scale: [1, 1.03, 1] }}
+                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+               >
+                 {timonText.split('').map((char, i) => (
+                   <motion.span
+                     key={i}
+                     initial={{ opacity: 0, y: 5 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     transition={{ 
+                       duration: 0.5, 
+                       delay: i * 0.08, 
+                       ease: MOTION_RULES.ease 
+                     }}
+                   >
+                     {char}
+                   </motion.span>
+                 ))}
+               </motion.p>
+            </motion.div>
          </motion.div>
 
          <div className="w-full lg:w-7/12 space-y-7 md:space-y-12">
-            <motion.div variants={VARIANTS.reveal} className="space-y-4">
+            <motion.div variants={VARIANTS.staggerContainer} className="mb-7 md:mb-12 space-y-4">
               <div className="flex items-center justify-between mb-7 md:mb-12">
                 <div className="h-8 flex items-center">
                   <AnimatePresence mode="wait">
@@ -177,10 +163,14 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
                 </motion.button>
               </div>
 
-              <span className="mono text-[10px] text-brand-purple font-black tracking-[0.5em] uppercase">The Method</span>
-              <h2 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none">
-                The Trader Behind <GhostText text="TIMON" className="text-transparent stroke-text" />
-              </h2>
+              <motion.div variants={VARIANTS.reveal} className="flex items-center gap-4">
+                <div className="h-px w-12 bg-brand-purple" />
+                <span className="mono text-[11px] text-brand-purple font-black tracking-[0.5em] uppercase italic">The Method</span>
+              </motion.div>
+              <motion.h2 variants={VARIANTS.reveal} className="text-5xl md:text-7xl font-black text-white italic uppercase tracking-tighter leading-none">
+                THE TRADER BEHIND <br />
+                <GhostText text="TIMON" loop={true} className="text-transparent transition-colors cursor-default stroke-text" />
+              </motion.h2>
             </motion.div>
             
             <motion.div variants={VARIANTS.reveal} className="space-y-7 group/text">
@@ -196,7 +186,7 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
       </div>
 
       <style>{`
-        .stroke-text { -webkit-text-stroke: 1px rgba(255,255,255,0.2); }
+        .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); }
       `}</style>
     </motion.section>
   );

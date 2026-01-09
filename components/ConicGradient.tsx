@@ -1,7 +1,5 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-// Fixed: Using MOTION_RULES instead of non-existent ANIM_SYSTEM
 import { MOTION_RULES } from '../constants';
 
 interface ConicGradientProps {
@@ -27,10 +25,9 @@ export const ConicGradient: React.FC<ConicGradientProps> = ({
       style={{ zIndex: 0 }}
     >
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: opacity, scale: 1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: opacity }}
         transition={{ 
-          // Fixed: Using MOTION_RULES instead of non-existent ANIM_SYSTEM
           duration: MOTION_RULES.revealDuration * 2, 
           ease: MOTION_RULES.ease 
         }}

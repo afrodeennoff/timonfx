@@ -103,6 +103,8 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
     setMobileMenuOpen(false);
   }, []);
 
+  const logoText = "TIMON";
+
   return (
     <>
       <motion.header
@@ -123,10 +125,35 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
             <div className="flex items-center justify-between md:justify-start px-2.5 md:border-r border-white/5 md:pr-6 h-7 md:h-auto relative z-10">
                <button 
                  onClick={(e) => { e.preventDefault(); onSetMode('STUDY'); scrollToSection('hero'); }}
-                 className="flex items-center gap-2 select-none group focus:outline-none whitespace-nowrap"
+                 className="flex items-center gap-1 select-none group focus:outline-none whitespace-nowrap overflow-hidden py-1"
                >
-                 <span className="text-xl font-black tracking-tighter text-white uppercase italic leading-none group-hover:text-brand-purple transition-colors">TIMON</span>
-                 <span className="text-xl font-black tracking-tighter text-brand-purple italic leading-none">//</span>
+                 <motion.div
+                   className="flex items-center"
+                 >
+                   {logoText.split('').map((char, i) => (
+                     <motion.span
+                       key={i}
+                       initial={{ opacity: 0, y: 5 }}
+                       animate={{ opacity: 1, y: 0 }}
+                       transition={{ 
+                         duration: 0.5, 
+                         delay: i * 0.08, 
+                         ease: MOTION_RULES.ease 
+                       }}
+                       className="text-xl font-black tracking-tighter text-white uppercase italic leading-none group-hover:text-brand-purple group-hover:-translate-y-0.5 transition-all duration-300"
+                     >
+                       {char}
+                     </motion.span>
+                   ))}
+                   
+                   <motion.span 
+                     animate={{ opacity: [0.3, 1, 0.3] }}
+                     transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                     className="ml-2 text-xl font-black tracking-tighter text-brand-purple italic leading-none"
+                   >
+                     //
+                   </motion.span>
+                 </motion.div>
                </button>
                
                <button 

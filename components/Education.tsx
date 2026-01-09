@@ -66,8 +66,8 @@ export const Education: React.FC = () => {
             <span className="mono text-[11px] text-brand-purple font-black tracking-[0.5em] uppercase italic">Curriculum Logic</span>
           </motion.div>
           <motion.h2 variants={VARIANTS.reveal} className="text-5xl md:text-7xl font-black text-white italic uppercase tracking-tighter leading-none">
-            Built For <br />
-            <GhostText text="Consistent Size." className="text-zinc-600 transition-colors cursor-default stroke-text" />
+            THE EDGE BEHIND <br />
+            <GhostText text="CONSISTENCY." className="text-transparent transition-colors cursor-default stroke-text" />
           </motion.h2>
         </motion.div>
 

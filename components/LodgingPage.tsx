@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { VARIANTS, GLASS_STYLES, MOTION_RULES } from '../constants';
+import { GhostText } from './GhostText';
 
 export const LodgingPage: React.FC = () => {
   return (
@@ -22,8 +23,8 @@ export const LodgingPage: React.FC = () => {
           </div>
           
           <h2 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none">
-            No Trades <br />
-            <span className="text-zinc-800">Lodged</span>
+            THE RECORD BEHIND <br />
+            <GhostText text="THE SESSION." className="text-transparent transition-colors cursor-default stroke-text" />
           </h2>
           
           <p className="mono text-[11px] text-zinc-500 uppercase tracking-widest leading-relaxed max-w-md mx-auto font-bold italic">
@@ -45,6 +46,7 @@ export const LodgingPage: React.FC = () => {
            </div>
         </div>
       </div>
+      <style>{` .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); } `}</style>
     </motion.div>
   );
 };

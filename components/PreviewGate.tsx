@@ -67,9 +67,9 @@ export const PreviewGate: React.FC<PreviewGateProps> = ({ isOpen, onClose }) => 
             className="fixed inset-0 bg-black/98 backdrop-blur-3xl z-[300]"
           />
           <motion.div 
-            initial={{ scale: 0.98, opacity: 0, y: 15 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.98, opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 15 }}
             transition={{ duration: 0.4, ease: MOTION_RULES.ease }}
             className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl z-[301] p-4"
           >

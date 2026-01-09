@@ -52,7 +52,8 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
         >
            <span className="mono text-[9px] text-zinc-600 font-black tracking-[0.6em] uppercase italic">Entry Matrix</span>
            <h2 className="text-5xl md:text-8xl font-black text-white italic uppercase tracking-tighter leading-none">
-             <GhostText text="PRICING" className="text-transparent stroke-text" />
+             THE TIER BEHIND <br />
+             <GhostText text="THE GATEWAY." className="text-transparent stroke-text" />
            </h2>
         </motion.div>
 
@@ -91,8 +92,8 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
            <PriceCard className="w-full">
              <div className="relative overflow-hidden flex flex-col lg:flex-row items-stretch group/main">
                 <motion.div 
-                    initial={{ opacity: 0, scale: 0.8 }} 
-                    animate={{ opacity: 1, scale: 1 }} 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
                     transition={{ delay: 0.8, duration: 0.5, ease: MOTION_RULES.ease }}
                     className="absolute top-5 right-5 z-20 px-3.5 py-1.5 bg-brand-purple/10 border border-brand-purple/40 rounded-full shadow-[0_0_15px_rgba(139,92,246,0.6)] group-hover/main:shadow-[0_0_25px_rgba(139,92,246,0.8)] transition-shadow duration-300"
                 >

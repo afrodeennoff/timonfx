@@ -25,7 +25,8 @@ export const SocialProof: React.FC = () => {
               className="text-zinc-600 hover:text-white transition-colors duration-300"
               aria-label={link.name}
             >
-              {React.cloneElement(link.icon, { className: link.name === 'X' ? 'w-5 h-5' : 'w-6 h-6' })}
+              {/* Fix: Explicitly cast to ReactElement with any props to allow dynamic className assignment */}
+              {React.cloneElement(link.icon as React.ReactElement<any>, { className: link.name === 'X' ? 'w-5 h-5' : 'w-6 h-6' })}
             </a>
           ))}
         </motion.div>

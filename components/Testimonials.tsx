@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TESTIMONIALS, MOTION_RULES, VARIANTS, GLASS_STYLES } from '../constants';
+import { GhostText } from './GhostText';
 
 export const Testimonials: React.FC = () => {
   const [index, setIndex] = useState(0);
@@ -51,8 +52,9 @@ export const Testimonials: React.FC = () => {
           className="mb-7 md:mb-12 text-center"
         >
           <span className="mono text-[11px] text-zinc-600 font-black tracking-[0.8em] uppercase italic block mb-6">Trader Feedback</span>
-          <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter leading-none opacity-20">
-            Real Words.
+          <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter leading-none">
+            THE WORDS BEHIND <br />
+            <GhostText text="THE RESULTS." className="text-transparent transition-colors cursor-default stroke-text" />
           </h2>
         </motion.div>
 
@@ -98,6 +100,7 @@ export const Testimonials: React.FC = () => {
 
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-purple/5 blur-[120px] pointer-events-none -z-10" />
       <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-brand-purple/5 blur-[120px] pointer-events-none -z-10" />
+      <style>{` .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); } `}</style>
     </section>
   );
 };

@@ -4,8 +4,7 @@ import { ModuleCard, Testimonial, PropFirm } from './types';
 export const BRAND_NAME = "TIMON";
 
 /**
- * GLOBAL MOTION STANDARD (Source of Truth: Pricing Section)
- * Applied site-wide for all entry and interaction logic.
+ * GLOBAL MOTION STANDARD
  */
 export const MOTION_RULES = {
   ease: [0.22, 1, 0.36, 1] as any,
@@ -18,30 +17,15 @@ export const MOTION_RULES = {
 };
 
 /**
- * GLOBAL VISUAL STYLE (Source of Truth: Prop Firm Section)
- * Applied site-wide to every card, panel, and surfaced block.
+ * GLOBAL VISUAL STYLE
  */
 export const GLASS_STYLES = {
-  // Master Card Standard: bg-[#080808], 15% border, 2.5rem radius, 8px blur.
   card: "bg-[#080808] border border-white/15 shadow-2xl rounded-[2.5rem] backdrop-blur-[8px] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
   cardHover: "hover:border-white/25 hover:bg-[#0a0a0a]",
-  // Master Button Standard: 15% border, shimmer-ready, specific hover colors.
   button: "px-6 py-3 bg-white/[0.03] text-white border border-white/15 shadow-[inset_0_1px_1px_rgba(255,255,255,0.02)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] rounded-full inline-flex items-center justify-center whitespace-nowrap relative overflow-hidden group/btn",
   buttonHover: "hover:bg-brand-purple/20 hover:border-brand-purple/50 hover:shadow-[0_12px_24px_-12px_rgba(139,92,246,0.3)]",
-  // Accent Button Standard (e.g. CTA/Enroll)
   accentButton: "px-6 py-3 bg-brand-purple text-white shadow-[0_15px_35px_-10px_rgba(139,92,246,0.5)] rounded-full transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] inline-flex items-center justify-center whitespace-nowrap relative overflow-hidden group/btn",
   accentButtonHover: "hover:brightness-110 hover:shadow-[0_15px_45px_-10px_rgba(139,92,246,0.6)]"
-};
-
-/**
- * DEPTH PRESETS (Source: Pricing)
- */
-export const DEPTH_PRESETS = {
-  perspective: 1600,
-  maxRotation: 0.5,
-  zDepth: 12,
-  scale: 1.005,
-  spring: { stiffness: 150, damping: 25, mass: 1.2 }
 };
 
 const checkKillSwitch = () => {
@@ -54,7 +38,6 @@ const checkKillSwitch = () => {
 export const MOTION_KILL_SWITCH = checkKillSwitch();
 
 export const VARIANTS = {
-  // Reveal Standard: transform + opacity only. NO scale/blur on reveal.
   reveal: {
     initial: { opacity: 0, y: 15 },
     animate: { 
@@ -72,18 +55,15 @@ export const VARIANTS = {
       }
     }
   },
-  // Card Hover Standard: -8px lift + micro scale.
   cardHover: {
     y: -8,
-    scale: 1.005,
     transition: { duration: MOTION_RULES.hoverDuration, ease: MOTION_RULES.ease }
   },
-  // Button Hover Standard: -1px lift.
   buttonHover: {
     y: -1,
     transition: { duration: 0.3, ease: MOTION_RULES.ease }
   },
-  buttonTap: { opacity: 0.9, scale: 0.98, y: 0 },
+  buttonTap: { opacity: 0.9, y: 0 },
   buttonFocus: { outline: "none" },
   inputFocus: { borderColor: "rgba(139,92,246,0.2)", transition: { duration: 0.2 } }
 };
@@ -105,9 +85,9 @@ export const PROP_FIRMS: PropFirm[] = [
     name: "FundingTicks",
     marketType: "FUTURES",
     accountSize: "$25K – $150K",
-    profitSplit: "Up to 90%",
-    payoutCap: "Rule based",
-    maxAllocation: "Multi-account allowed",
+    profitSplit: "100% of first $10K, then 90%",
+    payoutCap: "Weekly Payouts",
+    maxAllocation: "Up to 20 Accounts",
     coupon: "TIMON",
     url: "https://fundingticks.com"
   },
@@ -147,13 +127,13 @@ export const PROP_FIRMS: PropFirm[] = [
   {
     id: "ti",
     name: "Tradeify",
-    marketType: "CFD",
-    accountSize: "$10K – $200K",
-    profitSplit: "Up to 90%",
-    payoutCap: "Plan based",
-    maxAllocation: "Varies",
+    marketType: "FUTURES",
+    accountSize: "$50K – $150K",
+    profitSplit: "100% of first $10K, then 90%",
+    payoutCap: "No Activation Fees",
+    maxAllocation: "Up to 20 accounts",
     coupon: "TIMON",
-    url: "https://tradeify.com"
+    url: "https://tradeify.co"
   },
   {
     id: "bg",

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FAQ_DATA, VARIANTS, GLASS_STYLES, MOTION_RULES } from '../constants';
+import { GhostText } from './GhostText';
 
 export const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -15,7 +16,10 @@ export const FAQ: React.FC = () => {
           variants={VARIANTS.reveal}
           className="text-center space-y-4 mb-7 md:mb-12"
         >
-           <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter">Frequently Asked Questions</h2>
+           <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter leading-none">
+             THE ANSWERS BEHIND <br />
+             <GhostText text="THE PROCESS." className="text-transparent transition-colors cursor-default stroke-text" />
+           </h2>
            <p className="mono text-[11px] text-zinc-500 tracking-widest leading-relaxed max-w-lg mx-auto uppercase font-bold">
               Everything you need to know about our trading mentorship program.
            </p>
@@ -75,6 +79,7 @@ export const FAQ: React.FC = () => {
           ))}
         </motion.div>
       </div>
+      <style>{` .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); } `}</style>
     </section>
   );
 };

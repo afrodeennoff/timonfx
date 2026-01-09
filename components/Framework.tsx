@@ -16,9 +16,9 @@ export const Framework: React.FC = () => {
         >
           <motion.div variants={VARIANTS.reveal} className="space-y-3">
             <span className="mono text-[10px] text-brand-purple font-black tracking-[0.4em] uppercase">Process</span>
-            <h2 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none">
-              The 09:27 <br />
-              <GhostText text="Execution Window" className="text-zinc-600 transition-colors cursor-default stroke-text" />
+            <h2 className="text-5xl md:text-7xl font-black text-white italic uppercase tracking-tighter leading-none">
+              THE LOGIC BEHIND <br />
+              <GhostText text="EXECUTION." className="text-transparent transition-colors cursor-default stroke-text" />
             </h2>
           </motion.div>
 
@@ -52,11 +52,9 @@ export const Framework: React.FC = () => {
           viewport={MOTION_RULES.viewport}
           className={`relative aspect-square flex items-center justify-center group/main overflow-hidden max-w-md mx-auto w-full transform-gpu ${GLASS_STYLES.card}`}
         >
-          {/* Background grid overlay */}
           <div className="absolute inset-0 z-0 opacity-5 pointer-events-none">
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#aaa1_1px,transparent_1px),linear-gradient(to_bottom,#aaa1_1px,transparent_1px)] bg-[size:40px_40px]" />
           </div>
-          {/* Subtle inner layered border for depth */}
           <div className="absolute inset-[1px] rounded-[2.5rem] pointer-events-none opacity-0 group-hover/main:opacity-100 transition-opacity duration-700">
             <div className="absolute inset-0 rounded-[2.5rem] border border-brand-purple/20 blur-[2px] opacity-70" />
             <div className="absolute inset-0 rounded-[2.5rem] border border-white/5 opacity-50" />

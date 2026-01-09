@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, Suspense, lazy } from 'react';
 import { Hero } from './components/Hero';
 import { CustomCursor } from './components/CustomCursor';
@@ -103,9 +102,9 @@ export const App: React.FC = () => {
             {mode === 'EXECUTION' && (
               <motion.div 
                 key="execution-mode"
-                initial={{ opacity: 0, scale: 0.98 }} 
-                animate={{ opacity: 1, scale: 1 }} 
-                exit={{ opacity: 0, scale: 1.02 }}
+                initial={{ opacity: 0, y: 15 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.4, ease: MOTION_RULES.ease }}
                 className="pt-20 md:pt-24 px-2.5 md:px-4 min-h-[calc(100vh-80px)] flex flex-col gap-3.5 md:gap-5 pb-5 md:pb-7"
               >
@@ -150,9 +149,9 @@ export const App: React.FC = () => {
             {mode === 'LODGING' && (
               <motion.div 
                 key="lodging-mode"
-                initial={{ opacity: 0, scale: 0.98 }} 
-                animate={{ opacity: 1, scale: 1 }} 
-                exit={{ opacity: 0, scale: 1.02 }}
+                initial={{ opacity: 0, y: 15 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.4, ease: MOTION_RULES.ease }}
                 className="pt-20 md:pt-24 min-h-screen flex flex-col"
               >
