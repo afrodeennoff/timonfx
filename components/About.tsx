@@ -26,7 +26,6 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
   const [generatedLogo, setGeneratedLogo] = useState<string | null>(null);
   const [generationStep, setGenerationStep] = useState('');
   const cardRef = useRef<HTMLDivElement>(null);
-  const subCardRef = useRef<HTMLDivElement>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -139,7 +138,6 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
                />
             </div>
             <div 
-              ref={subCardRef}
               className={`absolute bottom-[-1.5rem] right-[-1.5rem] w-40 md:w-52 p-6 shadow-2xl ${GLASS_STYLES.card} group/sub`}
               style={{ transform: 'translateZ(30px)' }}
             >
@@ -172,9 +170,10 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
                   disabled={isGenerating}
                   whileHover={!isGenerating ? VARIANTS.buttonHover : {}}
                   whileTap={!isGenerating ? VARIANTS.buttonTap : {}}
-                  className={`mono text-[9px] font-black tracking-widest uppercase px-4 py-2 rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${isGenerating ? 'opacity-40 cursor-wait bg-zinc-800 border-zinc-700' : 'bg-brand-purple/10 text-white border border-brand-purple/30 hover:bg-brand-purple/20 hover:border-brand-purple/50'}`}
+                  className={`mono text-[9px] font-black tracking-widest uppercase px-4 py-2 rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] relative overflow-hidden group/btn ${isGenerating ? 'opacity-40 cursor-wait bg-zinc-800 border-zinc-700' : 'bg-brand-purple/10 text-white border border-brand-purple/30 hover:bg-brand-purple/20 hover:border-brand-purple/50'}`}
                 >
-                  {isGenerating ? generationStep || 'SYNTHESIZING...' : 'REFINE IDENTITY'}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
+                  <span className="relative z-10">{isGenerating ? generationStep || 'SYNTHESIZING...' : 'REFINE IDENTITY'}</span>
                 </motion.button>
               </div>
 

@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { VARIANTS, MOTION_RULES, GLASS_STYLES, DEPTH_PRESETS, MOTION_KILL_SWITCH } from '../constants';
+import { VARIANTS, MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH } from '../constants';
 import { ConicGradient } from './ConicGradient';
 
 interface HeroProps {
@@ -97,9 +96,6 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
   const midX = useTransform(springX, [-0.5, 0.5], [-50, 50]);
   const midY = useTransform(springY, [-0.5, 0.5], [-50, 50]);
   
-  const activeX = useTransform(springX, [-0.5, 0.5], [-75, 75]);
-  const activeY = useTransform(springY, [-0.5, 0.5], [-75, 75]);
-
   const rotateX = useTransform(springY, [-0.5, 0.5], [3, -3]);
   const rotateY = useTransform(springX, [-0.5, 0.5], [-3, 3]);
 
@@ -189,7 +185,8 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
             onClick={() => scrollToSection('join')}
             className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} w-full sm:w-auto px-8 py-3.5 md:px-10 md:py-4`}
           >
-            <span className="mono text-[11px] font-black text-white uppercase tracking-[0.5em]">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
+            <span className="relative z-10 mono text-[11px] font-black text-white uppercase tracking-[0.5em]">
               ENTER DESK
             </span>
           </motion.button>
@@ -200,7 +197,8 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
             onClick={() => scrollToSection('coupon')}
             className={`${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} w-full sm:w-auto px-8 py-3.5 md:px-10 md:py-4 opacity-60 hover:opacity-100 transition-opacity duration-300`}
           >
-            <span className="mono text-[11px] font-black text-white uppercase tracking-[0.5em]">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
+            <span className="relative z-10 mono text-[11px] font-black text-white uppercase tracking-[0.5em]">
               PARTNERS
             </span>
           </motion.button>

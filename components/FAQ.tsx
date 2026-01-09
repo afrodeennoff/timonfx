@@ -34,7 +34,7 @@ export const FAQ: React.FC = () => {
               key={i} 
               variants={VARIANTS.reveal}
               whileHover={VARIANTS.cardHover}
-              className={`group/main rounded-[2rem] overflow-hidden transition-all duration-500 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}
+              className={`group/main overflow-hidden transition-all duration-500 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}
             >
               <motion.button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}

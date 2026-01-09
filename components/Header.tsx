@@ -182,8 +182,9 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                    whileTap={VARIANTS.buttonTap}
                    className={`${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} ${activeSection === 'join' ? 'border-brand-purple/60' : ''} px-6 py-3 gap-2 focus:outline-none whitespace-nowrap`}
                  >
-                   <div className="w-1.5 h-1.5 rounded-full bg-brand-purple shadow-[0_0_8px_rgba(139,92,246,0.5)]" />
-                   <span className={`mono text-[10px] font-black uppercase tracking-[0.2em] ${activeSection === 'join' ? 'text-brand-purple' : 'text-white'}`}>
+                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
+                   <div className="w-1.5 h-1.5 rounded-full bg-brand-purple shadow-[0_0_8px_rgba(139,92,246,0.5)] relative z-10" />
+                   <span className={`mono text-[10px] font-black uppercase tracking-[0.2em] relative z-10 ${activeSection === 'join' ? 'text-brand-purple' : 'text-white'}`}>
                      JOIN
                    </span>
                  </motion.button>
@@ -194,8 +195,9 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                    onClick={() => onSetMode('STUDY')}
                    className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} px-6 py-3 gap-2 focus:outline-none whitespace-nowrap`}
                  >
-                   <div className="w-1.5 h-1.5 rounded-full bg-brand-red animate-ping" />
-                   <span className="mono text-[10px] font-black uppercase tracking-[0.2em]">
+                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
+                   <div className="w-1.5 h-1.5 rounded-full bg-brand-red animate-ping relative z-10" />
+                   <span className="mono text-[10px] font-black uppercase tracking-[0.2em] relative z-10">
                      EXIT DESK
                    </span>
                  </motion.button>
