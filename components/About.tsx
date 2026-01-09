@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { VARIANTS, ANIM_SYSTEM, GLASS_STYLES, MOTION_KILL_SWITCH, GLOBAL_3D_PRESET } from '../constants';
+import { VARIANTS, MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH, DEPTH_PRESETS } from '../constants';
 import { ConicGradient } from './ConicGradient';
 import { GhostText } from './GhostText';
 import { GoogleGenAI } from "@google/genai";
@@ -25,18 +25,16 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
   const [generatedLogo, setGeneratedLogo] = useState<string | null>(null);
   const [generationStep, setGenerationStep] = useState('');
   const cardRef = useRef<HTMLDivElement>(null);
+  const subCardRef = useRef<HTMLDivElement>(null);
 
-  // Parallax motion values synchronized with Pricing standard
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // High-fidelity spring synchronized with Pricing standard
-  const springConfig = { stiffness: 120, damping: 25, mass: 1.1 };
-  const xSpring = useSpring(x, springConfig);
-  const ySpring = useSpring(y, springConfig);
+  const xSpring = useSpring(x, DEPTH_PRESETS.spring);
+  const ySpring = useSpring(y, DEPTH_PRESETS.spring);
 
-  const rotateX = useTransform(ySpring, [-0.5, 0.5], [GLOBAL_3D_PRESET.maxRotation * 1.5, -GLOBAL_3D_PRESET.maxRotation * 1.5]);
-  const rotateY = useTransform(xSpring, [-0.5, 0.5], [-GLOBAL_3D_PRESET.maxRotation * 1.5, GLOBAL_3D_PRESET.maxRotation * 1.5]);
+  const rotateX = useTransform(ySpring, [-0.5, 0.5], [DEPTH_PRESETS.maxRotation * 4, -DEPTH_PRESETS.maxRotation * 4]);
+  const rotateY = useTransform(xSpring, [-0.5, 0.5], [-DEPTH_PRESETS.maxRotation * 4, DEPTH_PRESETS.maxRotation * 4]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current || MOTION_KILL_SWITCH) return;
@@ -55,32 +53,24 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
   const handleGenerateLogo = async () => {
     try {
       setIsGenerating(true);
-      setGenerationStep('ANALYZING_DNA');
+      setGenerationStep('ANALYZING...');
       
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       let referencePart = null;
 
       try {
-        setGenerationStep('EXTRACTING_REFERENCE');
         const response = await fetch('metimon.png');
         if (response.ok) {
           const blob = await response.blob();
           const base64 = await blobToBase64(blob);
           referencePart = {
-            inlineData: {
-              data: base64,
-              mimeType: 'image/png'
-            }
+            inlineData: { data: base64, mimeType: 'image/png' }
           };
         }
-      } catch (e) {
-        console.warn("Base reference fetch failed, proceeding with text-only prompt.");
-      }
+      } catch (e) {}
 
-      setGenerationStep('SYNTHESIZING_MARK');
-      
       const textPart = {
-        text: 'Generate a professional, minimalist trading logo for "ORK TRADING". The design must be a sleek, modern, and high-tech abstract mark that represents precision and market flow. Use the provided image as a conceptual base but elevate it to a premium, billionaire-tier trading firm standard. High contrast, dark mode optimized, purple and silver accents, vector style.'
+        text: 'Professional minimalist trading logo for TIMON TRADING. Abstract mark, dark mode, purple accents.'
       };
 
       const response = await ai.models.generateContent({
@@ -88,12 +78,9 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
         contents: { parts: referencePart ? [referencePart, textPart] : [textPart] },
       });
 
-      setGenerationStep('FINALIZING_VECTORS');
-
       for (const part of response.candidates[0].content.parts) {
         if (part.inlineData) {
-          const base64 = part.inlineData.data;
-          setGeneratedLogo(`data:image/png;base64,${base64}`);
+          setGeneratedLogo(`data:image/png;base64,${part.inlineData.data}`);
           break;
         }
       }
@@ -110,173 +97,96 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
       id="about" 
       initial="initial"
       whileInView="animate"
-      viewport={ANIM_SYSTEM.viewport}
+      viewport={MOTION_RULES.viewport}
       variants={VARIANTS.staggerContainer}
-      className="py-12 md:py-16 px-6 bg-brand-black relative overflow-hidden transform-gpu scroll-mt-24 md:scroll-mt-32"
+      className="py-10 md:py-14 px-6 bg-brand-black relative overflow-hidden transform-gpu scroll-mt-24 md:scroll-mt-32"
     >
-      <ConicGradient opacity={0.05} size="100%" />
+      <ConicGradient opacity={0.04} size="100%" />
 
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-[0.1]">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 text-[15vw] font-black text-white italic tracking-tighter select-none whitespace-nowrap">
-          <GhostText text="TIMON // TRADER" />
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 lg:gap-16 items-center relative z-10">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-center relative z-10">
          <motion.div 
            ref={cardRef}
            variants={VARIANTS.reveal} 
-           className="w-full lg:w-5/12 relative group will-change-transform"
+           className="w-full lg:w-5/12 relative group/main will-change-transform"
            onMouseMove={handleMouseMove}
            onMouseLeave={handleMouseLeave}
            style={{
              transformStyle: 'preserve-3d',
-             perspective: GLOBAL_3D_PRESET.perspective,
+             perspective: DEPTH_PRESETS.perspective,
              rotateX: !MOTION_KILL_SWITCH ? rotateX : 0,
              rotateY: !MOTION_KILL_SWITCH ? rotateY : 0,
            }}
            whileHover={{ 
-             y: -8, 
-             scale: 1.002,
-             transition: { duration: ANIM_SYSTEM.hoverDuration, ease: ANIM_SYSTEM.ease }
+             y: -8,
+             z: DEPTH_PRESETS.zDepth,
+             scale: DEPTH_PRESETS.scale
            }}
          >
-            <div className={`aspect-[4/5] overflow-hidden relative border border-white/10 shadow-2xl flex items-center justify-center p-8 rounded-[2.5rem] ${GLASS_STYLES.card}`}>
+            <div className={`aspect-[4/5] overflow-hidden relative shadow-2xl flex items-center justify-center p-8 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}>
                <img 
                  src="https://raw.githubusercontent.com/afrodeennoff/ork-orginal-/25e7b64e21207cd0988dc6cf704f230b51e73b74/IMG_1213.png" 
-                 alt="ORK Trading Logo" 
-                 className="w-full h-full object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-700 ease-[0.22,1,0.36,1]"
+                 alt="TIMON Trading Logo" 
+                 className="w-full h-full object-contain opacity-50 group-hover/main:opacity-100 transition-opacity duration-700 ease-[0.22,1,0.36,1] relative z-10"
                  loading="lazy"
                />
-               <div className="absolute inset-0 bg-gradient-to-t from-brand-black/40 via-transparent to-transparent pointer-events-none" />
             </div>
             <div 
-              className={`absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 w-36 md:w-48 p-5 md:p-6 shadow-2xl rounded-[1.5rem] ${GLASS_STYLES.card}`}
-              style={{ transform: 'translateZ(40px)' }}
+              ref={subCardRef}
+              className={`absolute bottom-[-1.5rem] right-[-1.5rem] w-40 md:w-52 p-6 shadow-2xl ${GLASS_STYLES.card} group/sub`}
+              style={{ transform: 'translateZ(30px)' }}
             >
-               <span className="mono text-[8px] text-brand-purple uppercase tracking-[0.5em] font-black">HEAD TRADER</span>
-               <p className="mt-2 mono text-[11px] md:text-[13px] text-white uppercase font-black italic tracking-widest leading-none">TIMON</p>
-               <p className="mt-1.5 mono text-[7px] text-zinc-600 uppercase tracking-widest font-black">FOCUS: EXECUTION</p>
+               <span className="mono text-[8px] text-brand-purple uppercase tracking-[0.5em] font-black relative z-10">HEAD_TRADER</span>
+               <p className="mt-1 mono text-[12px] text-white uppercase font-black italic tracking-widest leading-none relative z-10 group-hover/sub:text-brand-purple transition-colors duration-300">TIMON</p>
             </div>
          </motion.div>
 
-         <div className="w-full lg:w-7/12 space-y-6">
-            <motion.div variants={VARIANTS.reveal} className="space-y-3">
-              <div className="flex items-center justify-between mb-4">
-                <div className="relative">
+         <div className="w-full lg:w-7/12 space-y-8">
+            <motion.div variants={VARIANTS.reveal} className="space-y-4">
+              <div className="flex items-center justify-between mb-8">
+                <div className="h-8 flex items-center">
                   <AnimatePresence mode="wait">
                     {generatedLogo ? (
                       <motion.img 
-                        key="generated"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        src={generatedLogo} 
-                        alt="Refined Identity" 
-                        className="h-10 w-auto block filter drop-shadow-[0_0_10px_rgba(139,92,246,0.5)]" 
+                        key="gen" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        src={generatedLogo} alt="Refined" className="h-8 w-auto filter drop-shadow-[0_0_8px_rgba(139,92,246,0.3)]" 
                       />
                     ) : (
                       <motion.img 
-                        key="original"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        src="metimon.png" 
-                        alt="Metimon Logo" 
-                        className="h-7 w-auto block" 
+                        key="orig" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        src="metimon.png" alt="Metimon" className="h-6 w-auto opacity-60" 
                       />
                     )}
                   </AnimatePresence>
                 </div>
                 
-                <button 
+                <motion.button 
                   onClick={handleGenerateLogo}
                   disabled={isGenerating}
-                  className={`mono text-[8px] font-black tracking-widest uppercase px-4 py-2 rounded-full border border-white/10 hover:border-brand-purple/40 hover:bg-brand-purple/5 transition-all flex items-center gap-2 ${isGenerating ? 'opacity-50 cursor-wait' : ''}`}
+                  whileHover={!isGenerating ? VARIANTS.buttonHover : {}}
+                  whileTap={!isGenerating ? VARIANTS.buttonTap : {}}
+                  className={`mono text-[9px] font-black tracking-widest uppercase px-4 py-2 rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${isGenerating ? 'opacity-40 cursor-wait bg-zinc-800 border-zinc-700' : 'bg-brand-purple/10 text-white border border-brand-purple/30 hover:bg-brand-purple/20 hover:border-brand-purple/50'}`}
                 >
-                  <span className={`w-1 h-1 rounded-full ${isGenerating ? 'bg-brand-purple animate-ping' : 'bg-brand-purple/40'}`} />
                   {isGenerating ? 'SYNTHESIZING...' : 'REFINE IDENTITY'}
-                </button>
+                </motion.button>
               </div>
 
-              <span className="mono text-[10px] text-brand-purple font-black tracking-[0.5em] uppercase">Method</span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white italic uppercase tracking-tighter leading-none">
-                The Trader Behind <span className="text-transparent stroke-text">ORK</span>
+              <span className="mono text-[10px] text-brand-purple font-black tracking-[0.5em] uppercase">The Method</span>
+              <h2 className="text-4xl md:text-6xl font-black text-white italic uppercase tracking-tighter leading-none">
+                The Trader Behind <GhostText text="TIMON" className="text-transparent stroke-text" />
               </h2>
             </motion.div>
             
-            <motion.div variants={VARIANTS.reveal} className="space-y-4">
-              <p className="mono text-sm md:text-base text-zinc-200 uppercase tracking-[0.02em] leading-relaxed font-black">
-                <span className="text-brand-purple">I am Timon.</span> I develop disciplined traders, not followers. Built to focus strictly on market structure and risk control.
+            <motion.div variants={VARIANTS.reveal} className="space-y-6 group/text">
+              <p className="mono text-lg md:text-xl text-zinc-200 leading-relaxed font-medium group-hover/text:text-white transition-colors duration-300">
+                <span className="text-brand-purple font-bold">I’m Timon — a futures trader and trading educator.</span>
+                {' '}After years of studying price action, market behavior, and trading psychology, I developed a structured approach focused on clarity, simplicity, and consistent execution.
               </p>
-              
-              <p className="mono text-[10px] text-zinc-500 uppercase tracking-widest leading-relaxed font-medium max-w-xl">
-                Through session reviews and live analysis, traders operate with clarity and refine their edge via a validated method.
+              <p className="mono text-sm md:text-base text-zinc-400 leading-relaxed font-medium border-l border-white/5 pl-6 group-hover/text:text-white transition-colors duration-300">
+                This method is built to help traders avoid common mistakes, reduce noise, and progress with better decision-making and discipline. The focus is straightforward: strategy, execution, and mindset. No distractions. Just a process designed to support steady improvement over time.
               </p>
-
-              <div className="pt-4 border-t border-white/5">
-                <p className="mono text-xs text-white uppercase tracking-[0.2em] font-black italic">
-                   Precision. Focus. <span className="text-brand-purple">Pure Execution.</span>
-                </p>
-              </div>
             </motion.div>
-            
-            <motion.button 
-              whileHover={VARIANTS.buttonHover}
-              whileTap={VARIANTS.buttonTap}
-              onClick={onStartPreview}
-              className={`group relative w-full sm:w-auto px-10 py-4 rounded-full mono text-[10px] font-black text-white uppercase tracking-[0.3em] overflow-hidden ${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover}`}
-            >
-              <span className="relative z-10 group-hover:text-brand-purple transition-colors duration-300">REQUEST ACCESS</span>
-            </motion.button>
          </div>
       </div>
-
-      <AnimatePresence>
-        {isGenerating && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[1000] bg-brand-black/90 backdrop-blur-md flex items-center justify-center p-6"
-          >
-            <div className={`max-w-md w-full p-8 rounded-[2rem] border border-white/10 ${GLASS_STYLES.card} flex flex-col items-center gap-8`}>
-              <div className="relative w-24 h-24">
-                <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-0 border-t-2 border-brand-purple rounded-full opacity-40"
-                />
-                <motion.div 
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-2 border-b-2 border-brand-purple/30 rounded-full"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="mono text-[10px] text-brand-purple font-black animate-pulse tracking-widest uppercase">ORK</span>
-                </div>
-              </div>
-
-              <div className="text-center space-y-2">
-                <h3 className="text-xl font-black text-white uppercase tracking-[0.2em] italic">Branding Lab</h3>
-                <div className="flex flex-col items-center gap-1">
-                  <span className="mono text-[9px] text-brand-purple font-black tracking-[0.5em] uppercase mb-1">{generationStep}</span>
-                  <div className="w-48 h-[2px] bg-white/5 rounded-full overflow-hidden">
-                    <motion.div 
-                      initial={{ x: '-100%' }}
-                      animate={{ x: '100%' }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                      className="h-full w-1/3 bg-brand-purple"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <p className="mono text-[8px] text-zinc-500 text-center uppercase tracking-widest font-black max-w-[240px] leading-relaxed">
-                Applying institutional aesthetic parameters. Reconstructing visual identity for maximum authority.
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <style>{`
         .stroke-text { -webkit-text-stroke: 1px rgba(255,255,255,0.2); }

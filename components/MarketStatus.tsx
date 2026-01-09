@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { GLASS_STYLES, ANIM_SYSTEM } from '../constants';
+// Fixed: Using MOTION_RULES instead of non-existent ANIM_SYSTEM
+import { GLASS_STYLES, MOTION_RULES } from '../constants';
 
 interface Session {
   id: string;
@@ -74,11 +75,12 @@ export const MarketStatus: React.FC = React.memo(() => {
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: ANIM_SYSTEM.revealDuration, ease: ANIM_SYSTEM.ease }}
-      className={`fixed bottom-4 left-4 md:bottom-6 md:left-6 z-[150] pointer-events-none p-3 md:p-4 ${GLASS_STYLES.card} !rounded-[1.25rem] border border-white/10 shadow-2xl backdrop-blur-xl`}
+      // Fixed: Using MOTION_RULES instead of non-existent ANIM_SYSTEM
+      transition={{ duration: MOTION_RULES.revealDuration, ease: MOTION_RULES.ease }}
+      className={`fixed bottom-2 left-2 md:bottom-3 md:left-3 z-[150] pointer-events-none p-2 md:p-2.5 ${GLASS_STYLES.card} !rounded-[1.25rem] shadow-2xl backdrop-blur-xl`}
     >
-      <div className="flex flex-row md:flex-col gap-3 md:gap-1.5 items-center md:items-start">
-        <div className="flex items-center gap-2 border-r md:border-r-0 border-white/10 pr-3 md:pr-0">
+      <div className="flex flex-row md:flex-col gap-1 items-center md:items-start">
+        <div className="flex items-center gap-2 border-r md:border-r-0 border-white/10 pr-2 md:pr-0">
           <span className="mono text-[8px] text-zinc-600 uppercase tracking-widest font-black">UTC</span>
           <span className="mono text-[9px] md:text-[10px] text-zinc-400 tracking-widest font-bold tabular-nums">
             {data.utcTimeString}

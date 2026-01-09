@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AppMode } from '../types';
-import { VARIANTS, ANIM_SYSTEM, GLASS_STYLES } from '../constants';
+import { VARIANTS, MOTION_RULES, GLASS_STYLES } from '../constants';
 
 interface HeaderProps {
   onStartPreview: () => void;
   mode: AppMode;
   onToggleMode: () => void;
+  onSetMode: (mode: AppMode) => void;
 }
 
 const NAV_ITEMS = [
@@ -20,8 +21,6 @@ const NAV_ITEMS = [
 const scrollToSection = (id: string) => {
   const element = document.getElementById(id);
   if (element) {
-    // Lenis is present in the project, so a simple scrollIntoView or 
-    // window.scrollTo with the right offset will be intercepted and smoothed.
     const headerOffset = 100;
     const elementPosition = element.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -48,8 +47,8 @@ const NavLink: React.FC<{
     }}
     initial={{ opacity: 0, y: -10 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.1 + index * 0.05, ease: ANIM_SYSTEM.ease }}
-    className="relative px-3 py-2 group focus:outline-none"
+    transition={{ delay: 0.1 + index * 0.05, ease: MOTION_RULES.ease }}
+    className="relative px-2 py-0.5 group focus:outline-none whitespace-nowrap"
   >
     <span className={`relative z-10 mono text-[10px] transition-colors duration-300 font-black tracking-[0.2em] uppercase ${
       isActive ? 'text-brand-purple' : 'text-zinc-400 group-hover:text-white'
@@ -62,7 +61,7 @@ const NavLink: React.FC<{
   </motion.button>
 );
 
-export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMode }) => {
+export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMode, onSetMode }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
@@ -109,20 +108,24 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: ANIM_SYSTEM.ease }}
-        className="fixed top-0 left-0 right-0 z-[200] px-4 pt-4 md:px-6 md:pt-6 pointer-events-none flex justify-center"
+        transition={{ duration: 0.6, ease: MOTION_RULES.ease }}
+        className="fixed top-0 left-0 right-0 z-[200] px-2.5 pt-2 md:pt-3 pointer-events-none flex justify-center"
       >
         <div className={`pointer-events-auto transition-all duration-500 ease-[0.22,1,0.36,1] ${
           scrolled ? 'w-auto max-w-[90vw]' : 'w-full max-w-7xl'
-        }`}>
-          <div className={`border border-white/10 rounded-full px-4 md:px-2 py-2 md:h-16 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 md:gap-0 ${GLASS_STYLES.card}`}>
+        } group/main`}>
+          <div className={`border border-white/15 rounded-full px-2.5 md:px-2 py-3 md:h-16 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2 md:gap-0 ${GLASS_STYLES.card}`}>
+            <div className="absolute inset-[1px] rounded-full pointer-events-none opacity-0 group-hover/main:opacity-100 transition-opacity duration-700">
+              <div className="absolute inset-0 rounded-full border border-brand-purple/20 blur-[2px] opacity-70" />
+              <div className="absolute inset-0 rounded-full border border-white/5 opacity-50" />
+            </div>
             
-            <div className="flex items-center justify-between md:justify-start px-4 md:border-r border-white/5 md:pr-8 h-10 md:h-auto">
+            <div className="flex items-center justify-between md:justify-start px-2.5 md:border-r border-white/5 md:pr-6 h-7 md:h-auto relative z-10">
                <button 
-                 onClick={(e) => { e.preventDefault(); scrollToSection('hero'); }}
-                 className="flex items-center gap-2 select-none group focus:outline-none"
+                 onClick={(e) => { e.preventDefault(); onSetMode('STUDY'); scrollToSection('hero'); }}
+                 className="flex items-center gap-2 select-none group focus:outline-none whitespace-nowrap"
                >
-                 <span className="text-xl font-black tracking-tighter text-white uppercase italic leading-none group-hover:text-brand-purple transition-colors">ORK</span>
+                 <span className="text-xl font-black tracking-tighter text-white uppercase italic leading-none group-hover:text-brand-purple transition-colors">TIMON</span>
                  <span className="text-xl font-black tracking-tighter text-brand-purple italic leading-none">//</span>
                </button>
                
@@ -139,7 +142,7 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                </button>
             </div>
 
-            <nav className="hidden md:flex items-center gap-1 px-4">
+            <nav className="hidden md:flex items-center gap-2 px-3 relative z-10">
               {mode === 'STUDY' ? (
                 <>
                   {NAV_ITEMS.map((item, i) => (
@@ -154,26 +157,30 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                   ))}
                 </>
               ) : (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex items-center gap-3 px-5 py-2 bg-brand-purple/10 border border-brand-purple/20 rounded-full"
-                >
-                  <div className="w-1.5 h-1.5 rounded-full bg-brand-purple animate-pulse" />
-                  <span className="mono text-[10px] text-brand-purple font-black tracking-[0.2em] uppercase">
-                    TRADING: LIVE MARKET ACCESS
-                  </span>
-                </motion.div>
+                <div className="flex items-center gap-2">
+                   <button 
+                     onClick={() => onSetMode('EXECUTION')}
+                     className={`px-4 py-1.5 rounded-full mono text-[9px] font-black uppercase tracking-widest transition-all ${mode === 'EXECUTION' ? 'bg-white/10 text-white' : 'text-zinc-600 hover:text-white'}`}
+                   >
+                     TERMINAL
+                   </button>
+                   <button 
+                     onClick={() => onSetMode('LODGING')}
+                     className={`px-4 py-1.5 rounded-full mono text-[9px] font-black uppercase tracking-widest transition-all ${mode === 'LODGING' ? 'bg-white/10 text-white' : 'text-zinc-600 hover:text-white'}`}
+                   >
+                     LOGS
+                   </button>
+                </div>
               )}
             </nav>
 
-            <div className="hidden md:flex items-center gap-4 pl-8 border-l border-white/5">
+            <div className="hidden md:flex items-center gap-2 pl-4 border-l border-white/5 relative z-10">
                {mode === 'STUDY' ? (
                  <motion.button 
                    onClick={(e) => { e.preventDefault(); scrollToSection('join'); }}
                    whileHover={VARIANTS.buttonHover}
                    whileTap={VARIANTS.buttonTap}
-                   className={`relative h-11 px-7 rounded-full flex items-center gap-3 transition-all duration-300 overflow-hidden group focus:outline-none ${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} ${activeSection === 'join' ? 'border-brand-purple/60' : ''}`}
+                   className={`${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} ${activeSection === 'join' ? 'border-brand-purple/60' : ''} px-6 py-3 gap-2 focus:outline-none whitespace-nowrap`}
                  >
                    <div className="w-1.5 h-1.5 rounded-full bg-brand-purple shadow-[0_0_8px_rgba(139,92,246,0.5)]" />
                    <span className={`mono text-[10px] font-black uppercase tracking-[0.2em] ${activeSection === 'join' ? 'text-brand-purple' : 'text-white'}`}>
@@ -181,15 +188,17 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                    </span>
                  </motion.button>
                ) : (
-                 <button 
-                   onClick={onToggleMode}
-                   className="relative h-11 px-7 rounded-full flex items-center gap-3 transition-all duration-300 overflow-hidden bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:bg-zinc-200 focus:outline-none"
+                 <motion.button 
+                   whileHover={VARIANTS.buttonHover}
+                   whileTap={VARIANTS.buttonTap}
+                   onClick={() => onSetMode('STUDY')}
+                   className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} px-6 py-3 gap-2 focus:outline-none whitespace-nowrap`}
                  >
                    <div className="w-1.5 h-1.5 rounded-full bg-brand-red animate-ping" />
                    <span className="mono text-[10px] font-black uppercase tracking-[0.2em]">
-                     CLOSE DESK
+                     EXIT DESK
                    </span>
-                 </button>
+                 </motion.button>
                )}
             </div>
           </div>
@@ -202,14 +211,14 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                  exit={{ height: 0, opacity: 0 }}
                  className={`md:hidden overflow-hidden mt-2 rounded-[1.5rem] ${GLASS_STYLES.card}`}
                >
-                 <div className="p-6 flex flex-col gap-6">
+                 <div className="p-3.5 flex flex-col gap-3.5">
                     {mode === 'STUDY' ? (
-                      <div className="flex flex-col gap-6">
+                      <div className="flex flex-col gap-3.5">
                         {NAV_ITEMS.map((item) => (
                           <button 
                             key={item.label} 
                             onClick={(e) => { e.preventDefault(); scrollToSection(item.id); handleMobileNavClick(); }}
-                            className={`mono text-left text-sm uppercase tracking-widest font-black transition-colors focus:outline-none ${
+                            className={`mono text-left text-sm uppercase tracking-widest font-black transition-colors focus:outline-none whitespace-nowrap ${
                               activeSection === item.id ? 'text-brand-purple' : 'text-zinc-300'
                             }`}
                           >
@@ -218,24 +227,25 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                         ))}
                       </div>
                     ) : (
-                      <span className="mono text-xs text-brand-purple font-black uppercase tracking-widest">
-                         TRADING: LIVE MARKET ACCESS
-                      </span>
+                      <div className="flex flex-col gap-3">
+                        <button onClick={() => { onSetMode('EXECUTION'); setMobileMenuOpen(false); }} className={`mono text-left text-sm font-black uppercase tracking-widest ${mode === 'EXECUTION' ? 'text-brand-purple' : 'text-zinc-400'}`}>TERMINAL</button>
+                        <button onClick={() => { onSetMode('LODGING'); setMobileMenuOpen(false); }} className={`mono text-left text-sm font-black uppercase tracking-widest ${mode === 'LODGING' ? 'text-brand-purple' : 'text-zinc-400'}`}>LOGS</button>
+                      </div>
                     )}
                     <div className="h-[1px] bg-white/10" />
                     {mode === 'STUDY' ? (
                       <button 
                          onClick={(e) => { e.preventDefault(); scrollToSection('join'); handleMobileNavClick(); }}
-                         className={`w-full py-5 rounded-full mono text-xs font-black uppercase text-center tracking-widest bg-brand-purple text-white shadow-[0_10px_30px_rgba(139,92,246,0.3)] focus:outline-none`}
+                         className={`w-full px-6 py-3 rounded-full mono text-xs font-black uppercase text-center tracking-widest bg-brand-purple text-white shadow-[0_10px_30px_rgba(139,92,246,0.3)] transition-all duration-300 focus:outline-none whitespace-nowrap`}
                       >
                          JOIN
                       </button>
                     ) : (
                       <button 
-                         onClick={() => { onToggleMode(); setMobileMenuOpen(false); }}
-                         className="w-full py-5 rounded-full mono text-xs font-black uppercase tracking-widest bg-white text-black focus:outline-none"
+                         onClick={() => { onSetMode('STUDY'); setMobileMenuOpen(false); }}
+                         className={`w-full px-6 py-3 rounded-full mono text-xs font-black uppercase tracking-widest ${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} text-white focus:outline-none whitespace-nowrap`}
                       >
-                         CLOSE DESK
+                         EXIT DESK
                       </button>
                     )}
                  </div>

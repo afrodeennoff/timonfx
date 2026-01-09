@@ -1,5 +1,4 @@
-
-export type AppMode = 'STUDY' | 'EXECUTION';
+export type AppMode = 'STUDY' | 'EXECUTION' | 'LODGING';
 
 export interface ModuleCard {
   id: string;
@@ -25,35 +24,23 @@ export interface Testimonial {
 
 export interface PropFirm {
   id: string;
-  rank: number;
   name: string;
-  type: 'FUTURES' | 'CFD';
-  platforms: string[];
-  drawdownType: 'TRAILING' | 'STAT' | 'END-OF-DAY';
-  maxLeverage: string;
-  profitTarget: string;
-  maxDrawdown: string;
+  marketType: 'CFD' | 'FUTURES';
+  accountSize: string;
+  profitSplit: string;
+  payoutCap: string;
   maxAllocation: string;
-  accountType: string;
-  payoutSpeed: string;
-  payoutPolicy: string;
-  yearsInOperation: string;
-  assets: string[];
-  firmRules: string[];
-  startingPrice: string;
-  couponCode: string;
-  discount: string;
-  link: string;
-  description: string;
+  coupon?: string;
+  url?: string;
   isRecommended?: boolean;
 }
 
 export enum SectionID {
   Hero = 'hero',
-  Founder = 'founder',
-  Framework = 'framework',
-  Education = 'education',
-  Pricing = 'pricing',
+  About = 'about',
+  Logic = 'logic',
+  Edge = 'edge',
+  Join = 'join',
   Testimonials = 'testimonials',
   FAQ = 'faq',
   Preview = 'preview',

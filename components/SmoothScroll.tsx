@@ -3,19 +3,17 @@ import Lenis from 'lenis';
 
 export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
-    // STRICT GUARD: Ensure browser environment
     if (typeof window === 'undefined') return;
 
-    // Optimized for 60fps consistency and professional feel
     const lenis = new Lenis({
-      duration: 1.4, // Slightly longer for more premium feel
+      duration: 1.2, // Balanced duration for natural momentum
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1,
+      wheelMultiplier: 1.0,
       touchMultiplier: 1.5,
-      lerp: 0.08, // Slightly more gradual deceleration
+      lerp: 0.1, // More responsive tracking for a quiet, predictable feel
     });
 
     function raf(time: number) {

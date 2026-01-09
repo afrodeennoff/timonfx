@@ -1,160 +1,168 @@
-import React, { useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { MODULES, VARIANTS, ANIM_SYSTEM, GLASS_STYLES, GLOBAL_3D_PRESET, MOTION_KILL_SWITCH } from '../constants';
+import React, { useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MODULES, MOTION_RULES, GLASS_STYLES, VARIANTS } from '../constants';
 import { ModuleCard } from '../types';
 import { ConicGradient } from './ConicGradient';
 import { GhostText } from './GhostText';
 
-const ProtocolCard: React.FC<{ module: ModuleCard; index: number }> = React.memo(({ module, index }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  // Synchronized with Pricing standard physics
-  const springConfig = { stiffness: 120, damping: 25, mass: 1.1 };
-  const xSpring = useSpring(x, springConfig);
-  const ySpring = useSpring(y, springConfig);
-
-  // Subtle 3D mapping using global preset values
-  const rotateX = useTransform(ySpring, [-0.5, 0.5], [GLOBAL_3D_PRESET.maxRotation * 1.2, -GLOBAL_3D_PRESET.maxRotation * 1.2]);
-  const rotateY = useTransform(xSpring, [-0.5, 0.5], [-GLOBAL_3D_PRESET.maxRotation * 1.2, GLOBAL_3D_PRESET.maxRotation * 1.2]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!cardRef.current || MOTION_KILL_SWITCH) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    x.set((e.clientX - centerX) / rect.width);
-    y.set((e.clientY - centerY) / rect.height);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+const ExecutionStep: React.FC<{ module: ModuleCard; index: number }> = ({ module, index }) => {
+  const [isOpen, setIsOpen] = useState(index === 0);
 
   return (
     <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      initial="initial"
-      whileInView="animate"
-      viewport={ANIM_SYSTEM.viewport}
       variants={VARIANTS.reveal}
-      whileHover={{ 
-        y: -8,
-        z: GLOBAL_3D_PRESET.zDepth,
-        scale: 1.002,
-        borderColor: "rgba(139, 92, 246, 0.35)",
-        backgroundColor: "rgba(255, 255, 255, 0.03)",
-        boxShadow: "0 30px 60px -20px rgba(0,0,0,0.8)",
-        transition: { duration: ANIM_SYSTEM.hoverDuration, ease: ANIM_SYSTEM.ease }
-      }}
-      style={{
-        transformStyle: 'preserve-3d',
-        perspective: GLOBAL_3D_PRESET.perspective,
-        rotateX: !MOTION_KILL_SWITCH ? rotateX : 0,
-        rotateY: !MOTION_KILL_SWITCH ? rotateY : 0,
-      }}
-      className={`relative h-full p-8 flex flex-col gap-8 rounded-[2.5rem] border border-white/5 bg-zinc-950/20 transition-all duration-300 group overflow-hidden will-change-transform ${GLASS_STYLES.cardHover}`}
+      className={`group relative border-l-2 transition-all duration-500 ${
+        isOpen ? 'border-brand-purple' : 'border-white/5 hover:border-brand-purple/30'
+      } ml-4 md:ml-10 pl-8 md:pl-20 pb-24 last:pb-0`}
     >
-      <div className="flex justify-between items-start" style={{ transform: 'translateZ(30px)' }}>
-        <div className="space-y-1">
-          <span className="mono text-[8px] text-zinc-600 font-black tracking-[0.4em] uppercase">Ref_0{index + 1}</span>
-          <h3 className="text-xl font-black text-white italic uppercase tracking-tighter leading-none group-hover:text-brand-purple transition-colors duration-300">
-            {module.title}
-          </h3>
-        </div>
-        <div className="opacity-10 group-hover:opacity-30 transition-opacity duration-700 select-none">
-          <span className="text-4xl font-black italic text-white">0{index + 1}</span>
-        </div>
+      <div className="absolute left-[-11px] top-0 flex items-center justify-center">
+        <motion.div
+          animate={{
+            scale: isOpen ? [1, 1.2, 1] : 1,
+            backgroundColor: isOpen ? '#8b5cf6' : '#0a0a0a',
+            borderColor: isOpen ? '#8b5cf6' : 'rgba(255,255,255,0.1)',
+          }}
+          transition={{ duration: 0.4, ease: MOTION_RULES.ease }}
+          className="w-5 h-5 rounded-full border-2 z-10 shadow-[0_0_15px_rgba(139,92,246,0.2)]"
+        />
+        {isOpen && (
+          <motion.div
+            layoutId="node-glow"
+            className="absolute w-12 h-12 bg-brand-purple/10 blur-2xl rounded-full"
+          />
+        )}
       </div>
 
-      <p className="mono text-[10px] text-zinc-400 uppercase leading-relaxed tracking-wider italic font-medium border-l border-brand-purple/20 pl-4" style={{ transform: 'translateZ(15px)' }}>
-        {module.objective}
-      </p>
-
-      <div className="grid grid-cols-1 gap-6 mt-auto" style={{ transform: 'translateZ(20px)' }}>
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="h-px w-3 bg-zinc-800" />
-            <span className="mono text-[8px] text-zinc-500 font-black tracking-widest uppercase italic">Deliverables</span>
+      <div className="relative cursor-pointer select-none" onClick={() => setIsOpen(!isOpen)}>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <span className="mono text-[10px] text-brand-purple font-black tracking-[0.5em] uppercase opacity-60">
+              LOGIC_GATE_0{index + 1}
+            </span>
+            <h3 className={`text-4xl md:text-6xl font-black italic uppercase tracking-tighter transition-all duration-500 ${
+              isOpen ? 'text-white translate-x-2' : 'text-zinc-800 group-hover:text-zinc-600'
+            }`}>
+              {module.title}
+            </h3>
           </div>
-          <ul className="space-y-2">
-            {module.checklist.map((item, i) => (
-              <li key={i} className="flex items-center gap-3">
-                <span className="text-[10px] text-brand-purple/40 font-black">/</span>
-                <span className="mono text-[9px] text-zinc-300 uppercase font-bold tracking-widest">{item}</span>
-              </li>
-            ))}
-          </ul>
+          
+          <div className="flex items-center gap-8">
+             <div className="flex flex-col items-end opacity-40 group-hover:opacity-100 transition-opacity">
+               <span className={`mono text-[9px] font-black uppercase tracking-widest ${isOpen ? 'text-brand-purple' : 'text-zinc-700'}`}>
+                 {isOpen ? 'STATUS: ACTIVE' : 'STATUS: STANDBY'}
+               </span>
+               <span className="mono text-[8px] text-zinc-800 uppercase font-black">SECURE_CLEARANCE</span>
+             </div>
+             <motion.div
+               animate={{ rotate: isOpen ? 180 : 0 }}
+               className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all ${isOpen ? 'border-brand-purple text-brand-purple bg-brand-purple/5' : 'border-white/5 text-zinc-800 hover:border-white/10'}`}
+             >
+               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                 <path d="M6 9l6 6 6-6" />
+               </svg>
+             </motion.div>
+          </div>
         </div>
 
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <div className="h-px w-3 bg-zinc-800" />
-            <span className="mono text-[8px] text-zinc-500 font-black tracking-widest uppercase italic">Directives</span>
-          </div>
-          <ul className="space-y-2">
-            {module.mistakes.map((m, i) => (
-              <li key={i} className="flex items-center gap-3">
-                <span className="text-[10px] text-brand-red/40 font-black">!</span>
-                <span className="mono text-[9px] text-zinc-500 uppercase font-medium italic tracking-wider">{m}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.6, ease: MOTION_RULES.ease }}
+              className="overflow-hidden"
+            >
+              <div className="pt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
+                <motion.div 
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={MOTION_RULES.viewport}
+                  variants={VARIANTS.reveal}
+                  whileHover={VARIANTS.cardHover}
+                  className={`p-10 md:p-14 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover} flex flex-col justify-between relative group/card`}
+                >
+                  <div className="absolute inset-[1px] rounded-[2.5rem] pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity duration-700">
+                    <div className="absolute inset-0 rounded-[2.5rem] border border-brand-purple/20 blur-[2px] opacity-70" />
+                    <div className="absolute inset-0 rounded-[2.5rem] border border-white/5 opacity-50" />
+                  </div>
+                  
+                  <div className="absolute top-0 right-0 p-8 opacity-5 group-hover/card:opacity-10 transition-opacity">
+                    <span className="mono text-[40px] font-black italic">STEP_{index + 1}</span>
+                  </div>
+                  
+                  <div className="space-y-10 relative z-10">
+                    <div className="space-y-4">
+                      <span className="mono text-[9px] text-zinc-600 uppercase tracking-widest font-black">OBJECTIVE //</span>
+                      <p className="mono text-sm md:text-base text-zinc-300 uppercase leading-relaxed tracking-widest font-bold border-l-2 border-brand-purple/40 pl-6">
+                        {module.objective}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                       <div className="space-y-4">
+                          <span className="mono text-[8px] text-zinc-500 uppercase tracking-widest font-black italic">CHECKLIST //</span>
+                          <ul className="space-y-2">
+                             {module.checklist.map((item, i) => (
+                               <li key={i} className="flex items-center gap-3">
+                                 <div className="w-1 h-1 bg-brand-purple" />
+                                 <span className="mono text-[9px] text-zinc-400 uppercase font-bold tracking-widest">{item}</span>
+                               </li>
+                             ))}
+                          </ul>
+                       </div>
+                       <div className="space-y-4">
+                          <span className="mono text-[8px] text-zinc-500 uppercase tracking-widest font-black italic">COMMON_ERROR //</span>
+                          <ul className="space-y-2">
+                             {module.mistakes.map((item, i) => (
+                               <li key={i} className="flex items-center gap-3">
+                                 <div className="w-1 h-1 bg-brand-red opacity-50" />
+                                 <span className="mono text-[9px] text-zinc-400 uppercase font-bold tracking-widest">{item}</span>
+                               </li>
+                             ))}
+                          </ul>
+                       </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      <div className="absolute bottom-0 right-0 w-24 h-24 bg-brand-purple/5 blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
     </motion.div>
   );
-});
+};
 
 export const Education: React.FC = () => {
   return (
-    <section id="edge" className="bg-brand-black py-24 md:py-32 relative z-10 overflow-hidden scroll-mt-24 md:scroll-mt-32">
-       <ConicGradient opacity={0.04} size="140%" blur="120px" />
-
-       <div className="max-w-7xl mx-auto px-6 relative">
-          <motion.div 
-            initial="initial"
-            whileInView="animate"
-            viewport={ANIM_SYSTEM.viewport}
-            variants={VARIANTS.staggerContainer}
-            className="flex flex-col md:flex-row items-center justify-between gap-12 mb-20 md:mb-24"
-          >
-             <div className="space-y-4 text-center md:text-left">
-                <motion.div variants={VARIANTS.reveal} className="flex items-center justify-center md:justify-start gap-3">
-                   <div className="h-[2px] w-6 bg-brand-purple" />
-                   <span className="mono text-[10px] text-brand-purple font-black tracking-[0.6em] uppercase">Trading Method</span>
-                </motion.div>
-                <motion.h2 variants={VARIANTS.reveal} className="text-4xl md:text-6xl lg:text-7xl font-black text-white italic uppercase tracking-tighter leading-none">
-                   What Makes <br />
-                   <GhostText text="ORK Different?" className="text-transparent stroke-text" />
-                </motion.h2>
-             </div>
-             <motion.div variants={VARIANTS.reveal} className="max-w-xs p-6 border border-white/5 rounded-2xl bg-white/[0.01]">
-                <p className="mono text-[10px] text-zinc-500 uppercase tracking-widest font-black leading-relaxed italic">
-                  Direct mentorship and session-based execution reviews for stabilized performance across all market cycles.
-                </p>
-             </motion.div>
+    <section id="edge" className="py-10 md:py-14 bg-brand-black relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <motion.div 
+          initial="initial"
+          whileInView="animate"
+          viewport={MOTION_RULES.viewport}
+          variants={VARIANTS.staggerContainer}
+          className="mb-20 space-y-4"
+        >
+          <motion.div variants={VARIANTS.reveal} className="flex items-center gap-4">
+            <div className="h-px w-12 bg-brand-purple" />
+            <span className="mono text-[11px] text-brand-purple font-black tracking-[0.5em] uppercase italic">Curriculum Logic</span>
           </motion.div>
+          <motion.h2 variants={VARIANTS.reveal} className="text-5xl md:text-7xl font-black text-white italic uppercase tracking-tighter leading-none">
+            Built For <br />
+            <GhostText text="Consistent Size." className="text-zinc-600 transition-colors cursor-default stroke-text" />
+          </motion.h2>
+        </motion.div>
 
-          <motion.div 
-             initial="initial"
-             whileInView="animate"
-             viewport={ANIM_SYSTEM.viewport}
-             variants={VARIANTS.staggerContainer}
-             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-             style={{ transformStyle: 'preserve-3d' }}
-          >
-             {MODULES.map((module, i) => (
-                <ProtocolCard key={module.id} module={module} index={i} />
-             ))}
-          </motion.div>
-       </div>
-       <style>{` .stroke-text { -webkit-text-stroke: 1px rgba(255,255,255,0.3); } `}</style>
+        <div className="relative">
+          {MODULES.map((module, i) => (
+            <ExecutionStep key={module.id} module={module} index={i} />
+          ))}
+        </div>
+      </div>
+      
+      <style>{` .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); } `}</style>
     </section>
   );
 };
