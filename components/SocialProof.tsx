@@ -9,12 +9,12 @@ export const SocialProof: React.FC = () => {
       whileInView="animate"
       viewport={MOTION_RULES.viewport}
       variants={VARIANTS.staggerContainer}
-      className="bg-brand-black pt-0 pb-4 md:pb-6"
+      className="bg-brand-black pt-0 pb-10 md:pb-14"
     >
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
           variants={VARIANTS.reveal}
-          className="flex items-center justify-center gap-6 md:gap-8"
+          className="flex items-center justify-center gap-7 md:gap-10"
         >
           {SOCIAL_LINKS.map((link) => (
             <a

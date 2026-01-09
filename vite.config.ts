@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
+      base: './',
       server: {
         port: 3000,
         host: '0.0.0.0',
@@ -12,9 +13,23 @@ export default defineConfig(({ mode }) => {
       plugins: [react()],
       resolve: {
         alias: {
-          // Fix: Use path.resolve('.') which defaults to the current working directory, avoiding potential TS definition issues with process.cwd()
           '@': path.resolve('.'),
         }
+      },
+      define: {
+        'process.env.NODE_ENV': JSON.stringify(mode),
+        'process.env.API_KEY': JSON.stringify(env.API_KEY || process.env.API_KEY || '')
+      },
+      build: {
+        outDir: 'dist',
+        assetsDir: 'assets',
+        emptyOutDir: true,
+        rollupOptions: {
+          input: {
+            main: path.resolve('.', 'index.html'),
+          },
+          external: ['@google/genai']
+        },
       }
     };
 });

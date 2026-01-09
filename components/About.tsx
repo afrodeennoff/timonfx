@@ -3,11 +3,12 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from
 import { VARIANTS, MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH, DEPTH_PRESETS } from '../constants';
 import { ConicGradient } from './ConicGradient';
 import { GhostText } from './GhostText';
-import { GoogleGenAI } from "@google/genai";
 
 interface AboutProps {
   onStartPreview: () => void;
 }
+
+const REMOTE_LOGO = "https://raw.githubusercontent.com/afrodeennoff/ork-orginal-/25e7b64e21207cd0988dc6cf704f230b51e73b74/IMG_1213.png";
 
 const blobToBase64 = (blob: Blob): Promise<string> => {
   return new Promise((resolve) => {
@@ -55,37 +56,44 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
       setIsGenerating(true);
       setGenerationStep('ANALYZING...');
       
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      let referencePart = null;
+      let base64Data = null;
 
       try {
-        const response = await fetch('metimon.png');
+        const response = await fetch(REMOTE_LOGO);
         if (response.ok) {
           const blob = await response.blob();
-          const base64 = await blobToBase64(blob);
-          referencePart = {
-            inlineData: { data: base64, mimeType: 'image/png' }
-          };
+          base64Data = await blobToBase64(blob);
         }
-      } catch (e) {}
+      } catch (e) {
+        console.debug('Asset fetch failed, relying on text prompt');
+      }
 
-      const textPart = {
-        text: 'Professional minimalist trading logo for TIMON TRADING. Abstract mark, dark mode, purple accents.'
-      };
+      setGenerationStep('SYNTHESIZING...');
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-image',
-        contents: { parts: referencePart ? [referencePart, textPart] : [textPart] },
+      const apiResponse = await fetch('/api/genai', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: 'Professional minimalist trading logo for TIMON TRADING. Abstract mark, dark mode, purple accents.',
+          imageData: base64Data
+        })
       });
 
-      for (const part of response.candidates[0].content.parts) {
-        if (part.inlineData) {
-          setGeneratedLogo(`data:image/png;base64,${part.inlineData.data}`);
-          break;
-        }
+      if (!apiResponse.ok) {
+        throw new Error('Failed to reach intel service');
+      }
+
+      const data = await apiResponse.json();
+      
+      if (data.image) {
+        setGeneratedLogo(data.image);
+      } else if (data.error) {
+        throw new Error(data.error);
       }
     } catch (error) {
-      console.error('Logo generation failed:', error);
+      console.error('Logo refinement failed:', error);
     } finally {
       setIsGenerating(false);
       setGenerationStep('');
@@ -124,8 +132,8 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
          >
             <div className={`aspect-[4/5] overflow-hidden relative shadow-2xl flex items-center justify-center p-8 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}>
                <img 
-                 src="https://raw.githubusercontent.com/afrodeennoff/ork-orginal-/25e7b64e21207cd0988dc6cf704f230b51e73b74/IMG_1213.png" 
-                 alt="TIMON Trading Logo" 
+                 src={REMOTE_LOGO} 
+                 alt="TIMON Trading Identity" 
                  className="w-full h-full object-contain opacity-50 group-hover/main:opacity-100 transition-opacity duration-700 ease-[0.22,1,0.36,1] relative z-10"
                  loading="lazy"
                />
@@ -140,9 +148,9 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
             </div>
          </motion.div>
 
-         <div className="w-full lg:w-7/12 space-y-8">
+         <div className="w-full lg:w-7/12 space-y-7 md:space-y-12">
             <motion.div variants={VARIANTS.reveal} className="space-y-4">
-              <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center justify-between mb-7 md:mb-12">
                 <div className="h-8 flex items-center">
                   <AnimatePresence mode="wait">
                     {generatedLogo ? (
@@ -153,7 +161,7 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
                     ) : (
                       <motion.img 
                         key="orig" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                        src="metimon.png" alt="Metimon" className="h-6 w-auto opacity-60" 
+                        src={REMOTE_LOGO} alt="Identity" className="h-6 w-auto opacity-60" 
                       />
                     )}
                   </AnimatePresence>
@@ -166,7 +174,7 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
                   whileTap={!isGenerating ? VARIANTS.buttonTap : {}}
                   className={`mono text-[9px] font-black tracking-widest uppercase px-4 py-2 rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${isGenerating ? 'opacity-40 cursor-wait bg-zinc-800 border-zinc-700' : 'bg-brand-purple/10 text-white border border-brand-purple/30 hover:bg-brand-purple/20 hover:border-brand-purple/50'}`}
                 >
-                  {isGenerating ? 'SYNTHESIZING...' : 'REFINE IDENTITY'}
+                  {isGenerating ? generationStep || 'SYNTHESIZING...' : 'REFINE IDENTITY'}
                 </motion.button>
               </div>
 
@@ -176,7 +184,7 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
               </h2>
             </motion.div>
             
-            <motion.div variants={VARIANTS.reveal} className="space-y-6 group/text">
+            <motion.div variants={VARIANTS.reveal} className="space-y-7 group/text">
               <p className="mono text-lg md:text-xl text-zinc-200 leading-relaxed font-medium group-hover/text:text-white transition-colors duration-300">
                 <span className="text-brand-purple font-bold">I’m Timon — a futures trader and trading educator.</span>
                 {' '}After years of studying price action, market behavior, and trading psychology, I developed a structured approach focused on clarity, simplicity, and consistent execution.

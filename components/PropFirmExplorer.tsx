@@ -69,7 +69,7 @@ export const PropFirmExplorer: React.FC = () => {
           whileInView="animate"
           viewport={MOTION_RULES.viewport}
           variants={VARIANTS.staggerContainer}
-          className="mb-20 space-y-4"
+          className="mb-7 md:mb-12 space-y-4"
         >
           <motion.div variants={VARIANTS.reveal} className="flex items-center gap-4">
             <div className="h-px w-12 bg-brand-purple" />
@@ -83,7 +83,7 @@ export const PropFirmExplorer: React.FC = () => {
           </motion.p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {PROP_FIRMS.map((firm, idx) => (
             <motion.div
               key={firm.id}
@@ -93,15 +93,15 @@ export const PropFirmExplorer: React.FC = () => {
               variants={VARIANTS.reveal}
               whileHover={VARIANTS.cardHover}
               transition={{ delay: idx * 0.05 }}
-              className={`${GLASS_STYLES.card} ${GLASS_STYLES.cardHover} p-10 flex flex-col justify-between group transition-colors duration-500`}
+              className={`${GLASS_STYLES.card} ${GLASS_STYLES.cardHover} p-8 md:p-10 flex flex-col justify-between group transition-colors duration-500`}
             >
-              <div className="mb-12">
+              <div className="mb-10">
                 <h3 className="text-2xl font-black text-white italic uppercase tracking-tighter leading-none group-hover:text-brand-purple transition-colors duration-500">
                   {firm.name}
                 </h3>
               </div>
 
-              <div className="space-y-1 mb-12">
+              <div className="space-y-1 mb-10">
                 <StatLine label="Market" value={firm.marketType} />
                 <StatLine label="Account Size" value={firm.accountSize} />
                 <StatLine label="Profit Split" value={firm.profitSplit} />

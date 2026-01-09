@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, Suspense, lazy } from 'react';
 import { Hero } from './components/Hero';
 import { CustomCursor } from './components/CustomCursor';
@@ -82,7 +83,7 @@ export const App: React.FC = () => {
                 animate={{ opacity: 1 }} 
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3, ease: MOTION_RULES.ease }}
-                className="pt-1 md:pt-2 pb-5 md:pb-7"
+                className="pt-0 pb-0"
               >
                 <Hero onStartPreview={() => setAppMode('EXECUTION')} />
                 <SocialProof />

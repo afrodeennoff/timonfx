@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { VARIANTS, MOTION_RULES, GLASS_STYLES, DEPTH_PRESETS, MOTION_KILL_SWITCH } from '../constants';
@@ -120,7 +121,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
       id="hero" 
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-[80vh] flex flex-col justify-center items-center px-6 py-0 overflow-hidden bg-brand-black transform-gpu scroll-mt-24 md:scroll-mt-32"
+      className="relative min-h-[85vh] flex flex-col justify-center items-center px-6 pt-24 pb-14 md:pt-32 md:pb-20 overflow-hidden bg-brand-black transform-gpu scroll-mt-24 md:scroll-mt-32"
     >
       <ConicGradient opacity={0.15} size="110%" />
 
@@ -151,23 +152,23 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         initial="initial"
         animate="animate"
         style={{ rotateX: !MOTION_KILL_SWITCH ? rotateX : 0, rotateY: !MOTION_KILL_SWITCH ? rotateY : 0, transformStyle: 'preserve-3d' }}
-        className="relative z-20 max-w-7xl w-full text-center flex flex-col items-center gap-5 md:gap-8 pt-2 md:pt-4"
+        className="relative z-20 max-w-7xl w-full text-center flex flex-col items-center gap-7 md:gap-12"
       >
         <div className="relative flex flex-col items-center" style={{ transform: 'translateZ(60px)' }}>
           <motion.p 
             variants={VARIANTS.reveal as any}
-            className="mono text-[9px] text-zinc-600 font-black uppercase tracking-[0.6em] mb-5 md:mb-7"
+            className="mono text-[9px] text-zinc-600 font-black uppercase tracking-[0.6em] mb-7 md:mb-12"
           >
             INSTITUTIONAL // METHOD
           </motion.p>
           
-          <motion.div variants={VARIANTS.reveal as any} className="mb-3.5 md:mb-5">
+          <motion.div variants={VARIANTS.reveal as any} className="mb-5 md:mb-8">
             <RotatingHeadline />
           </motion.div>
           
-          <motion.div variants={VARIANTS.reveal as any} className="mt-4 md:mt-6 px-4 max-w-3xl mx-auto">
+          <motion.div variants={VARIANTS.reveal as any} className="mt-6 md:mt-10 px-4 max-w-3xl mx-auto">
              <div className="mono text-[11px] md:text-[13px] text-zinc-500 font-bold uppercase tracking-[0.15em] leading-relaxed max-w-[720px] mx-auto">
-               <span className="text-white block mb-2 opacity-100 tracking-[0.25em] font-black italic text-sm md:text-base">
+               <span className="text-white block mb-3 opacity-100 tracking-[0.25em] font-black italic text-sm md:text-base">
                  FOR TRADERS WHO REFUSE TO STAY AVERAGE.
                </span>
                <span className="text-zinc-300 opacity-90 italic text-[11px] md:text-[13px] block max-w-[650px] mx-auto leading-relaxed font-medium">
@@ -179,14 +180,14 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
 
         <motion.div
           variants={VARIANTS.reveal as any}
-          className="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-3.5 w-full px-4"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 w-full px-4"
           style={{ transform: 'translateZ(40px)' }}
         >
           <motion.button
             whileHover={VARIANTS.buttonHover}
             whileTap={VARIANTS.buttonTap}
             onClick={() => scrollToSection('join')}
-            className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} w-full sm:w-auto px-8 py-3 md:px-10 md:py-4`}
+            className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} w-full sm:w-auto px-8 py-3.5 md:px-10 md:py-4`}
           >
             <span className="mono text-[11px] font-black text-white uppercase tracking-[0.5em]">
               ENTER DESK
@@ -197,7 +198,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
             whileHover={VARIANTS.buttonHover}
             whileTap={VARIANTS.buttonTap}
             onClick={() => scrollToSection('coupon')}
-            className={`${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} w-full sm:w-auto px-8 py-3 md:px-10 md:py-4 opacity-60 hover:opacity-100 transition-opacity duration-300`}
+            className={`${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} w-full sm:w-auto px-8 py-3.5 md:px-10 md:py-4 opacity-60 hover:opacity-100 transition-opacity duration-300`}
           >
             <span className="mono text-[11px] font-black text-white uppercase tracking-[0.5em]">
               PARTNERS

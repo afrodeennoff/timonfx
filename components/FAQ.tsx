@@ -13,7 +13,7 @@ export const FAQ: React.FC = () => {
           whileInView="animate"
           viewport={MOTION_RULES.viewport}
           variants={VARIANTS.reveal}
-          className="text-center space-y-4 mb-16"
+          className="text-center space-y-4 mb-7 md:mb-12"
         >
            <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter">Frequently Asked Questions</h2>
            <p className="mono text-[11px] text-zinc-500 tracking-widest leading-relaxed max-w-lg mx-auto uppercase font-bold">

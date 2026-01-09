@@ -13,7 +13,7 @@ export const Testimonials: React.FC = () => {
 
   useEffect(() => {
     if (isPaused) return;
-    const timer = setInterval(nextTestimonial, 5000); // Slightly increased speed
+    const timer = setInterval(nextTestimonial, 5000); 
     return () => clearInterval(timer);
   }, [isPaused, nextTestimonial]);
 
@@ -25,7 +25,7 @@ export const Testimonials: React.FC = () => {
       }
       scrollTimeoutRef.current = window.setTimeout(() => {
         setIsPaused(false);
-      }, 2000); // Resume 2s after scroll stops
+      }, 2000); 
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -48,7 +48,7 @@ export const Testimonials: React.FC = () => {
           whileInView="animate"
           viewport={MOTION_RULES.viewport}
           variants={VARIANTS.reveal}
-          className="mb-16 text-center"
+          className="mb-7 md:mb-12 text-center"
         >
           <span className="mono text-[11px] text-zinc-600 font-black tracking-[0.8em] uppercase italic block mb-6">Trader Feedback</span>
           <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter leading-none opacity-20">
@@ -56,17 +56,17 @@ export const Testimonials: React.FC = () => {
           </h2>
         </motion.div>
 
-        <div className="relative min-h-[450px] md:min-h-[500px] flex items-center justify-center">
+        <div className="relative min-h-[400px] md:min-h-[450px] flex items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 15 }} // Using only y-transform and opacity
+              initial={{ opacity: 0, y: 15 }} 
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.6, ease: MOTION_RULES.ease }}
-              className={`w-full max-w-4xl ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover} p-12 md:p-24 flex flex-col items-center text-center shadow-2xl relative`}
+              className={`w-full max-w-4xl ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover} p-10 md:p-16 flex flex-col items-center text-center shadow-2xl relative`}
             >
-              <blockquote className="text-2xl md:text-4xl font-black text-white italic leading-[1.3] tracking-tight mb-12 max-w-3xl">
+              <blockquote className="text-2xl md:text-3xl font-black text-white italic leading-[1.3] tracking-tight mb-8 md:mb-12 max-w-3xl">
                 "{TESTIMONIALS[index].quote}"
               </blockquote>
               
@@ -82,7 +82,7 @@ export const Testimonials: React.FC = () => {
           </AnimatePresence>
         </div>
 
-        <div className="flex justify-center gap-3 mt-12">
+        <div className="flex justify-center gap-3 mt-10 md:mt-12">
           {TESTIMONIALS.map((_, i) => (
             <button
               key={i}

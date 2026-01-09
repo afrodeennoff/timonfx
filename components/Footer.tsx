@@ -29,11 +29,11 @@ export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="relative py-24 px-6 bg-brand-black overflow-hidden">
+    <footer className="relative py-10 md:py-14 px-6 bg-brand-black overflow-hidden border-t border-white/5">
       <div className="max-w-7xl mx-auto relative z-10">
         
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16">
           
           {/* Brand Block */}
           <div className="md:col-span-5 space-y-6">
@@ -90,14 +90,14 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Legal / Meta Block */}
-        <div className="mt-24 space-y-8">
+        <div className="mt-16 md:mt-24 space-y-8">
           <div className="max-w-4xl">
             <p className="mono text-[10px] text-zinc-600 uppercase tracking-widest leading-loose font-medium italic">
               Risk Disclosure: Trading futures and options involves substantial risk and is not for every investor. An investor could potentially lose all or more than the initial investment. Risk capital is money that can be lost without jeopardizing ones’ financial security or life style. Only risk capital should be used for trading and only those with sufficient risk capital should consider trading. Past performance is not necessarily indicative of future results.
             </p>
           </div>
           
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-white/5">
             <div className="flex items-center gap-4">
               <span className="mono text-[10px] text-zinc-700 uppercase tracking-widest font-black">
                 © {currentYear} {BRAND_NAME}

@@ -13,7 +13,7 @@ const ExecutionStep: React.FC<{ module: ModuleCard; index: number }> = ({ module
       variants={VARIANTS.reveal}
       className={`group relative border-l-2 transition-all duration-500 ${
         isOpen ? 'border-brand-purple' : 'border-white/5 hover:border-brand-purple/30'
-      } ml-4 md:ml-10 pl-8 md:pl-20 pb-24 last:pb-0`}
+      } ml-4 md:ml-10 pl-8 md:pl-20 pb-16 md:pb-20 last:pb-0`}
     >
       <div className="absolute left-[-11px] top-0 flex items-center justify-center">
         <motion.div
@@ -73,7 +73,7 @@ const ExecutionStep: React.FC<{ module: ModuleCard; index: number }> = ({ module
               transition={{ duration: 0.6, ease: MOTION_RULES.ease }}
               className="overflow-hidden"
             >
-              <div className="pt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
+              <div className="pt-10 md:pt-14 grid grid-cols-1 lg:grid-cols-2 gap-10 items-stretch">
                 <motion.div 
                   initial="initial"
                   whileInView="animate"
@@ -136,14 +136,14 @@ const ExecutionStep: React.FC<{ module: ModuleCard; index: number }> = ({ module
 
 export const Education: React.FC = () => {
   return (
-    <section id="edge" className="py-10 md:py-14 bg-brand-black relative overflow-hidden">
+    <section id="edge" className="py-10 md:py-14 bg-brand-black relative overflow-hidden scroll-mt-24 md:scroll-mt-32">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <motion.div 
           initial="initial"
           whileInView="animate"
           viewport={MOTION_RULES.viewport}
           variants={VARIANTS.staggerContainer}
-          className="mb-20 space-y-4"
+          className="mb-7 md:mb-12 space-y-4"
         >
           <motion.div variants={VARIANTS.reveal} className="flex items-center gap-4">
             <div className="h-px w-12 bg-brand-purple" />
