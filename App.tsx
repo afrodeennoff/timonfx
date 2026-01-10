@@ -1,4 +1,5 @@
 import React, { useState, useCallback, Suspense, lazy } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { Hero } from './components/Hero';
 import { CustomCursor } from './components/CustomCursor';
 import { SmoothScroll } from './components/SmoothScroll';
@@ -161,6 +162,7 @@ export const App: React.FC = () => {
           </AnimatePresence>
         </div>
       </main>
+      <SpeedInsights />
     </SmoothScroll>
   );
 };
