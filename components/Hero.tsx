@@ -68,7 +68,7 @@ const RotatingHeadline = () => {
   }, [subIndex, index, reverse, isPaused]);
 
   return (
-    <div className="mono text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] text-white font-black uppercase tracking-tighter leading-[0.85] text-center flex flex-col items-center select-none">
+    <h1 className="mono text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] text-white font-black uppercase tracking-tighter leading-[0.85] text-center flex flex-col items-center select-none">
       <div className="text-white drop-shadow-[0_0_40px_rgba(255,255,255,0.2)]">ACCELERATE YOUR</div>
       <div className="flex items-center justify-center whitespace-nowrap italic">
         <span className="text-brand-purple drop-shadow-[0_0_20px_rgba(139,92,246,0.3)]">
@@ -77,7 +77,7 @@ const RotatingHeadline = () => {
         </span>
       </div>
       <div className="mt-2 text-zinc-400 text-3xl sm:text-5xl md:text-6xl tracking-tight leading-none opacity-80">IN THE MARKETS</div>
-    </div>
+    </h1>
   );
 };
 
@@ -105,8 +105,10 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
       >
         <img 
           src="https://raw.githubusercontent.com/afrodeennoff/ork-orginal-/25e7b64e21207cd0988dc6cf704f230b51e73b74/IMG_1213.png" 
-          alt="TIMON Trading Logo" 
-          className="w-[95vw] md:w-[75vw] max-w-[1100px] object-contain mix-blend-screen filter grayscale opacity-40"
+          alt="TIMON Trading Desk Logo Background" 
+          className="w-[95vw] md:w-[75vw] max-w-[1100px] object-contain mix-blend-screen filter grayscale opacity-40 will-change-transform"
+          loading="eager"
+          decoding="async"
         />
       </motion.div>
 

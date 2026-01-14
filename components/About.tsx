@@ -97,7 +97,7 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
             <div className={`aspect-[4/5] overflow-hidden relative shadow-2xl flex items-center justify-center p-8 ${GLASS_STYLES.card} ${GLASS_STYLES.cardHover}`}>
                <img 
                  src={REMOTE_LOGO} 
-                 alt="TIMON Trading Identity" 
+                 alt="TIMON Trading Professional Brand Identity" 
                  className="w-full h-full object-contain opacity-50 group-hover/main:opacity-100 transition-opacity duration-700 ease-[0.22,1,0.36,1] relative z-10"
                  loading="lazy"
                />
@@ -107,21 +107,19 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
               whileInView="animate"
               viewport={MOTION_RULES.viewport}
               variants={VARIANTS.staggerContainer}
-              className={`absolute bottom-[-1.5rem] right-[-1.5rem] w-40 md:w-52 p-6 shadow-2xl ${GLASS_STYLES.card} group/sub`}
+              className={`absolute bottom-[-1.5rem] left-1/2 -translate-x-1/2 w-48 md:w-64 p-6 shadow-2xl ${GLASS_STYLES.card} group/sub`}
             >
                <motion.p 
-                 className="mono text-xl text-white uppercase font-extrabold italic tracking-widest leading-none relative z-10 group-hover/sub:text-brand-purple transition-colors duration-300 flex"
-                 animate={{ scale: [1, 1.03, 1] }}
-                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+                 className="mono text-2xl md:text-3xl text-white uppercase font-black italic tracking-[0.25em] leading-none relative z-10 group-hover/sub:text-brand-purple transition-colors duration-300 flex justify-center text-glow"
                >
                  {timonText.split('').map((char, i) => (
                    <motion.span
                      key={i}
-                     initial={{ opacity: 0, y: 5 }}
+                     initial={{ opacity: 0, y: 8 }}
                      animate={{ opacity: 1, y: 0 }}
                      transition={{ 
                        duration: 0.5, 
-                       delay: i * 0.08, 
+                       delay: i * 0.1, 
                        ease: MOTION_RULES.ease 
                      }}
                    >
@@ -140,12 +138,12 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
                     {generatedLogo ? (
                       <motion.img 
                         key="gen" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                        src={generatedLogo} alt="Refined" className="h-8 w-auto filter drop-shadow-[0_0_8px_rgba(139,92,246,0.3)]" 
+                        src={generatedLogo} alt="TIMON Trading Refined AI Generated Logo" className="h-8 w-auto filter drop-shadow-[0_0_8px_rgba(139,92,246,0.3)]" 
                       />
                     ) : (
                       <motion.img 
                         key="orig" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                        src={REMOTE_LOGO} alt="Identity" className="h-6 w-auto opacity-60" 
+                        src={REMOTE_LOGO} alt="TIMON Trading Original Identity Badge" className="h-6 w-auto opacity-60" 
                       />
                     )}
                   </AnimatePresence>
@@ -187,6 +185,18 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
 
       <style>{`
         .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); }
+        
+        @keyframes text-pulse-glow {
+          0%, 100% {
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.4), 0 0 20px rgba(139, 92, 246, 0.2);
+          }
+          50% {
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.7), 0 0 40px rgba(139, 92, 246, 0.4);
+          }
+        }
+        .text-glow { 
+          animation: text-pulse-glow 4s infinite ease-in-out; 
+        }
       `}</style>
     </motion.section>
   );

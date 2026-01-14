@@ -2,16 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIMON // Professional Execution Method</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>TIMON | Professional Trading Discipline & Execution</title>
+    <meta name="description" content="Institutional price action logic and risk discipline for serious traders. High-performance execution mentorship for futures and CFD markets.">
+    
+    <!-- Market Visibility -->
+    <meta property="og:title" content="TIMON | Professional Trading Discipline">
+    <meta property="og:description" content="Surgical market execution and risk management. No noise, just logic.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://timon.trades" />
+    
+    <!-- Speed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <script>
-      // Secure process proxy for runtime stability
       window.process = { 
         env: { 
           NODE_ENV: 'production',
-          API_KEY: '' // Initialized for safety, Vite will inject the real key
+          API_KEY: '' 
         } 
       };
       window.global = window;
@@ -53,6 +66,7 @@
           background-color: #020202; 
           color: #ffffff; 
           -webkit-tap-highlight-color: transparent;
+          overflow-x: hidden;
         }
         
         body { 
@@ -62,6 +76,7 @@
           -moz-osx-font-smoothing: grayscale;
           font-family: 'Inter', sans-serif;
           overflow-x: hidden;
+          width: 100%;
         }
 
         .mono { font-family: 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; }
