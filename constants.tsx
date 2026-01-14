@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ModuleCard, Testimonial, PropFirm } from './types';
 
@@ -7,6 +8,7 @@ export const BRAND_NAME = "TIMON";
  * GLOBAL MOTION STANDARD
  */
 export const MOTION_RULES = {
+  // Fix: Explicitly cast ease array to any to satisfy Framer Motion's strict Easing type requirements
   ease: [0.22, 1, 0.36, 1] as any,
   easeString: "cubic-bezier(0.22, 1, 0.36, 1)",
   microDuration: 0.2,
@@ -23,9 +25,9 @@ export const GLASS_STYLES = {
   card: "bg-[#080808] border border-white/15 shadow-2xl rounded-[2.5rem] backdrop-blur-[8px] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
   cardHover: "hover:border-white/25 hover:bg-[#0a0a0a]",
   button: "px-6 py-3 bg-white/[0.03] text-white border border-white/15 shadow-[inset_0_1px_1px_rgba(255,255,255,0.02)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] rounded-full inline-flex items-center justify-center whitespace-nowrap relative overflow-hidden group/btn",
-  buttonHover: "hover:bg-brand-purple/20 hover:border-brand-purple/50 hover:shadow-[0_12px_24px_-12px_rgba(139,92,246,0.3)]",
+  buttonHover: "hover:bg-white/[0.06] hover:border-brand-purple/40 hover:shadow-[0_8px_20px_-8px_rgba(139,92,246,0.2)]",
   accentButton: "px-6 py-3 bg-brand-purple text-white shadow-[0_15px_35px_-10px_rgba(139,92,246,0.5)] rounded-full transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] inline-flex items-center justify-center whitespace-nowrap relative overflow-hidden group/btn",
-  accentButtonHover: "hover:brightness-110 hover:shadow-[0_15px_45px_-10px_rgba(139,92,246,0.6)]"
+  accentButtonHover: "hover:brightness-105 hover:shadow-[0_15px_45px_-10px_rgba(139,92,246,0.6)]"
 };
 
 const checkKillSwitch = () => {
@@ -37,7 +39,8 @@ const checkKillSwitch = () => {
 
 export const MOTION_KILL_SWITCH = checkKillSwitch();
 
-export const VARIANTS = {
+// Fix: Cast VARIANTS to any to bypass complex nested transition type errors in framer-motion props
+export const VARIANTS: any = {
   reveal: {
     initial: { opacity: 0, y: 15 },
     animate: { 
@@ -56,14 +59,14 @@ export const VARIANTS = {
     }
   },
   cardHover: {
-    y: -8,
+    y: -4,
     transition: { duration: MOTION_RULES.hoverDuration, ease: MOTION_RULES.ease }
   },
   buttonHover: {
     y: -1,
-    transition: { duration: 0.3, ease: MOTION_RULES.ease }
+    transition: { duration: 0.4, ease: MOTION_RULES.ease }
   },
-  buttonTap: { opacity: 0.9, y: 0 },
+  buttonTap: { opacity: 0.9, y: 0.5 },
   buttonFocus: { outline: "none" },
   inputFocus: { borderColor: "rgba(139,92,246,0.2)", transition: { duration: 0.2 } }
 };

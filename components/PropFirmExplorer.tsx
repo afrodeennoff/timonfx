@@ -135,4 +135,50 @@ export const PropFirmExplorer: React.FC = () => {
           </AnimatePresence>
         </div>
       </div>
-      <style>{` .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0
+      <style>{` .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); } `}</style>
+    </section>
+  );
+};
+
+const PropFirmCard: React.FC<{ firm: typeof PROP_FIRMS[0] }> = ({ firm }) => (
+  <motion.div
+    variants={VARIANTS.reveal}
+    whileHover={VARIANTS.cardHover}
+    className={`${GLASS_STYLES.card} ${GLASS_STYLES.cardHover} p-6 md:p-10 flex flex-col justify-between group transition-all duration-500 h-full`}
+  >
+    <div className="mb-8 md:mb-10">
+      <h3 className="text-xl md:text-2xl font-black text-white italic uppercase tracking-tighter leading-none group-hover:text-brand-purple transition-colors duration-500">
+        {firm.name}
+      </h3>
+    </div>
+
+    <div className="space-y-0.5 md:space-y-1 mb-8 md:mb-10">
+      <StatLine label="Account Size" value={firm.accountSize} />
+      <StatLine label="Profit Split" value={firm.profitSplit} />
+      <StatLine label="Payout Cap" value={firm.payoutCap} />
+      <StatLine label="Max Allocation" value={firm.maxAllocation} />
+      {firm.coupon && <StatLine label="Coupon Code" value={firm.coupon} isAccent={true} />}
+    </div>
+
+    <motion.a
+      href={firm.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={VARIANTS.buttonHover}
+      whileTap={VARIANTS.buttonTap}
+      className={`w-full py-3.5 md:py-4 bg-white/[0.03] border border-white/10 text-white rounded-2xl flex items-center justify-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${GLASS_STYLES.buttonHover} group/btn relative overflow-hidden`}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
+      <span className="relative z-10 mono text-[10px] font-black uppercase tracking-[0.4em] group-hover/btn:text-white transition-colors">ENTER DESK</span>
+      <svg 
+        className="relative z-10 w-3 h-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/btn:translate-x-1.5 group-hover/btn:scale-125" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="4"
+      >
+        <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    </motion.a>
+  </motion.div>
+);

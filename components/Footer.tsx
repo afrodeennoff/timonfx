@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BRAND_NAME, SOCIAL_LINKS, GLASS_STYLES } from '../constants';
 
@@ -24,9 +23,17 @@ export const Footer: React.FC = () => {
                 <p className="mono text-[11px] text-white uppercase tracking-[0.3em] font-black italic border-l-2 border-brand-purple pl-4">
                   Trading is business. Treat it like one.
                 </p>
-                <p className="mono text-[11px] text-zinc-500 uppercase tracking-widest leading-loose max-w-md font-bold italic">
-                  Professional-grade execution for those who value discipline over hype. We provide the logic; you provide the patience.
-                </p>
+                <div className="space-y-2">
+                  <p className="mono text-[11px] text-zinc-500 uppercase tracking-widest leading-loose max-w-md font-bold italic">
+                    Professional-grade execution for those who value discipline over hype. We provide the logic; you provide the patience.
+                  </p>
+                  <a 
+                    href="mailto:trade@timonfx.in" 
+                    className="inline-block mono text-[10px] text-brand-purple hover:text-white uppercase tracking-[0.3em] font-black italic transition-colors mt-2"
+                  >
+                    TRADE@TIMONFX.IN
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -57,7 +64,7 @@ export const Footer: React.FC = () => {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <input 
                     type="email" 
-                    placeholder="TRADER_EMAIL@DESK.COM" 
+                    placeholder="trade@timon.in" 
                     className="flex-1 bg-white/[0.02] border border-white/10 px-6 py-4 mono text-[10px] text-white uppercase tracking-[0.2em] focus:outline-none focus:border-brand-purple transition-colors rounded-2xl"
                   />
                   <button className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} px-10 py-4`}>
@@ -80,11 +87,12 @@ export const Footer: React.FC = () => {
                 <div className="w-2 h-2 rounded-full bg-brand-red shadow-[0_0_10px_rgba(255,30,30,0.4)]" />
                 <span className="mono text-[10px] text-brand-red font-black uppercase tracking-[0.4em]">Critical Risk Warning</span>
               </div>
-              <p className="mono text-[10px] text-zinc-600 uppercase tracking-widest leading-relaxed font-bold italic max-w-4xl border-l border-white/10 pl-8">
-                Trading futures, options, and forex involves substantial risk of loss and is not suitable for every investor. The valuation of financial instruments may fluctuate, and as a result, clients may lose more than their original investment. The highly leveraged nature of trading means that small market movements will have a great impact on your trading account and this can work against you, leading to large losses or can work for you, leading to large gains.
-                <br /><br />
-                Performance results are typically presented as hypothetical and do not reflect actual trading. Past performance is not necessarily indicative of future results. No representation is being made that any account will or is likely to achieve profits or losses similar to those shown.
-              </p>
+              <div className="mono text-[10px] text-zinc-600 uppercase tracking-widest leading-relaxed font-bold italic max-w-4xl border-l border-white/10 pl-8 space-y-4">
+                <p className="text-zinc-500 underline underline-offset-4 decoration-white/10">Legal Disclaimer</p>
+                <p>
+                  Trading futures, options, and foreign exchange involves substantial risk and is not suitable for all individuals. Financial instruments may fluctuate in value, and losses may exceed the initial investment, particularly when leverage is used. All trading decisions are made at the individual’s own discretion, and any profits or losses are solely the responsibility of the trader. Any performance examples shown are hypothetical and provided for educational purposes only and do not represent actual trading results. Past performance is not indicative of future results, and no representation is made that any account will or is likely to achieve profits or losses similar to those shown. Trade only with capital you can afford to lose.
+                </p>
+              </div>
             </div>
             
             <div className="md:col-span-4 flex flex-col md:items-end gap-6 h-full justify-between">

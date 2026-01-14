@@ -152,7 +152,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
             onClick={() => scrollToSection('join')}
             className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} w-full sm:w-auto px-8 py-3.5 md:px-10 md:py-4`}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none" />
             <span className="relative z-10 mono text-[11px] font-black text-white uppercase tracking-[0.5em]">
               ENTER DESK
             </span>
@@ -164,7 +164,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
             onClick={() => scrollToSection('coupon')}
             className={`${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} w-full sm:w-auto px-8 py-3.5 md:px-10 md:py-4 opacity-60 hover:opacity-100 transition-opacity duration-300`}
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none" />
             <span className="relative z-10 mono text-[11px] font-black text-white uppercase tracking-[0.5em]">
               PARTNERS
             </span>

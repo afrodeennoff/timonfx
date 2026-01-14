@@ -31,8 +31,8 @@ const EnrollButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
       onClick={onClick}
       className={`w-full py-3.5 md:py-4.5 mono text-[10px] md:text-[11px] font-black uppercase tracking-[0.4em] md:tracking-[0.5em] relative overflow-hidden group/btn ${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover}`}
     >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none" />
       <span className="relative z-10">Enroll Now</span>
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
     </motion.button>
   );
 };
@@ -161,8 +161,8 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
                   onClick={() => window.open('https://whop.com/timonict/free-access-c3-624b/', '_blank', 'noopener,noreferrer')} 
                   className={`w-full py-3 ${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} mono text-[9px] uppercase tracking-widest font-black relative z-10`}
                 >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none" />
                   <span className="relative z-10">Join Live</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
                 </motion.button>
               </PriceCard>
 
@@ -181,8 +181,8 @@ export const Pricing: React.FC<PricingProps> = ({ onStartPreview }) => {
                   onClick={() => window.open('https://discord.gg/FPrEk8fhwp', '_blank', 'noopener,noreferrer')}
                   className={`w-full py-3 ${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} mono text-[9px] uppercase tracking-widest font-black relative z-10 !text-zinc-500 hover:!text-white`}
                 >
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none" />
                   <span className="relative z-10">JOIN FREE DISCORD</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
                 </motion.button>
               </PriceCard>
            </div>
