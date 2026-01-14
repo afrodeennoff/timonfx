@@ -19,11 +19,11 @@ const StatLine: React.FC<{ label: string; value: string; isAccent?: boolean }> =
 
   return (
     <div 
-      className={`flex justify-between items-center py-3 border-b border-white/5 last:border-0 transition-all duration-300 ${isAccent ? 'cursor-pointer group/stat' : ''}`}
+      className={`flex justify-between items-center py-2.5 md:py-3 border-b border-white/5 last:border-0 transition-all duration-300 ${isAccent ? 'cursor-pointer group/stat' : ''}`}
       onClick={handleCopy}
     >
-      <span className="mono text-[10px] text-zinc-500 uppercase tracking-widest transition-colors duration-300 group-hover/stat:text-zinc-400">• {label}</span>
-      <div className="relative flex items-center">
+      <span className="mono text-[9px] md:text-[10px] text-zinc-500 uppercase tracking-widest transition-colors duration-300 group-hover/stat:text-zinc-400 truncate pr-2 shrink-0">• {label}</span>
+      <div className="relative flex items-center min-w-0">
         <AnimatePresence>
           {copied && (
             <motion.span
@@ -37,13 +37,13 @@ const StatLine: React.FC<{ label: string; value: string; isAccent?: boolean }> =
             </motion.span>
           )}
         </AnimatePresence>
-        <div className="flex items-center gap-2">
-          <span className={`mono text-[11px] font-bold uppercase tracking-tight text-right pl-4 transition-all duration-300 ${isAccent ? 'text-brand-purple group-hover/stat:text-white' : 'text-zinc-200'} ${copied ? 'opacity-0' : 'opacity-100'}`}>
+        <div className="flex items-center gap-1.5 md:gap-2 min-w-0">
+          <span className={`mono text-[10px] md:text-[11px] font-bold uppercase tracking-tight text-right transition-all duration-300 ${isAccent ? 'text-brand-purple group-hover/stat:text-white' : 'text-zinc-200'} ${copied ? 'opacity-0' : 'opacity-100'} truncate`}>
             {value}
           </span>
           {isAccent && !copied && (
             <svg 
-              className="w-3 h-3 text-brand-purple opacity-20 group-hover/stat:opacity-100 group-hover/stat:translate-x-0.5 transition-all duration-300" 
+              className="w-2.5 h-2.5 md:w-3 md:h-3 text-brand-purple opacity-20 group-hover/stat:opacity-100 group-hover/stat:translate-x-0.5 transition-all duration-300 shrink-0" 
               viewBox="0 0 24 24" 
               fill="none" 
               stroke="currentColor" 
@@ -70,10 +70,10 @@ export const PropFirmExplorer: React.FC = () => {
   return (
     <section 
       id="coupon" 
-      className="py-10 md:py-14 px-6 bg-brand-black relative overflow-hidden transform-gpu scroll-mt-24 md:scroll-mt-32"
+      className="py-10 md:py-14 px-4 md:px-6 bg-brand-black relative overflow-hidden transform-gpu scroll-mt-24 md:scroll-mt-32"
     >
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-14 md:mb-20">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-10 md:mb-20">
           <motion.div 
             initial="initial"
             whileInView="animate"
@@ -85,11 +85,11 @@ export const PropFirmExplorer: React.FC = () => {
               <div className="h-px w-12 bg-brand-purple" />
               <span className="mono text-[11px] text-brand-purple font-black tracking-[0.5em] uppercase italic">Market Gateways</span>
             </motion.div>
-            <motion.h2 variants={VARIANTS.reveal} className="text-5xl md:text-7xl font-black text-white italic uppercase tracking-tighter leading-none">
+            <motion.h2 variants={VARIANTS.reveal} className="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter leading-none">
               THE PARTNERS BEHIND <br />
               <GhostText text="THE FUNDING." className="text-transparent transition-colors cursor-default stroke-text" />
             </motion.h2>
-            <motion.p variants={VARIANTS.reveal} className="mono text-[12px] text-zinc-500 uppercase tracking-[0.3em] font-bold max-w-lg leading-relaxed border-l border-white/5 pl-6">
+            <motion.p variants={VARIANTS.reveal} className="mono text-[10px] md:text-[12px] text-zinc-500 uppercase tracking-[0.3em] font-bold max-w-lg leading-relaxed border-l border-white/5 pl-4 md:pl-6">
               A transparent selection of funding providers for those ready to execute at size. Click codes to copy.
             </motion.p>
           </motion.div>
@@ -101,16 +101,16 @@ export const PropFirmExplorer: React.FC = () => {
             variants={VARIANTS.reveal}
             className="flex items-center"
           >
-            <div className="flex items-center gap-1 p-1 bg-white/[0.03] border border-white/10 rounded-full">
+            <div className="flex items-center gap-1 p-1 bg-white/[0.03] border border-white/10 rounded-full w-full md:w-auto">
               <button 
                 onClick={() => setActiveMarket('CFD')}
-                className={`px-8 py-2.5 rounded-full mono text-[10px] font-black uppercase tracking-widest transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${activeMarket === 'CFD' ? 'bg-brand-purple text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]' : 'text-zinc-500 hover:text-zinc-300'}`}
+                className={`flex-1 md:flex-none px-6 md:px-8 py-2 md:py-2.5 rounded-full mono text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${activeMarket === 'CFD' ? 'bg-brand-purple text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]' : 'text-zinc-500 hover:text-zinc-300'}`}
               >
                 CFD
               </button>
               <button 
                 onClick={() => setActiveMarket('FUTURES')}
-                className={`px-8 py-2.5 rounded-full mono text-[10px] font-black uppercase tracking-widest transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${activeMarket === 'FUTURES' ? 'bg-brand-purple text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]' : 'text-zinc-500 hover:text-zinc-300'}`}
+                className={`flex-1 md:flex-none px-6 md:px-8 py-2 md:py-2.5 rounded-full mono text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${activeMarket === 'FUTURES' ? 'bg-brand-purple text-white shadow-[0_0_15px_rgba(139,92,246,0.3)]' : 'text-zinc-500 hover:text-zinc-300'}`}
               >
                 FUTURES
               </button>
@@ -118,7 +118,7 @@ export const PropFirmExplorer: React.FC = () => {
           </motion.div>
         </div>
 
-        <div className="min-h-[600px]">
+        <div className="min-h-[500px] md:min-h-[600px]">
           <AnimatePresence mode="wait">
             <motion.div 
               key={activeMarket}
@@ -135,50 +135,4 @@ export const PropFirmExplorer: React.FC = () => {
           </AnimatePresence>
         </div>
       </div>
-      <style>{` .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0.25); } `}</style>
-    </section>
-  );
-};
-
-const PropFirmCard: React.FC<{ firm: typeof PROP_FIRMS[0] }> = ({ firm }) => (
-  <motion.div
-    variants={VARIANTS.reveal}
-    whileHover={VARIANTS.cardHover}
-    className={`${GLASS_STYLES.card} ${GLASS_STYLES.cardHover} p-8 md:p-10 flex flex-col justify-between group transition-all duration-500 h-full`}
-  >
-    <div className="mb-10">
-      <h3 className="text-2xl font-black text-white italic uppercase tracking-tighter leading-none group-hover:text-brand-purple transition-colors duration-500">
-        {firm.name}
-      </h3>
-    </div>
-
-    <div className="space-y-1 mb-10">
-      <StatLine label="Account Size" value={firm.accountSize} />
-      <StatLine label="Profit Split" value={firm.profitSplit} />
-      <StatLine label="Payout Cap" value={firm.payoutCap} />
-      <StatLine label="Max Allocation" value={firm.maxAllocation} />
-      {firm.coupon && <StatLine label="Coupon Code" value={firm.coupon} isAccent={true} />}
-    </div>
-
-    <motion.a
-      href={firm.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      whileHover={VARIANTS.buttonHover}
-      whileTap={VARIANTS.buttonTap}
-      className={`w-full py-4 bg-white/[0.03] border border-white/10 text-white rounded-2xl flex items-center justify-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${GLASS_STYLES.buttonHover} group/btn relative overflow-hidden`}
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
-      <span className="relative z-10 mono text-[10px] font-black uppercase tracking-[0.4em] group-hover/btn:text-white transition-colors">ENTER DESK</span>
-      <svg 
-        className="relative z-10 w-3 h-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/btn:translate-x-1.5 group-hover/btn:scale-125" 
-        viewBox="0 0 24 24" 
-        fill="none" 
-        stroke="currentColor" 
-        strokeWidth="4"
-      >
-        <path d="M5 12h14M12 5l7 7-7 7" />
-      </svg>
-    </motion.a>
-  </motion.div>
-);
+      <style>{` .stroke-text { -webkit-text-stroke: 1.5px rgba(255,255,255,0
