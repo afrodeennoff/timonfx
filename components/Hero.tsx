@@ -100,7 +100,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.2 }}
-        transition={{ duration: 1.6, ease: MOTION_RULES.ease }}
+        transition={{ duration: 1.2, ease: MOTION_RULES.ease }}
         className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"
       >
         <img 
@@ -109,6 +109,8 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
           className="w-[95vw] md:w-[75vw] max-w-[1100px] object-contain mix-blend-screen filter grayscale opacity-40 will-change-transform"
           loading="eager"
           decoding="async"
+          // Fix: fetchpriority should be camelCase fetchPriority in React
+          fetchPriority="high"
         />
       </motion.div>
 
