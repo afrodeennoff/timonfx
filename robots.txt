@@ -1,0 +1,9 @@
+
+User-agent: *
+Allow: /
+
+# Disallow API endpoints
+Disallow: /api/genai
+
+# Sitemap (optional, but good practice to include if one exists)
+# Sitemap: https://timon.trades/sitemap.xml
