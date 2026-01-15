@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { VARIANTS, MOTION_RULES, GLASS_STYLES } from '../constants';
+import { VARIANTS, MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH } from '../constants';
 import { ConicGradient } from './ConicGradient';
 
 interface HeroProps {
@@ -26,8 +27,8 @@ const scrollToSection = (id: string) => {
 const FloatingNode: React.FC<{ x: string; y: string; delay: number; label?: string }> = ({ x, y, delay, label }) => (
   <motion.div
     initial={{ opacity: 0 }}
-    animate={{ opacity: [0.08, 0.24, 0.08] }}
-    transition={{ duration: 8, repeat: Infinity, delay, ease: "easeInOut" }}
+    animate={MOTION_KILL_SWITCH ? { opacity: 0.08 } : { opacity: [0.08, 0.24, 0.08] }}
+    transition={MOTION_KILL_SWITCH ? { duration: 0 } : { duration: 8, repeat: Infinity, delay, ease: "easeInOut" }}
     className="absolute pointer-events-none flex flex-col items-center gap-1"
     style={{ left: x, top: y }}
   >
@@ -43,6 +44,8 @@ const RotatingHeadline = () => {
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
+    if (MOTION_KILL_SWITCH) return; // Disable entirely
+
     if (isPaused) return;
 
     if (subIndex === WORDS[index].length && !reverse) {
@@ -72,8 +75,8 @@ const RotatingHeadline = () => {
       <div className="text-white drop-shadow-[0_0_40px_rgba(255,255,255,0.2)]">ACCELERATE YOUR</div>
       <div className="flex items-center justify-center whitespace-nowrap italic">
         <span className="text-brand-purple drop-shadow-[0_0_20px_rgba(139,92,246,0.3)]">
-          {WORDS[index].substring(0, subIndex)}
-          {!isPaused && <span className="opacity-40 ml-1 animate-pulse">_</span>}
+          {MOTION_KILL_SWITCH ? WORDS[index] : WORDS[index].substring(0, subIndex)}
+          {!isPaused && !MOTION_KILL_SWITCH && <span className="opacity-40 ml-1 animate-pulse">_</span>}
         </span>
       </div>
       <div className="mt-2 text-zinc-400 text-3xl sm:text-5xl md:text-6xl tracking-tight leading-none opacity-80">IN THE MARKETS</div>
@@ -100,7 +103,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.2 }}
-        transition={{ duration: 1.2, ease: MOTION_RULES.ease }}
+        transition={MOTION_KILL_SWITCH ? { duration: 0 } : { duration: 1.2, ease: MOTION_RULES.ease }}
         className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none"
       >
         <img 

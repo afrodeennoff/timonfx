@@ -1,4 +1,6 @@
+
 import React, { useState, useEffect, useRef } from 'react';
+import { MOTION_KILL_SWITCH } from '../constants';
 
 interface GhostTextProps {
   text: string;
@@ -39,7 +41,7 @@ export const GhostText: React.FC<GhostTextProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!isVisible) return;
+    if (!isVisible || MOTION_KILL_SWITCH) return; // Disable typing effect if kill switch is active
 
     if (!isDeleting && index < text.length) {
       const timeout = setTimeout(() => {
@@ -66,13 +68,13 @@ export const GhostText: React.FC<GhostTextProps> = ({
       ref={containerRef}
       className={className} 
       style={{ 
-        textShadow: `0 0 15px ${glowColor}`,
+        textShadow: MOTION_KILL_SWITCH ? 'none' : `0 0 15px ${glowColor}`,
         display: 'inline-block',
         minWidth: '1ch'
       }}
     >
-      {text.slice(0, index)}
-      {isVisible && (
+      {MOTION_KILL_SWITCH ? text : text.slice(0, index)}
+      {isVisible && !MOTION_KILL_SWITCH && (
         <span className={`opacity-70 inline-block ml-0.5 ${index < text.length || loop ? 'animate-pulse' : ''}`}>|</span>
       )}
     </span>
