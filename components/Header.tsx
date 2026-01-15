@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AppMode } from '../types';
@@ -50,7 +51,7 @@ const NavLink: React.FC<{
     transition={{ delay: 0.1 + index * 0.05, ease: MOTION_RULES.ease }}
     className="relative px-2 py-0.5 group focus:outline-none whitespace-nowrap"
   >
-    <span className={`relative z-10 mono text-[10px] transition-colors duration-300 font-black tracking-[0.2em] uppercase ${
+    <span className={`relative z-10 mono text-[9px] md:text-[10px] transition-colors duration-300 font-black tracking-[0.2em] uppercase ${
       isActive ? 'text-brand-purple' : 'text-zinc-400 group-hover:text-white'
     }`}>
       {label}
@@ -116,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
         <div className={`pointer-events-auto transition-all duration-500 ease-[0.22,1,0.36,1] ${
           scrolled ? 'w-auto max-w-[90vw]' : 'w-full max-w-7xl'
         } group/main`}>
-          <div className={`border border-white/15 rounded-full px-2.5 md:px-2 py-3 md:h-16 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2 md:gap-0 ${GLASS_STYLES.card}`}>
+          <div className={`border border-white/15 rounded-full px-2.5 md:px-2 py-2.5 md:h-16 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2 md:gap-0 ${GLASS_STYLES.card}`}>
             <div className="absolute inset-[1px] rounded-full pointer-events-none opacity-0 group-hover/main:opacity-100 transition-opacity duration-700">
               <div className="absolute inset-0 rounded-full border border-brand-purple/20 blur-[2px] opacity-70" />
               <div className="absolute inset-0 rounded-full border border-white/5 opacity-50" />
@@ -140,7 +141,7 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                          delay: i * 0.08, 
                          ease: MOTION_RULES.ease 
                        }}
-                       className="text-xl font-black tracking-tighter text-white uppercase italic leading-none group-hover:text-brand-purple group-hover:-translate-y-0.5 transition-all duration-300"
+                       className="text-lg md:text-xl font-black tracking-tighter text-white uppercase italic leading-none group-hover:text-brand-purple group-hover:-translate-y-0.5 transition-all duration-300"
                      >
                        {char}
                      </motion.span>
@@ -149,7 +150,7 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                    <motion.span 
                      animate={{ opacity: [0.3, 1, 0.3] }}
                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                     className="ml-2 text-xl font-black tracking-tighter text-brand-purple italic leading-none"
+                     className="ml-2 text-lg md:text-xl font-black tracking-tighter text-brand-purple italic leading-none"
                    >
                      //
                    </motion.span>
@@ -187,13 +188,13 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                 <div className="flex items-center gap-2">
                    <button 
                      onClick={() => onSetMode('EXECUTION')}
-                     className={`px-4 py-1.5 rounded-full mono text-[9px] font-black uppercase tracking-widest transition-all ${mode === 'EXECUTION' ? 'bg-white/10 text-white' : 'text-zinc-600 hover:text-white'}`}
+                     className={`px-3 py-1 rounded-full mono text-[8px] font-black uppercase tracking-widest transition-all ${mode === 'EXECUTION' ? 'bg-white/10 text-white' : 'text-zinc-600 hover:text-white'}`}
                    >
                      TERMINAL
                    </button>
                    <button 
                      onClick={() => onSetMode('LODGING')}
-                     className={`px-4 py-1.5 rounded-full mono text-[9px] font-black uppercase tracking-widest transition-all ${mode === 'LODGING' ? 'bg-white/10 text-white' : 'text-zinc-600 hover:text-white'}`}
+                     className={`px-3 py-1 rounded-full mono text-[8px] font-black uppercase tracking-widest transition-all ${mode === 'LODGING' ? 'bg-white/10 text-white' : 'text-zinc-600 hover:text-white'}`}
                    >
                      LOGS
                    </button>
@@ -207,11 +208,11 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                    onClick={(e) => { e.preventDefault(); scrollToSection('join'); }}
                    whileHover={VARIANTS.buttonHover}
                    whileTap={VARIANTS.buttonTap}
-                   className={`${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} ${activeSection === 'join' ? 'border-brand-purple/60' : ''} px-6 py-3 gap-2 focus:outline-none whitespace-nowrap`}
+                   className={`${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} ${activeSection === 'join' ? 'border-brand-purple/60' : ''} px-5 py-2.5 md:px-6 md:py-3 gap-2 focus:outline-none whitespace-nowrap`}
                  >
                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
                    <div className="w-1.5 h-1.5 rounded-full bg-brand-purple shadow-[0_0_8px_rgba(139,92,246,0.5)] relative z-10" />
-                   <span className={`mono text-[10px] font-black uppercase tracking-[0.2em] relative z-10 ${activeSection === 'join' ? 'text-brand-purple' : 'text-white'}`}>
+                   <span className={`mono text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] relative z-10 ${activeSection === 'join' ? 'text-brand-purple' : 'text-white'}`}>
                      JOIN
                    </span>
                  </motion.button>
@@ -220,11 +221,11 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                    whileHover={VARIANTS.buttonHover}
                    whileTap={VARIANTS.buttonTap}
                    onClick={() => onSetMode('STUDY')}
-                   className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} px-6 py-3 gap-2 focus:outline-none whitespace-nowrap`}
+                   className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} px-5 py-2.5 md:px-6 md:py-3 gap-2 focus:outline-none whitespace-nowrap`}
                  >
                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
                    <div className="w-1.5 h-1.5 rounded-full bg-brand-red animate-ping relative z-10" />
-                   <span className="mono text-[10px] font-black uppercase tracking-[0.2em] relative z-10">
+                   <span className="mono text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] relative z-10">
                      EXIT DESK
                    </span>
                  </motion.button>

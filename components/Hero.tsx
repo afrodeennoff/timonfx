@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { VARIANTS, MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH } from '../constants';
@@ -29,7 +30,7 @@ const FloatingNode: React.FC<{ x: string; y: string; delay: number; label?: stri
     initial={{ opacity: 0 }}
     animate={MOTION_KILL_SWITCH ? { opacity: 0.08 } : { opacity: [0.08, 0.24, 0.08] }}
     transition={MOTION_KILL_SWITCH ? { duration: 0 } : { duration: 8, repeat: Infinity, delay, ease: "easeInOut" }}
-    className="absolute pointer-events-none flex flex-col items-center gap-1"
+    className="absolute pointer-events-none flex flex-col items-center gap-1 hidden sm:flex"
     style={{ left: x, top: y }}
   >
     <div className="w-1.5 h-1.5 rounded-full bg-brand-purple/40 shadow-[0_0_12px_rgba(139,92,246,0.3)]" />
@@ -126,7 +127,7 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
         <div className="relative flex flex-col items-center">
           <motion.p 
             variants={VARIANTS.reveal as any}
-            className="mono text-[9px] text-zinc-600 font-black uppercase tracking-[0.6em] mb-7 md:mb-12"
+            className="mono text-[8px] md:text-[9px] text-zinc-600 font-black uppercase tracking-[0.6em] mb-7 md:mb-12"
           >
             INSTITUTIONAL // METHOD
           </motion.p>
@@ -136,11 +137,11 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
           </motion.div>
           
           <motion.div variants={VARIANTS.reveal as any} className="mt-6 md:mt-10 px-4 max-w-3xl mx-auto">
-             <div className="mono text-[11px] md:text-[13px] text-zinc-500 font-bold uppercase tracking-[0.15em] leading-relaxed max-w-[720px] mx-auto">
+             <div className="mono text-[10px] md:text-[13px] text-zinc-500 font-bold uppercase tracking-[0.15em] leading-relaxed max-w-[720px] mx-auto">
                <span className="text-white block mb-3 opacity-100 tracking-[0.25em] font-black italic text-sm md:text-base">
                  FOR TRADERS WHO REFUSE TO STAY AVERAGE.
                </span>
-               <span className="text-zinc-300 opacity-90 italic text-[11px] md:text-[13px] block max-w-[650px] mx-auto leading-relaxed font-medium">
+               <span className="text-zinc-300 opacity-90 italic text-[10px] md:text-[13px] block max-w-[650px] mx-auto leading-relaxed font-medium">
                  A private, elite mentorship driven by a proprietary standard that <span className="text-brand-purple font-black not-italic">eliminates noise</span> and enforces institutional precision.
                </span>
              </div>
@@ -155,10 +156,10 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
             whileHover={VARIANTS.buttonHover}
             whileTap={VARIANTS.buttonTap}
             onClick={() => scrollToSection('join')}
-            className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} w-full sm:w-auto px-8 py-3.5 md:px-10 md:py-4`}
+            className={`${GLASS_STYLES.accentButton} ${GLASS_STYLES.accentButtonHover} w-full sm:w-auto px-6 py-3 md:px-10 md:py-4`}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none" />
-            <span className="relative z-10 mono text-[11px] font-black text-white uppercase tracking-[0.5em]">
+            <span className="relative z-10 mono text-[10px] md:text-[11px] font-black text-white uppercase tracking-[0.5em]">
               ENTER DESK
             </span>
           </motion.button>
@@ -167,10 +168,10 @@ export const Hero: React.FC<HeroProps> = React.memo(({ onStartPreview }) => {
             whileHover={VARIANTS.buttonHover}
             whileTap={VARIANTS.buttonTap}
             onClick={() => scrollToSection('coupon')}
-            className={`${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} w-full sm:w-auto px-8 py-3.5 md:px-10 md:py-4 opacity-60 hover:opacity-100 transition-opacity duration-300`}
+            className={`${GLASS_STYLES.button} ${GLASS_STYLES.buttonHover} w-full sm:w-auto px-6 py-3 md:px-10 md:py-4 opacity-60 hover:opacity-100 transition-opacity duration-300`}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] pointer-events-none" />
-            <span className="relative z-10 mono text-[11px] font-black text-white uppercase tracking-[0.5em]">
+            <span className="relative z-10 mono text-[10px] md:text-[11px] font-black text-white uppercase tracking-[0.5em]">
               PARTNERS
             </span>
           </motion.button>

@@ -1,4 +1,5 @@
 
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 // Fixed: Using MOTION_RULES instead of non-existent ANIM_SYSTEM
@@ -77,19 +78,19 @@ export const MarketStatus: React.FC = React.memo(() => {
       animate={{ opacity: 1, y: 0 }}
       // Fixed: Using MOTION_RULES instead of non-existent ANIM_SYSTEM
       transition={{ duration: MOTION_RULES.revealDuration, ease: MOTION_RULES.ease }}
-      className={`fixed bottom-2 left-2 md:bottom-3 md:left-3 z-[150] pointer-events-none p-2 md:p-2.5 ${GLASS_STYLES.card} !rounded-[1.25rem] shadow-2xl backdrop-blur-xl`}
+      className={`fixed bottom-4 left-4 md:bottom-3 md:left-3 z-[150] pointer-events-none p-2 md:p-2.5 ${GLASS_STYLES.card} !rounded-[1.25rem] shadow-2xl backdrop-blur-xl`}
     >
       <div className="flex flex-row md:flex-col gap-1 items-center md:items-start">
         <div className="flex items-center gap-2 border-r md:border-r-0 border-white/10 pr-2 md:pr-0">
-          <span className="mono text-[8px] text-zinc-600 uppercase tracking-widest font-black">UTC</span>
-          <span className="mono text-[9px] md:text-[10px] text-zinc-400 tracking-widest font-bold tabular-nums">
+          <span className="mono text-[7px] md:text-[8px] text-zinc-600 uppercase tracking-widest font-black">UTC</span>
+          <span className="mono text-[8px] md:text-[10px] text-zinc-400 tracking-widest font-bold tabular-nums">
             {data.utcTimeString}
           </span>
         </div>
         
         <div className="flex items-center gap-2">
           <div className={`w-1 h-1 rounded-full ${data.dotColor} shadow-[0_0_6px_rgba(255,255,255,0.02)]`} />
-          <span className={`mono text-[8px] md:text-[9px] font-black tracking-widest uppercase ${data.statusColor}`}>
+          <span className={`mono text-[7px] md:text-[9px] font-black tracking-widest uppercase ${data.statusColor}`}>
             {data.statusText}
           </span>
         </div>
