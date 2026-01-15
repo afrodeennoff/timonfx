@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import Lenis from 'lenis';
 
@@ -13,7 +12,7 @@ export const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 2.0, // Increased for better mobile responsiveness
+      touchMultiplier: 1.5,
       lerp: 0.1, // More responsive tracking for a quiet, predictable feel
     });
 

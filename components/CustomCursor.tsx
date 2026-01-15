@@ -1,16 +1,10 @@
-
-
 import React, { useEffect, useState, memo, useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export const CustomCursor: React.FC = memo(() => {
-  // Exit early if on a touch device to prevent hook execution
-  if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
-    return null;
-  }
-
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const requestRef = useRef<number>(0);
   
   // High-performance springs for premium following motion
@@ -26,7 +20,10 @@ export const CustomCursor: React.FC = memo(() => {
   const proximityOpacity = useMotionValue(0.4);
 
   useEffect(() => {
-    // No need for isMounted state or touch check inside useEffect now.
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
+        return;
+    }
+    setIsMounted(true);
 
     const updateRotation = (time: number) => {
       if (!isHovering) {
@@ -88,6 +85,8 @@ export const CustomCursor: React.FC = memo(() => {
     };
   }, [isHovering, isVisible, mouseX, mouseY, proximityOpacity, proximityScale, rotateValue]);
 
+  if (!isMounted) return null;
+  if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return null;
   if (!isVisible) return null;
 
   return (

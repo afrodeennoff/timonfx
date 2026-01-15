@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { VARIANTS, MOTION_RULES, GLASS_STYLES } from '../constants';
@@ -7,7 +6,7 @@ import { GhostText } from './GhostText';
 export const Framework: React.FC = () => {
   return (
     <section id="framework" className="py-10 md:py-14 px-6 bg-[#040404] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-10 md:gap-10 items-center">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-7 md:gap-10 items-center">
         <motion.div 
           initial="initial"
           whileInView="animate"
@@ -16,14 +15,14 @@ export const Framework: React.FC = () => {
           className="space-y-5"
         >
           <motion.div variants={VARIANTS.reveal} className="space-y-3">
-            <span className="mono text-[9px] md:text-[10px] text-brand-purple font-black tracking-[0.4em] uppercase">Process</span>
-            <h2 className="text-4xl md:text-7xl font-black text-white italic uppercase tracking-tighter leading-none">
+            <span className="mono text-[10px] text-brand-purple font-black tracking-[0.4em] uppercase">Process</span>
+            <h2 className="text-5xl md:text-7xl font-black text-white italic uppercase tracking-tighter leading-none">
               THE LOGIC BEHIND <br />
               <GhostText text="EXECUTION." className="text-transparent transition-colors cursor-default stroke-text" />
             </h2>
           </motion.div>
 
-          <motion.p variants={VARIANTS.reveal} className="mono text-[10px] md:text-[11px] text-zinc-400 uppercase tracking-widest leading-relaxed max-w-sm font-bold">
+          <motion.p variants={VARIANTS.reveal} className="mono text-[11px] text-zinc-400 uppercase tracking-widest leading-relaxed max-w-sm font-bold">
             The TIMON process identifies liquidity nodes prior to institutional expansion for high-probability reactions.
           </motion.p>
 
@@ -38,9 +37,9 @@ export const Framework: React.FC = () => {
                 variants={VARIANTS.reveal}
                 whileHover={{ x: 4 }}
               >
-                <span className="mono text-[8px] md:text-[9px] text-zinc-600 font-black">0{step.id} //</span>
-                <h4 className="text-base md:text-lg font-black text-white uppercase tracking-widest mt-0.5">{step.title}</h4>
-                <p className="mono text-[8px] md:text-[9px] text-zinc-500 uppercase mt-0.5 tracking-widest font-bold">{step.desc}</p>
+                <span className="mono text-[9px] text-zinc-600 font-black">0{step.id} //</span>
+                <h4 className="text-lg font-black text-white uppercase tracking-widest mt-0.5">{step.title}</h4>
+                <p className="mono text-[9px] text-zinc-500 uppercase mt-0.5 tracking-widest font-bold">{step.desc}</p>
               </motion.div>
             ))}
           </div>

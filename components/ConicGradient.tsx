@@ -1,8 +1,6 @@
-
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MOTION_RULES, MOTION_KILL_SWITCH } from '../constants';
+import { MOTION_RULES } from '../constants';
 
 interface ConicGradientProps {
   className?: string;
@@ -29,7 +27,7 @@ export const ConicGradient: React.FC<ConicGradientProps> = ({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: opacity }}
-        transition={MOTION_KILL_SWITCH ? { duration: 0 } : { 
+        transition={{ 
           duration: MOTION_RULES.revealDuration * 2, 
           ease: MOTION_RULES.ease 
         }}

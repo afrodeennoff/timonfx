@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VARIANTS, MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH } from '../constants';
@@ -155,7 +154,7 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
                   disabled={isGenerating}
                   whileHover={!isGenerating ? VARIANTS.buttonHover : {}}
                   whileTap={!isGenerating ? VARIANTS.buttonTap : {}}
-                  className={`mono text-[9px] font-black tracking-widest uppercase px-3 py-1.5 md:px-4 md:py-2 rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] relative overflow-hidden group/btn ${isGenerating ? 'opacity-40 cursor-wait bg-zinc-800 border-zinc-700' : 'bg-brand-purple/10 text-white border border-brand-purple/30 hover:bg-brand-purple/20 hover:border-brand-purple/50'}`}
+                  className={`mono text-[9px] font-black tracking-widest uppercase px-4 py-2 rounded-full transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] relative overflow-hidden group/btn ${isGenerating ? 'opacity-40 cursor-wait bg-zinc-800 border-zinc-700' : 'bg-brand-purple/10 text-white border border-brand-purple/30 hover:bg-brand-purple/20 hover:border-brand-purple/50'}`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_2s_infinite] pointer-events-none" />
                   <span className="relative z-10">{isGenerating ? generationStep || 'SYNTHESIZING...' : 'REFINE IDENTITY'}</span>
@@ -173,7 +172,7 @@ export const About: React.FC<AboutProps> = ({ onStartPreview }) => {
             </motion.div>
             
             <motion.div variants={VARIANTS.reveal} className="space-y-7 group/text">
-              <p className="mono text-base md:text-xl text-zinc-200 leading-relaxed font-medium group-hover/text:text-white transition-colors duration-300">
+              <p className="mono text-lg md:text-xl text-zinc-200 leading-relaxed font-medium group-hover/text:text-white transition-colors duration-300">
                 <span className="text-brand-purple font-bold">I’m Timon — a futures trader and trading educator.</span>
                 {' '}After years of studying price action, market behavior, and trading psychology, I developed a structured approach focused on clarity, simplicity, and consistent execution.
               </p>
