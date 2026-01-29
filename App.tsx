@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AppMode } from './types';
 import { MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH } from './constants';
 import { SocialProof } from './components/SocialProof';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 // Lazy load sections
 const Education = lazy(() => import('./components/Education').then(m => ({ default: m.Education })));
@@ -120,6 +121,7 @@ export const App: React.FC = () => {
         <BackToTop />
         <PreviewGate isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} />
         <Footer />
+        <SpeedInsights />
       </div>
     </SmoothScroll>
   );
