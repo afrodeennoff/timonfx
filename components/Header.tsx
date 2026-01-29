@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AppMode } from '../types';
@@ -126,6 +127,7 @@ export const Header: React.FC<HeaderProps> = ({ onStartPreview, mode, onToggleMo
                <button 
                  onClick={(e) => { e.preventDefault(); onSetMode('STUDY'); scrollToSection('hero'); }}
                  className="flex items-center gap-1 select-none group focus:outline-none whitespace-nowrap overflow-hidden py-1"
+                 aria-label="Navigate to Home"
                >
                  <motion.div
                    className="flex items-center"

@@ -1,3 +1,5 @@
+
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FAQ_DATA, VARIANTS, GLASS_STYLES, MOTION_RULES } from '../constants';
@@ -47,6 +49,7 @@ export const FAQ: React.FC = () => {
                 aria-expanded={openIndex === i}
                 aria-controls={`faq-answer-${i}`}
                 id={`faq-question-${i}`}
+                aria-label={`Toggle answer for ${item.q}`}
               >
                 <span className="mono text-[11px] md:text-xs text-white uppercase tracking-widest font-black pr-8 leading-relaxed group-hover/main:text-brand-purple transition-colors duration-300">
                   {item.q}

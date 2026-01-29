@@ -10,7 +10,7 @@ import { PreviewGate } from './components/PreviewGate';
 import { Footer } from './components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AppMode } from './types';
-import { MOTION_RULES, GLASS_STYLES } from './constants';
+import { MOTION_RULES, GLASS_STYLES, MOTION_KILL_SWITCH } from './constants';
 import { SocialProof } from './components/SocialProof';
 
 // Lazy load sections
@@ -47,6 +47,9 @@ export const App: React.FC = () => {
     setIsPreviewOpen(true);
   }, []);
 
+  // Helper to get transition based on MOTION_KILL_SWITCH
+  const getModeTransition = (duration: number) => MOTION_KILL_SWITCH ? { duration: 0 } : { duration, ease: MOTION_RULES.ease };
+
   return (
     <SmoothScroll>
       <div className="min-h-screen bg-brand-black text-white selection:bg-brand-purple/30 selection:text-white">
@@ -66,7 +69,7 @@ export const App: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={getModeTransition(0.5)}
               >
                 <Hero onStartPreview={handleStartPreview} />
                 <SocialProof />
@@ -87,7 +90,7 @@ export const App: React.FC = () => {
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.5, ease: MOTION_RULES.ease }}
+                transition={getModeTransition(0.5)}
                 className="pt-24 pb-12 px-6 min-h-screen flex items-center justify-center"
               >
                 <Suspense fallback={<DigitalLoader />}>
@@ -102,7 +105,7 @@ export const App: React.FC = () => {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 15 }}
-                transition={{ duration: 0.5, ease: MOTION_RULES.ease }}
+                transition={getModeTransition(0.5)}
                 className="pt-24 pb-12 px-6 min-h-screen flex flex-col"
               >
                 <Suspense fallback={<DigitalLoader />}>
